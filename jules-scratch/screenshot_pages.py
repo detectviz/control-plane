@@ -34,7 +34,7 @@ def run_verification(playwright):
             link_locator.click()
             # 等待一小段時間確保頁面內容載入
             page.wait_for_timeout(500)
-            page.screenshot(path=f"jules-scratch/final_run/{page_id}.png")
+            page.screenshot(path=f"jules-scratch/{page_id}.png")
             print(f"  - 已儲存截圖: {page_id}.png")
 
             # 特別處理「自動化」頁面的頁籤
@@ -42,7 +42,7 @@ def run_verification(playwright):
                 execution_logs_tab = page.locator("#execution-logs-tab")
                 execution_logs_tab.click()
                 page.wait_for_timeout(500)
-                page.screenshot(path=f"jules-scratch/final_run/automation_execution_logs.png")
+                page.screenshot(path=f"jules-scratch/automation_execution_logs.png")
                 print(f"  - 已儲存截圖: automation_execution_logs.png")
         else:
             print(f"頁面連結 {page_id} 不可見，已跳過。")

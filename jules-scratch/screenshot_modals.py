@@ -25,7 +25,7 @@ def run_verification(playwright):
     print("正在截取「通知中心」下拉選單...")
     page.locator("#notification-btn").click()
     expect(page.locator("#notification-dropdown")).to_be_visible()
-    page.screenshot(path="jules-scratch/final_run/modal_notifications.png")
+    page.screenshot(path="jules-scratch/modal_notifications.png")
     page.locator("#notification-btn").click() # 關閉它
     print("  - 完成。")
 
@@ -34,7 +34,7 @@ def run_verification(playwright):
     page.get_by_role("link", name="設備管理").click()
     page.get_by_role("button", name="新增設備").click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/final_run/modal_add_device.png")
+    page.screenshot(path="jules-scratch/modal_add_device.png")
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -43,7 +43,7 @@ def run_verification(playwright):
     # 這會點擊設備列表中的第一個刪除按鈕
     page.locator(".delete-device-btn").first.click()
     expect(page.locator("#confirm-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/final_run/modal_confirm_delete.png")
+    page.screenshot(path="jules-scratch/modal_confirm_delete.png")
     page.locator("#cancel-action-btn").click()
     print("  - 完成。")
 
@@ -53,7 +53,7 @@ def run_verification(playwright):
     # 點擊告警紀錄列表中的第一個項目
     page.locator("#logs-table-body tr.log-row").first.click()
     expect(page.locator("#incident-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/final_run/modal_incident_details.png")
+    page.screenshot(path="jules-scratch/modal_incident_details.png")
     page.locator("#incident-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -64,7 +64,7 @@ def run_verification(playwright):
     expect(page.locator("#gemini-modal")).to_be_visible()
     # 等待載入動畫結束且內容出現
     expect(page.locator("#gemini-modal-content h3")).to_be_visible(timeout=5000)
-    page.screenshot(path="jules-scratch/final_run/modal_gemini_report.png")
+    page.screenshot(path="jules-scratch/modal_gemini_report.png")
     page.locator("#close-gemini-modal").click()
     print("  - 完成。")
 
@@ -74,7 +74,7 @@ def run_verification(playwright):
     page.locator("#profile-name-input").fill("Test Name")
     page.get_by_role("button", name="更新資訊").click()
     expect(page.locator("#feedback-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/final_run/modal_feedback.png")
+    page.screenshot(path="jules-scratch/modal_feedback.png")
     print("  - 完成。")
 
     print("已完成所有彈出視窗的截圖。")
