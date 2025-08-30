@@ -548,13 +548,7 @@
             </div>
           </div>
           <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
-              <h3 class="text-lg font-semibold text-slate-800 mb-4">主要線路流量 (Mbps)</h3>
-              <div class="relative h-80">
-                <canvas id="trafficChart"></canvas>
-              </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-md">
+            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-md">
               <h3 class="text-lg font-semibold text-slate-800 mb-4">設備狀態分佈</h3>
               <div class="relative h-80">
                 <canvas id="statusChart"></canvas>
@@ -562,8 +556,9 @@
             </div>
           </div>
           <div class="mt-8 bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">區域狀態總覽</h3>
-            <div id="region-status-container" class="space-y-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">設備群組狀態總覽</h3>
+            <div id="group-status-container" class="space-y-6">
+              <!-- Device group statuses will be populated here by JavaScript -->
             </div>
           </div>
         </section>
@@ -828,14 +823,14 @@
                 <input type="date" id="logs-end-date"
                   class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
                 <select id="logs-level-filter"
-                  class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-slate-800">
                   <option value="">所有等級</option>
                   <option value="error">高 (錯誤)</option>
                   <option value="warning">中 (警告)</option>
                   <option value="info">低 (資訊)</option>
                 </select>
                 <select id="logs-status-filter"
-                  class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                  class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-slate-800">
                   <option value="">所有狀態</option>
                   <option value="new">新告警</option>
                   <option value="ack">處理中</option>
@@ -961,14 +956,14 @@
                 <div>
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇目標群組</label>
                   <select id="capacity-target-group"
-                    class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-slate-800">
                     <option value="">請選擇設備群組</option>
                   </select>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇指標</label>
                   <select id="capacity-metric"
-                    class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    class="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-slate-800">
                     <option value="">請先選擇群組</option>
                   </select>
                 </div>
@@ -1066,17 +1061,25 @@
               <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">個人資訊</h3>
               <div class="space-y-4 text-sm">
                 <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                  <label class="font-medium text-slate-500">姓名</label>
-                  <p id="profile-name" class="md:col-span-3 text-slate-800"></p>
+                  <label for="profile-name-input" class="font-medium text-slate-700">姓名</label>
+                  <input type="text" id="profile-name-input"
+                    class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                   <label class="font-medium text-slate-500">角色</label>
                   <p id="profile-role" class="md:col-span-3 text-slate-800"></p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                  <label class="font-medium text-slate-500">所屬團隊</label>
-                  <p id="profile-teams" class="md:col-span-3 text-slate-800"></p>
+                <div class="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                  <label for="profile-teams-select" class="font-medium text-slate-700 pt-2">所屬團隊</label>
+                  <select id="profile-teams-select" multiple
+                    class="md:col-span-3 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <!-- Options will be populated by JavaScript -->
+                  </select>
                 </div>
+              </div>
+              <div class="flex justify-end mt-6">
+                <button id="save-profile-info-btn"
+                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新資訊</button>
               </div>
             </div>
 
@@ -1503,7 +1506,6 @@
 
     // --- Data Population Functions ---
     function populateDashboard() {
-      const regionContainer = document.getElementById('region-status-container');
       const pendingAlerts = getPendingAlerts();
       const notificationList = document.getElementById('notification-list');
 
@@ -1531,39 +1533,43 @@
         notificationList.innerHTML += itemHtml;
       });
 
+      const groupContainer = document.getElementById('group-status-container');
+      if (groupContainer) {
+        groupContainer.innerHTML = '';
+        mockData.deviceGroups.forEach(group => {
+          const groupDevices = mockData.devices.filter(d => group.memberIds.includes(d.id));
+          const statuses = { normal: 0, warning: 0, error: 0 };
+          let overallStatus = 'normal';
 
-      const regions = { '北區': [], '中區': [], '南區': [] };
-      mockData.branches.forEach(b => regions[b.region].push(b));
+          groupDevices.forEach(d => {
+            statuses[d.status]++;
+            if (d.status === 'error') overallStatus = 'error';
+            else if (d.status === 'warning' && overallStatus !== 'error') overallStatus = 'warning';
+          });
 
-      regionContainer.innerHTML = '';
-      for (const [regionName, branches] of Object.entries(regions)) {
-        let branchCardsHtml = branches.map(branch => {
           const statusClasses = {
-            normal: { border: 'border-green-500', text: 'text-green-600' },
-            warning: { border: 'border-yellow-500', text: 'text-yellow-600' },
-            error: { border: 'border-red-500', text: 'text-red-600' },
+            normal: { border: 'border-green-500' },
+            warning: { border: 'border-yellow-500' },
+            error: { border: 'border-red-500' },
           };
-          const status = statusClasses[branch.status];
-          return `
-                        <div class="bg-white p-4 rounded-lg border-l-4 ${status.border} shadow-sm hover:shadow-md transition-shadow">
-                            <p class="font-semibold text-slate-800">${branch.name}</p>
-                            <div class="text-xs text-slate-500 mt-2 flex justify-between">
-                                <span>總數: ${branch.devices.total}</span>
-                                <span class="text-red-500 font-medium">異常: ${branch.devices.error}</span>
-                                <span class="text-yellow-500 font-medium">警告: ${branch.devices.warning}</span>
-                            </div>
-                        </div>
-                    `;
-        }).join('');
+          const statusClass = statusClasses[overallStatus];
 
-        regionContainer.innerHTML += `
-                    <div>
-                        <h4 class="text-md font-bold text-slate-600 mb-3 pb-2 border-b">${regionName}</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            ${branchCardsHtml}
-                        </div>
+          const groupCardHtml = `
+            <div class="bg-slate-50 p-4 rounded-lg border-l-4 ${statusClass.border} shadow-sm hover:shadow-md transition-shadow">
+                <p class="font-semibold text-slate-800">${group.name}</p>
+                <p class="text-sm text-slate-600 mt-1">${group.description}</p>
+                <div class="text-xs text-slate-500 mt-3 flex justify-between items-center">
+                    <span>總數: ${groupDevices.length}</span>
+                    <div class="flex gap-x-4">
+                      <span class="text-green-600 font-medium">正常: ${statuses.normal}</span>
+                      <span class="text-yellow-600 font-medium">警告: ${statuses.warning}</span>
+                      <span class="text-red-600 font-medium">異常: ${statuses.error}</span>
                     </div>
-                `;
+                </div>
+            </div>
+          `;
+          groupContainer.innerHTML += groupCardHtml;
+        });
       }
     }
 
@@ -3255,13 +3261,12 @@
       if (!loggedInUser) return;
 
       // Populate profile information
-      const profileName = document.getElementById('profile-name');
+      const profileNameInput = document.getElementById('profile-name-input');
       const profileRole = document.getElementById('profile-role');
-      const profileTeams = document.getElementById('profile-teams');
       const profileEmail = document.getElementById('profile-email');
       const profileLineToken = document.getElementById('profile-line-token');
 
-      if (profileName) profileName.textContent = loggedInUser.name;
+      if (profileNameInput) profileNameInput.value = loggedInUser.name;
       if (profileRole) {
         const roleMap = {
           'SuperAdmin': '超級管理員',
@@ -3271,14 +3276,22 @@
         profileRole.textContent = roleMap[loggedInUser.role] || loggedInUser.role;
       }
 
-      // Find user's teams
+      // Find user's teams and populate dropdown
       const userPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-      if (profileTeams && userPersonnel) {
-        const userTeamNames = userPersonnel.teamIds.map(teamId =>
-          mockData.teams.find(t => t.id === teamId)?.name
-        ).filter(Boolean);
-        profileTeams.textContent = userTeamNames.join(', ') || '無';
+      const profileTeamsSelect = document.getElementById('profile-teams-select');
+      if (profileTeamsSelect && userPersonnel) {
+        profileTeamsSelect.innerHTML = ''; // Clear existing options
+        mockData.teams.forEach(team => {
+          const option = document.createElement('option');
+          option.value = team.id;
+          option.textContent = team.name;
+          if (userPersonnel.teamIds.includes(team.id)) {
+            option.selected = true;
+          }
+          profileTeamsSelect.appendChild(option);
+        });
       }
+
 
       // Populate contact info
       if (profileEmail) profileEmail.value = loggedInUser.email || '';
@@ -3295,6 +3308,32 @@
     }
 
     function initializeProfileActions() {
+      // Save profile info
+      const saveProfileInfoBtn = document.getElementById('save-profile-info-btn');
+      if (saveProfileInfoBtn) {
+        saveProfileInfoBtn.addEventListener('click', () => {
+          const newName = document.getElementById('profile-name-input').value;
+          const profileTeamsSelect = document.getElementById('profile-teams-select');
+          const selectedTeamIds = Array.from(profileTeamsSelect.selectedOptions).map(opt => parseInt(opt.value, 10));
+
+          const oldName = loggedInUser.name;
+          loggedInUser.name = newName;
+
+          // Update mockData.personnel as well
+          const userInPersonnel = mockData.personnel.find(p => p.name === oldName || p.name === newName);
+          if (userInPersonnel) {
+              userInPersonnel.name = newName;
+              userInPersonnel.teamIds = selectedTeamIds;
+          }
+          // re-render user name in sidebar
+          document.getElementById('user-name').textContent = newName;
+          populateTables(); // To refresh names and teams in other tables
+          populateProfilePage(); // To refresh the profile page itself
+          showFeedbackModal('個人資訊已更新！');
+          setTimeout(closeFeedbackModal, 1500);
+        });
+      }
+
       // Save password
       const savePasswordBtn = document.getElementById('save-password-btn');
       if (savePasswordBtn) {
