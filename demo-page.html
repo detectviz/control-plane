@@ -3067,10 +3067,16 @@
       const resultsDiv = document.getElementById('capacity-results');
       let capacityChart = null;
 
-      // Initialize target group dropdown on first load
+      // Initialize dropdowns for the first time
       if (targetGroupSelect && targetGroupSelect.children.length <= 1) {
         populateTargetGroupDropdown();
       }
+      // Set initial state for metric dropdown
+      if (metricSelect.value === '') {
+          metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
+          metricSelect.disabled = true;
+      }
+
 
       // Prevent multiple event listener bindings
       if (targetGroupSelect && !targetGroupSelect.hasAttribute('data-initialized')) {
@@ -3079,248 +3085,128 @@
         // Update metrics when group is selected
         targetGroupSelect.addEventListener('change', (e) => {
           const groupId = e.target.value;
-
           if (metricSelect) {
-            // Preserve current metric selection
-            const currentMetricSelection = metricSelect.value;
-
             if (groupId) {
-              // Populate metrics dropdown and restore selection if possible
               metricSelect.innerHTML = '<option value="">請選擇指標</option>';
               Object.entries(mockData.capacityMetrics).forEach(([key, metric]) => {
-                const selected = currentMetricSelection === key ? 'selected' : '';
+                const selected = metricSelect.dataset.lastSelection === key ? 'selected' : '';
                 metricSelect.innerHTML += `<option value="${key}" ${selected}>${metric.name}</option>`;
               });
+              if(metricSelect.dataset.lastSelection) {
+                metricSelect.value = metricSelect.dataset.lastSelection;
+              }
               metricSelect.disabled = false;
             } else {
+              // No group is selected, reset and disable
               metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
               metricSelect.disabled = true;
             }
-
-            // Update analyze button state
             updateAnalyzeButtonState();
           }
         });
       }
 
-      // Enable analyze button when both selections are made
+      // Store the selection in a data attribute
       if (metricSelect && !metricSelect.hasAttribute('data-initialized')) {
         metricSelect.setAttribute('data-initialized', 'true');
-
-        metricSelect.addEventListener('change', () => {
+        metricSelect.addEventListener('change', (e) => {
+          if(e.target.value) {
+            metricSelect.dataset.lastSelection = e.target.value;
+          }
           updateAnalyzeButtonState();
         });
       }
 
-      // Analyze capacity
+      // Analyze capacity click handler
       if (analyzeBtn && !analyzeBtn.hasAttribute('data-initialized')) {
         analyzeBtn.setAttribute('data-initialized', 'true');
-
         analyzeBtn.addEventListener('click', async () => {
-          const groupId = targetGroupSelect.value;
-          const metric = metricSelect.value;
-          const groupName = targetGroupSelect.options[targetGroupSelect.selectedIndex].text;
-          const metricName = mockData.capacityMetrics[metric].name;
+            const groupId = targetGroupSelect.value;
+            const metric = metricSelect.value;
+            if (!groupId || !metric) return;
 
-          // Show loading state
-          analyzeBtn.disabled = true;
-          analyzeBtn.textContent = '分析中...';
+            const groupName = targetGroupSelect.options[targetGroupSelect.selectedIndex].text;
+            const metricName = mockData.capacityMetrics[metric].name;
 
-          // Simulate analysis delay
-          await new Promise(resolve => setTimeout(resolve, 2000));
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '分析中...';
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            const mockResults = generateMockCapacityAnalysis(metric);
 
-          // Generate mock analysis results
-          const mockResults = generateMockCapacityAnalysis(metric);
+            const growthRateEl = document.getElementById('growth-rate');
+            const warningEtaEl = document.getElementById('warning-eta');
+            const depletionEtaEl = document.getElementById('depletion-eta');
+            if (growthRateEl) growthRateEl.textContent = mockResults.growthRate;
+            if (warningEtaEl) warningEtaEl.textContent = mockResults.warningEta;
+            if (depletionEtaEl) depletionEtaEl.textContent = mockResults.depletionEta;
 
-          // Update UI with results
-          const growthRateEl = document.getElementById('growth-rate');
-          const warningEtaEl = document.getElementById('warning-eta');
-          const depletionEtaEl = document.getElementById('depletion-eta');
+            const recommendationsDiv = document.getElementById('capacity-recommendations');
+            if (recommendationsDiv) {
+                recommendationsDiv.innerHTML = mockResults.recommendations.map(rec =>
+                `<div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0 mt-1"><div class="h-2 w-2 rounded-full bg-blue-500"></div></div>
+                  <p class="text-sm text-slate-700">${rec}</p>
+                </div>`
+                ).join('');
+            }
 
-          if (growthRateEl) growthRateEl.textContent = mockResults.growthRate;
-          if (warningEtaEl) warningEtaEl.textContent = mockResults.warningEta;
-          if (depletionEtaEl) depletionEtaEl.textContent = mockResults.depletionEta;
+            createCapacityTrendChart(mockResults.chartData, metricName);
+            if (resultsDiv) {
+                resultsDiv.classList.remove('hidden');
+            }
 
-          // Show recommendations
-          const recommendationsDiv = document.getElementById('capacity-recommendations');
-          if (recommendationsDiv) {
-            recommendationsDiv.innerHTML = mockResults.recommendations.map(rec =>
-              `<div class="flex items-start space-x-3">
-              <div class="flex-shrink-0 mt-1">
-                <div class="h-2 w-2 rounded-full bg-blue-500"></div>
-              </div>
-              <p class="text-sm text-slate-700">${rec}</p>
-            </div>`
-            ).join('');
-          }
-
-          // Create trend chart
-          createCapacityTrendChart(mockResults.chartData, metricName);
-
-          // Show results
-          if (resultsDiv) {
-            resultsDiv.classList.remove('hidden');
-          }
-
-          // Reset button
-          analyzeBtn.disabled = false;
-          analyzeBtn.textContent = '重新分析';
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = '重新分析';
         });
       }
 
       function generateMockCapacityAnalysis(metric) {
-        const baseGrowthRates = {
-          'cpu_usage': '2.3%',
-          'memory_usage': '5.2%',
-          'disk_usage': '8.1%',
-          'network_traffic': '12.5%'
-        };
-
-        const baseWarningEtas = {
-          'cpu_usage': '120 天後',
-          'memory_usage': '45 天後',
-          'disk_usage': '30 天後',
-          'network_traffic': '15 天後'
-        };
-
-        const baseDepletionEtas = {
-          'cpu_usage': '180 天後',
-          'memory_usage': '65 天後',
-          'disk_usage': '45 天後',
-          'network_traffic': '25 天後'
-        };
-
+        const baseGrowthRates = {'cpu_usage': '2.3%', 'memory_usage': '5.2%', 'disk_usage': '8.1%', 'network_traffic': '12.5%'};
+        const baseWarningEtas = {'cpu_usage': '120 天後', 'memory_usage': '45 天後', 'disk_usage': '30 天後', 'network_traffic': '15 天後'};
+        const baseDepletionEtas = {'cpu_usage': '180 天後', 'memory_usage': '65 天後', 'disk_usage': '45 天後', 'network_traffic': '25 天後'};
         const recommendations = {
-          'cpu_usage': [
-            '建議監控 CPU 使用率較高的服務，考慮優化或擴容',
-            '評估是否需要增加伺服器節點來分散負載',
-            '檢查是否有異常程序消耗過多 CPU 資源'
-          ],
-          'memory_usage': [
-            '建議盡快規劃記憶體擴充，預計 45 天後達到警戒線',
-            '檢查應用程式是否存在記憶體洩漏問題',
-            '考慮實施記憶體快取策略優化'
-          ],
-          'disk_usage': [
-            '緊急建議：磁碟空間即將不足，需立即清理或擴容',
-            '建立自動化日誌清理機制',
-            '評估資料歸檔策略，將舊資料移至冷儲存'
-          ],
-          'network_traffic': [
-            '網路流量增長快速，建議評估頻寬升級需求',
-            '檢查是否有異常流量或攻擊行為',
-            '考慮實施流量優化和 CDN 策略'
-          ]
+          'cpu_usage': ['建議監控 CPU 使用率較高的服務，考慮優化或擴容', '評估是否需要增加伺服器節點來分散負載', '檢查是否有異常程序消耗過多 CPU 資源'],
+          'memory_usage': ['建議盡快規劃記憶體擴充，預計 45 天後達到警戒線', '檢查應用程式是否存在記憶體洩漏問題', '考慮實施記憶體快取策略優化'],
+          'disk_usage': ['緊急建議：磁碟空間即將不足，需立即清理或擴容', '建立自動化日誌清理機制', '評估資料歸檔策略，將舊資料移至冷儲存'],
+          'network_traffic': ['網路流量增長快速，建議評估頻寬升級需求', '檢查是否有異常流量或攻擊行為', '考慮實施流量優化和 CDN 策略']
         };
-
-        // Generate mock historical data
-        const chartData = {
-          labels: [],
-          historical: [],
-          predicted: []
-        };
-
+        const chartData = {labels: [], historical: [], predicted: []};
         const now = new Date();
         for (let i = 90; i >= 0; i--) {
           const date = new Date(now);
           date.setDate(date.getDate() - i);
           chartData.labels.push(date.toISOString().slice(5, 10));
-
-          // Generate realistic historical data with trend
           const baseValue = 30 + (90 - i) * 0.3 + Math.random() * 10;
           chartData.historical.push(Math.min(baseValue, 95));
         }
-
-        // Generate prediction data
         for (let i = 1; i <= 60; i++) {
           const date = new Date(now);
           date.setDate(date.getDate() + i);
           chartData.labels.push(date.toISOString().slice(5, 10));
-
           const lastValue = chartData.historical[chartData.historical.length - 1];
           const predictedValue = lastValue + i * 0.5 + Math.random() * 2;
           chartData.predicted.push(Math.min(predictedValue, 100));
         }
-
-        return {
-          growthRate: baseGrowthRates[metric],
-          warningEta: baseWarningEtas[metric],
-          depletionEta: baseDepletionEtas[metric],
-          recommendations: recommendations[metric],
-          chartData: chartData
-        };
+        return {growthRate: baseGrowthRates[metric], warningEta: baseWarningEtas[metric], depletionEta: baseDepletionEtas[metric], recommendations: recommendations[metric], chartData: chartData};
       }
 
       function createCapacityTrendChart(data, metricName) {
         const ctx = document.getElementById('capacityTrendChart').getContext('2d');
-
-        if (capacityChart) {
-          capacityChart.destroy();
-        }
-
+        if (capacityChart) { capacityChart.destroy(); }
         capacityChart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: data.labels,
             datasets: [
-              {
-                label: `歷史 ${metricName}`,
-                data: data.historical.concat(Array(data.predicted.length).fill(null)),
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                fill: true,
-                tension: 0.4
-              },
-              {
-                label: `預測 ${metricName}`,
-                data: Array(data.historical.length).fill(null).concat(data.predicted),
-                borderColor: '#f59e0b',
-                backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                borderDash: [5, 5],
-                fill: false,
-                tension: 0.4
-              },
-              {
-                label: '80% 警戒線',
-                data: Array(data.labels.length).fill(80),
-                borderColor: '#ef4444',
-                borderWidth: 1,
-                pointRadius: 0,
-                fill: false
-              }
+              { label: `歷史 ${metricName}`, data: data.historical.concat(Array(data.predicted.length).fill(null)), borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 },
+              { label: `預測 ${metricName}`, data: Array(data.historical.length).fill(null).concat(data.predicted), borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderDash: [5, 5], fill: false, tension: 0.4 },
+              { label: '80% 警戒線', data: Array(data.labels.length).fill(80), borderColor: '#ef4444', borderWidth: 1, pointRadius: 0, fill: false }
             ]
           },
           options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 100,
-                ticks: {
-                  callback: function (value) {
-                    return value + '%';
-                  }
-                }
-              },
-              x: {
-                ticks: {
-                  maxTicksLimit: 10
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                position: 'top'
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    return context.dataset.label + ': ' + context.parsed.y + '%';
-                  }
-                }
-              }
-            }
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, max: 100, ticks: { callback: function (value) { return value + '%'; } } }, x: { ticks: { maxTicksLimit: 10 } } },
+            plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: function (context) { return context.dataset.label + ': ' + context.parsed.y + '%'; } } } }
           }
         });
       }
@@ -3330,25 +3216,16 @@
     function populateTargetGroupDropdown() {
       const targetGroupSelect = document.getElementById('capacity-target-group');
       if (!targetGroupSelect) return;
-
-      // Store current selection
       const currentSelection = targetGroupSelect.value;
-
-      // Get visible groups based on user role
       const userRole = loggedInUser?.role;
       let visibleGroups = mockData.deviceGroups;
-
       if (userRole === 'TeamManager' || userRole === 'TeamMember') {
         const managedTeamIds = userRole === 'TeamManager' ? loggedInUser.managesTeamIds : mockData.personnel.find(p => p.name === loggedInUser.name)?.teamIds || [];
         const visibleTeams = mockData.teams.filter(t => managedTeamIds.includes(t.id));
         const accessibleGroupIds = new Set();
-        visibleTeams.forEach(team => {
-          team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id));
-        });
+        visibleTeams.forEach(team => { team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id)); });
         visibleGroups = mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
       }
-
-      // Update group dropdown with selected state preserved
       targetGroupSelect.innerHTML = '<option value="">請選擇設備群組</option>';
       visibleGroups.forEach(group => {
         const selected = currentSelection === group.id.toString() ? 'selected' : '';
@@ -3360,35 +3237,17 @@
       const targetGroupSelect = document.getElementById('capacity-target-group');
       const metricSelect = document.getElementById('capacity-metric');
       const analyzeBtn = document.getElementById('analyze-capacity-btn');
-
       if (analyzeBtn && targetGroupSelect && metricSelect) {
         analyzeBtn.disabled = !targetGroupSelect.value || !metricSelect.value;
       }
     }
 
     function updateCapacityDropdowns() {
+      // This function is called on re-renders. We just need to repopulate the group dropdown.
+      // The event listeners on the elements will handle the rest.
       populateTargetGroupDropdown();
-
-      // If there's a group selected, make sure metrics are populated
-      const targetGroupSelect = document.getElementById('capacity-target-group');
-      const metricSelect = document.getElementById('capacity-metric');
-
-      if (targetGroupSelect && metricSelect) {
-        if (targetGroupSelect.value) {
-          const currentMetricSelection = metricSelect.value;
-          metricSelect.innerHTML = '<option value="">請選擇指標</option>';
-          Object.entries(mockData.capacityMetrics).forEach(([key, metric]) => {
-            const selected = currentMetricSelection === key ? 'selected' : '';
-            metricSelect.innerHTML += `<option value="${key}" ${selected}>${metric.name}</option>`;
-          });
-          metricSelect.disabled = false;
-        } else {
-          metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
-          metricSelect.disabled = true;
-        }
-      }
-
-      updateAnalyzeButtonState();
+      // Manually trigger change to re-evaluate metric dropdown state
+      document.getElementById('capacity-target-group').dispatchEvent(new Event('change'));
     }
 
     // --- Profile Page Functions ---
