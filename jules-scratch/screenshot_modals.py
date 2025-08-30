@@ -47,7 +47,16 @@ def run_verification(playwright):
     page.locator("#cancel-action-btn").click()
     print("  - 完成。")
 
-    # 4. 事件詳情彈窗
+    # 4. 編輯人員彈窗
+    print("正在截取「編輯人員」彈窗...")
+    page.get_by_role("link", name="人員管理").click()
+    page.locator(".edit-user-btn").first.click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.screenshot(path="jules-scratch/modal_edit_personnel.png")
+    page.locator("#form-modal .close-modal-btn").first.click()
+    print("  - 完成。")
+
+    # 5. 事件詳情彈窗
     print("正在截取「事件詳情」彈窗...")
     page.get_by_role("link", name="告警紀錄").click()
     # 點擊告警紀錄列表中的第一個項目
