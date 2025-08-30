@@ -1,8 +1,12 @@
 # FIXME
 
+## 檔案為 [demo-page.html](demo-page.html)，以下問題需要解決。
+
 - [ ]如 ![1.png](1.png) 所示，請把左下角的個人資訊區塊，移動到上方靠右位置，跟 Header Bar 齊平。
 
 - [ ]Header Bar 的語系切換下拉選單，請改至個人資料的頁面，因為實用性不高，不需要常駐在 Header Bar 中。
+
+- [ ] 個人資料頁面，個人資訊區塊中，所屬團隊沒有顯示，需要新增。
 
 - [ ]如 ![settings.png](jules-scratch/settings.png) 所示，在「系統設定」頁面中，表格裡的輸入框（Input）與背景的融合度太高，不夠突出，導致看起來不清晰。
 
