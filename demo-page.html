@@ -89,6 +89,28 @@
       border-color: #3b82f6;
     }
 
+    /* Custom styles for better input visibility */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      border: 1px solid #94a3b8; /* Corresponds to slate-400 */
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #3b82f6; /* Corresponds to blue-500 */
+      box-shadow: 0 0 0 2px #bfdbfe; /* A ring effect like Tailwind's focus rings */
+    }
+
     /* Responsive Table Styles */
     @media (max-width: 768px) {
       .rwd-table thead {
@@ -1059,11 +1081,10 @@
                   <p id="profile-role" class="md:col-span-3 text-slate-800"></p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
-                  <label for="profile-teams-select" class="font-medium text-slate-700 pt-2">所屬團隊</label>
-                  <select id="profile-teams-select" multiple
-                    class="md:col-span-3 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                    <!-- Options will be populated by JavaScript -->
-                  </select>
+                  <label class="font-medium text-slate-700 pt-1">所屬團隊</label>
+                  <div id="profile-teams-tags" class="md:col-span-3 flex flex-wrap gap-2">
+                    <!-- Tags will be populated by JavaScript -->
+                  </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                   <label for="profile-language-select" class="font-medium text-slate-700">語言</label>
@@ -1468,28 +1489,55 @@
       // Chart.js Initialization
       const statusCtx = document.getElementById('statusChart').getContext('2d');
       new Chart(statusCtx, { type: 'doughnut', data: { labels: ['正常', '警告', '異常'], datasets: [{ data: [1150, 41, 13], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], hoverOffset: 4 }] }, options: { responsive: true, maintainAspectRatio: false } });
+    });
 
+    let groupStatusChartInstance = null; // To hold the chart instance
+
+    function renderGroupStatusChart() {
       const groupStatusCtx = document.getElementById('groupStatusChart').getContext('2d');
-      new Chart(groupStatusCtx, {
-        type: 'line',
+
+      // 1. Prepare data
+      const labels = mockData.deviceGroups.map(g => g.name);
+      const statuses = { normal: [], warning: [], error: [] };
+
+      mockData.deviceGroups.forEach(group => {
+        const counts = { normal: 0, warning: 0, error: 0 };
+        group.memberIds.forEach(deviceId => {
+          const device = mockData.devices.find(d => d.id === deviceId);
+          if (device) {
+            counts[device.status]++;
+          }
+        });
+        statuses.normal.push(counts.normal);
+        statuses.warning.push(counts.warning);
+        statuses.error.push(counts.error);
+      });
+
+      // 2. Destroy old chart if it exists
+      if (groupStatusChartInstance) {
+        groupStatusChartInstance.destroy();
+      }
+
+      // 3. Create new chart
+      groupStatusChartInstance = new Chart(groupStatusCtx, {
+        type: 'bar',
         data: {
-          labels: ['-6d', '-5d', '-4d', '-3d', '-2d', 'Yesterday', 'Today'],
+          labels: labels,
           datasets: [
             {
-              label: '核心交換器 (異常)',
-              data: [0, 0, 1, 1, 0, 0, 1],
-              borderColor: '#ef4444',
-              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-              fill: true,
-              tension: 0.4
+              label: '正常',
+              data: statuses.normal,
+              backgroundColor: '#10b981',
             },
             {
-              label: '總公司防火牆 (警告)',
-              data: [1, 2, 1, 3, 2, 4, 3],
-              borderColor: '#f59e0b',
-              backgroundColor: 'rgba(245, 158, 11, 0.1)',
-              fill: true,
-              tension: 0.4
+              label: '警告',
+              data: statuses.warning,
+              backgroundColor: '#f59e0b',
+            },
+            {
+              label: '異常',
+              data: statuses.error,
+              backgroundColor: '#ef4444',
             }
           ]
         },
@@ -1497,16 +1545,25 @@
           responsive: true,
           maintainAspectRatio: false,
           scales: {
+            x: {
+              stacked: true,
+            },
             y: {
+              stacked: true,
               beginAtZero: true,
               ticks: {
                 stepSize: 1
               }
             }
+          },
+          plugins: {
+            tooltip: {
+              mode: 'index',
+            }
           }
         }
       });
-    });
+    }
 
     function renderUI() {
       if (!loggedInUser) return;
@@ -1534,6 +1591,7 @@
       initializeBatchOperations();
       initializeAutomationFeatures();
       initializeCapacityPlanning();
+      renderGroupStatusChart();
     }
 
 
@@ -3271,20 +3329,22 @@
         profileRole.textContent = roleMap[loggedInUser.role] || loggedInUser.role;
       }
 
-      // Find user's teams and populate dropdown
+      // Find user's teams and populate read-only tags
       const userPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-      const profileTeamsSelect = document.getElementById('profile-teams-select');
-      if (profileTeamsSelect && userPersonnel) {
-        profileTeamsSelect.innerHTML = ''; // Clear existing options
-        mockData.teams.forEach(team => {
-          const option = document.createElement('option');
-          option.value = team.id;
-          option.textContent = team.name;
-          if (userPersonnel.teamIds.includes(team.id)) {
-            option.selected = true;
-          }
-          profileTeamsSelect.appendChild(option);
-        });
+      const profileTeamsTags = document.getElementById('profile-teams-tags');
+      if (profileTeamsTags && userPersonnel) {
+        profileTeamsTags.innerHTML = ''; // Clear existing tags
+        const userTeams = mockData.teams.filter(team => userPersonnel.teamIds.includes(team.id));
+        if (userTeams.length > 0) {
+          userTeams.forEach(team => {
+            const tag = document.createElement('span');
+            tag.className = 'bg-slate-200 text-slate-700 text-sm font-medium px-3 py-1 rounded-full';
+            tag.textContent = team.name;
+            profileTeamsTags.appendChild(tag);
+          });
+        } else {
+          profileTeamsTags.innerHTML = '<p class="text-slate-500 text-sm">未加入任何團隊</p>';
+        }
       }
 
 
@@ -3308,8 +3368,6 @@
       if (saveProfileInfoBtn) {
         saveProfileInfoBtn.addEventListener('click', () => {
           const newName = document.getElementById('profile-name-input').value;
-          const profileTeamsSelect = document.getElementById('profile-teams-select');
-          const selectedTeamIds = Array.from(profileTeamsSelect.selectedOptions).map(opt => parseInt(opt.value, 10));
 
           const oldName = loggedInUser.name;
           loggedInUser.name = newName;
@@ -3317,8 +3375,7 @@
           // Update mockData.personnel as well
           const userInPersonnel = mockData.personnel.find(p => p.name === oldName || p.name === newName);
           if (userInPersonnel) {
-              userInPersonnel.name = newName;
-              userInPersonnel.teamIds = selectedTeamIds;
+            userInPersonnel.name = newName;
           }
           // re-render user name in sidebar
           document.getElementById('user-name').textContent = newName;
