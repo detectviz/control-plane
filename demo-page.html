@@ -350,40 +350,6 @@
           系統設定
         </a>
       </nav>
-      <div class="px-4 py-4 border-t border-slate-700">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <img id="user-avatar" class="h-10 w-10 rounded-full" src="https://placehold.co/100x100/64748b/ffffff?text=A"
-              alt="User Avatar">
-            <div class="ml-3">
-              <p id="user-name" class="text-sm font-medium">Admin</p>
-              <p id="user-dept" class="text-xs text-slate-400">超級管理員</p>
-            </div>
-          </div>
-          <!-- MODIFIED: Wrapper for icons -->
-          <div class="flex items-center space-x-2">
-            <!-- NEW: Profile settings icon -->
-            <button title="個人資料" class="sidebar-link text-slate-400 hover:text-white p-1 rounded-full"
-              data-page="profile">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-                <path
-                  d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
-                </path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-            <button id="logout-btn" title="登出" class="text-slate-400 hover:text-white p-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -419,11 +385,34 @@
                 class="block bg-slate-50 text-center text-sm font-medium text-blue-600 py-2 hover:bg-slate-100 rounded-b-xl">查看所有通知</a>
             </div>
           </div>
-          <select
-            class="text-sm rounded-md border-slate-600 focus:ring-blue-500 focus:border-blue-500 bg-slate-700 text-slate-200 px-3 py-1.5">
-            <option>繁體中文</option>
-            <option>English</option>
-          </select>
+          <div class="w-px h-6 bg-slate-700"></div>
+
+          <div class="flex items-center">
+            <img id="user-avatar" class="h-8 w-8 rounded-full" src="https://placehold.co/100x100/64748b/ffffff?text=A"
+              alt="User Avatar">
+            <div class="ml-3">
+              <p id="user-name" class="text-sm font-medium">Admin</p>
+              <p id="user-dept" class="text-xs text-slate-400">超級管理員</p>
+            </div>
+          </div>
+
+          <button title="個人資料" class="sidebar-link text-slate-400 hover:text-white p-1 rounded-full"
+            data-page="profile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+
+          <button id="logout-btn" title="登出" class="text-slate-400 hover:text-white p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -548,17 +537,17 @@
             </div>
           </div>
           <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-md">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+              <h3 class="text-lg font-semibold text-slate-800 mb-4">設備群組狀態總覽</h3>
+              <div class="relative h-80">
+                <canvas id="groupStatusChart"></canvas>
+              </div>
+            </div>
+            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-md">
               <h3 class="text-lg font-semibold text-slate-800 mb-4">設備狀態分佈</h3>
               <div class="relative h-80">
                 <canvas id="statusChart"></canvas>
               </div>
-            </div>
-          </div>
-          <div class="mt-8 bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">設備群組狀態總覽</h3>
-            <div id="group-status-container" class="space-y-6">
-              <!-- Device group statuses will be populated here by JavaScript -->
             </div>
           </div>
         </section>
@@ -771,7 +760,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                   <label for="grafana-url" class="text-sm font-medium text-slate-700">Grafana 基礎 URL</label>
                   <input type="text" id="grafana-url"
-                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
                     placeholder="https://grafana.example.com">
                 </div>
               </div>
@@ -783,25 +772,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                   <label for="smtp-server" class="text-sm font-medium text-slate-700">SMTP 伺服器</label>
                   <input type="text" id="smtp-server"
-                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
                     placeholder="smtp.example.com">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                   <label for="smtp-port" class="text-sm font-medium text-slate-700">端口 (Port)</label>
                   <input type="number" id="smtp-port"
-                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
                     placeholder="587">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                   <label for="smtp-user" class="text-sm font-medium text-slate-700">使用者名稱</label>
                   <input type="text" id="smtp-user"
-                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
                     placeholder="user@example.com">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                   <label for="smtp-pass" class="text-sm font-medium text-slate-700">密碼</label>
                   <input type="password" id="smtp-pass"
-                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
                 </div>
               </div>
             </div>
@@ -1076,6 +1065,13 @@
                     <!-- Options will be populated by JavaScript -->
                   </select>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                  <label for="profile-language-select" class="font-medium text-slate-700">語言</label>
+                  <select id="profile-language-select" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-slate-800 px-3 py-1.5">
+                    <option>繁體中文</option>
+                    <option>English</option>
+                  </select>
+                </div>
               </div>
               <div class="flex justify-end mt-6">
                 <button id="save-profile-info-btn"
@@ -1338,6 +1334,7 @@
         { id: 1, name: '陳經理', isAdmin: true, channelIds: [1, 3], subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 3], email: 'manager.chen@corp.com', lineToken: 'GHI789jkl' },
         { id: 2, name: '林組長', isAdmin: false, channelIds: [3], subscribedLevels: ['high', 'medium'], teamIds: [1], email: 'manager.lin@corp.com', lineToken: '' },
         { id: 3, name: '王工程師', isAdmin: false, channelIds: [1, 2, 3], subscribedLevels: ['high'], teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw' },
+        { id: 4, name: 'Admin', isAdmin: true, channelIds: [3], subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
       ],
       teams: [
         { id: 1, name: '網路團隊', memberIds: [1, 2, 3], accessibleGroupIds: [1, 3] },
@@ -1469,10 +1466,46 @@
 
 
       // Chart.js Initialization
-      const trafficCtx = document.getElementById('trafficChart').getContext('2d');
-      new Chart(trafficCtx, { type: 'line', data: { labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'], datasets: [{ label: '入口流量', data: [120, 150, 300, 250, 400, 350], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 }, { label: '出口流量', data: [80, 100, 220, 180, 310, 280], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } } });
       const statusCtx = document.getElementById('statusChart').getContext('2d');
       new Chart(statusCtx, { type: 'doughnut', data: { labels: ['正常', '警告', '異常'], datasets: [{ data: [1150, 41, 13], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], hoverOffset: 4 }] }, options: { responsive: true, maintainAspectRatio: false } });
+
+      const groupStatusCtx = document.getElementById('groupStatusChart').getContext('2d');
+      new Chart(groupStatusCtx, {
+        type: 'line',
+        data: {
+          labels: ['-6d', '-5d', '-4d', '-3d', '-2d', 'Yesterday', 'Today'],
+          datasets: [
+            {
+              label: '核心交換器 (異常)',
+              data: [0, 0, 1, 1, 0, 0, 1],
+              borderColor: '#ef4444',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: '總公司防火牆 (警告)',
+              data: [1, 2, 1, 3, 2, 4, 3],
+              borderColor: '#f59e0b',
+              backgroundColor: 'rgba(245, 158, 11, 0.1)',
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1
+              }
+            }
+          }
+        }
+      });
     });
 
     function renderUI() {
@@ -1533,44 +1566,6 @@
         notificationList.innerHTML += itemHtml;
       });
 
-      const groupContainer = document.getElementById('group-status-container');
-      if (groupContainer) {
-        groupContainer.innerHTML = '';
-        mockData.deviceGroups.forEach(group => {
-          const groupDevices = mockData.devices.filter(d => group.memberIds.includes(d.id));
-          const statuses = { normal: 0, warning: 0, error: 0 };
-          let overallStatus = 'normal';
-
-          groupDevices.forEach(d => {
-            statuses[d.status]++;
-            if (d.status === 'error') overallStatus = 'error';
-            else if (d.status === 'warning' && overallStatus !== 'error') overallStatus = 'warning';
-          });
-
-          const statusClasses = {
-            normal: { border: 'border-green-500' },
-            warning: { border: 'border-yellow-500' },
-            error: { border: 'border-red-500' },
-          };
-          const statusClass = statusClasses[overallStatus];
-
-          const groupCardHtml = `
-            <div class="bg-slate-50 p-4 rounded-lg border-l-4 ${statusClass.border} shadow-sm hover:shadow-md transition-shadow">
-                <p class="font-semibold text-slate-800">${group.name}</p>
-                <p class="text-sm text-slate-600 mt-1">${group.description}</p>
-                <div class="text-xs text-slate-500 mt-3 flex justify-between items-center">
-                    <span>總數: ${groupDevices.length}</span>
-                    <div class="flex gap-x-4">
-                      <span class="text-green-600 font-medium">正常: ${statuses.normal}</span>
-                      <span class="text-yellow-600 font-medium">警告: ${statuses.warning}</span>
-                      <span class="text-red-600 font-medium">異常: ${statuses.error}</span>
-                    </div>
-                </div>
-            </div>
-          `;
-          groupContainer.innerHTML += groupCardHtml;
-        });
-      }
     }
 
     function populateTables() {
