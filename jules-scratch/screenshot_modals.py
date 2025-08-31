@@ -65,7 +65,16 @@ def run_verification(playwright):
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
-    # 6. 事件詳情彈窗
+    # 6. 編輯通知管道彈窗
+    print("正在截取「編輯通知管道」彈窗...")
+    page.get_by_role("link", name="通知管道").click()
+    page.locator(".edit-channel-btn").first.click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.screenshot(path="jules-scratch/modal_edit_channel.png")
+    page.locator("#form-modal .close-modal-btn").first.click()
+    print("  - 完成。")
+
+    # 7. 事件詳情彈窗
     print("正在截取「事件詳情」彈窗...")
     page.get_by_role("link", name="告警紀錄").click()
     # 點擊告警紀錄列表中的第一個項目
@@ -75,7 +84,7 @@ def run_verification(playwright):
     page.locator("#incident-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
-    # 7. Gemini AI 分析報告彈窗
+    # 8. Gemini AI 分析報告彈窗
     print("正在截取「Gemini AI 分析報告」彈窗...")
     page.locator("#select-all-logs").check()
     page.get_by_role("button", name="✨ 生成事件報告").click()
@@ -86,7 +95,7 @@ def run_verification(playwright):
     page.locator("#close-gemini-modal").click()
     print("  - 完成。")
 
-    # 8. 操作成功反饋提示
+    # 9. 操作成功反饋提示
     print("正在截取「操作成功反饋」提示...")
     page.get_by_role("link", name="個人資料").click()
     page.locator("#profile-name-input").fill("Test Name")
