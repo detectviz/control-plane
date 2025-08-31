@@ -820,6 +820,30 @@
                 </div>
               </div>
             </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">SMS 閘道設定 (SMS Gateway Settings)</h3>
+              <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                  <label for="sms-provider" class="text-sm font-medium text-slate-700">服務提供商 (Service Provider)</label>
+                  <select id="sms-provider" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                    <option>Twilio</option>
+                    <option>Another Provider</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                  <label for="sms-sid" class="text-sm font-medium text-slate-700">帳號 SID (Account SID)</label>
+                  <input type="text" id="sms-sid" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                  <label for="sms-token" class="text-sm font-medium text-slate-700">認證權杖 (Auth Token)</label>
+                  <input type="password" id="sms-token" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                  <label for="sms-from" class="text-sm font-medium text-slate-700">發送號碼 (From Number)</label>
+                  <input type="text" id="sms-from" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800" placeholder="+15017122661">
+                </div>
+              </div>
+            </div>
             <div class="flex justify-end">
               <button id="save-settings-btn"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors">儲存設定</button>
@@ -1133,29 +1157,38 @@
             <!-- Contact Info Card -->
             <div class="bg-white p-6 rounded-xl shadow-md">
               <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">聯絡方式</h3>
-              <div class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                  <label for="profile-email" class="text-sm font-medium text-slate-700">Email</label>
-                  <input type="email" id="profile-email"
-                    class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    placeholder="用於接收 Email 通知">
+              <div id="contact-methods-container" class="space-y-6">
+                <!-- Email -->
+                <div>
+                  <label for="profile-email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <input type="email" id="profile-email" class="col-span-12 md:col-span-7 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收 Email 通知">
+                    <span id="email-status" class="col-span-6 md:col-span-2 text-sm font-medium text-slate-500"></span>
+                    <button id="email-action-btn" data-method="email" data-action="save" class="col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold transition-colors text-sm">儲存</button>
+                  </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                  <label for="profile-line-token" class="text-sm font-medium text-slate-700">LINE Notify Token</label>
-                  <input type="text" id="profile-line-token"
-                    class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    placeholder="用於接收 LINE 通知">
+                <!-- LINE Notify -->
+                <div>
+                  <label for="profile-line-token" class="block text-sm font-medium text-slate-700 mb-1">LINE Notify Token</label>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <input type="text" id="profile-line-token" class="col-span-12 md:col-span-7 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收 LINE 通知">
+                    <span id="line-status" class="col-span-6 md:col-span-2 text-sm font-medium text-slate-500"></span>
+                    <button id="line-action-btn" data-method="line" data-action="save" class="col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold transition-colors text-sm">儲存</button>
+                  </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                  <label for="profile-sms" class="text-sm font-medium text-slate-700">SMS 手機號碼</label>
-                  <input type="text" id="profile-sms"
-                    class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    placeholder="用於接收個人簡訊通知">
+                <!-- SMS -->
+                <div>
+                  <label for="profile-sms" class="block text-sm font-medium text-slate-700 mb-1">SMS 手機號碼</label>
+                  <div class="grid grid-cols-12 gap-2 items-center">
+                    <input type="text" id="profile-sms" class="col-span-12 md:col-span-7 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收個人簡訊通知">
+                    <span id="sms-status" class="col-span-6 md:col-span-2 text-sm font-medium text-slate-500"></span>
+                    <button id="sms-action-btn" data-method="sms" data-action="save" class="col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold transition-colors text-sm">儲存</button>
+                  </div>
+                  <div id="sms-verify-container" class="hidden mt-2 grid grid-cols-12 gap-2 items-center">
+                      <input type="text" id="sms-verify-code" class="col-span-12 md:col-span-7 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="請輸入收到的 6 位數驗證碼">
+                      <button id="sms-verify-btn" class="col-span-12 md:col-span-5 justify-center px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">確認驗證碼</button>
+                  </div>
                 </div>
-              </div>
-              <div class="flex justify-end mt-6">
-                <button id="save-contact-btn"
-                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">儲存聯絡方式</button>
               </div>
             </div>
 
@@ -1310,9 +1343,9 @@
     // --- Enhanced Mock Data ---
     const mockUsers = {
       // MODIFIED: Added contact info and preferences
-      admin: { pass: 'admin', role: 'SuperAdmin', name: 'Admin', dept: '超級管理員', avatar: 'A', email: 'admin@corp.com', lineToken: 'ABC123xyz', subscribedLevels: ['high', 'medium', 'low'] },
-      manager: { pass: 'manager', role: 'TeamManager', name: '林組長', dept: '網路團隊', avatar: 'L', managesTeamIds: [1], email: 'manager.lin@corp.com', lineToken: '', subscribedLevels: ['high', 'medium'] },
-      member: { pass: 'member', role: 'TeamMember', name: '王工程師', dept: '網路團隊', avatar: 'W', teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw', subscribedLevels: ['high'] }
+      admin: { pass: 'admin', role: 'SuperAdmin', name: 'Admin', dept: '超級管理員', avatar: 'A', email: 'admin@corp.com', emailVerified: true, lineToken: 'ABC123xyz', lineVerified: true, sms: '+15551234567', smsVerified: true, subscribedLevels: ['high', 'medium', 'low'] },
+      manager: { pass: 'manager', role: 'TeamManager', name: '林組長', dept: '網路團隊', avatar: 'L', managesTeamIds: [1], email: 'manager.lin@corp.com', emailVerified: true, lineToken: '', lineVerified: false, sms: '', smsVerified: false, subscribedLevels: ['high', 'medium'] },
+      member: { pass: 'member', role: 'TeamMember', name: '王工程師', dept: '網路團隊', avatar: 'W', teamIds: [1, 2], email: 'wang.pe@corp.com', emailVerified: false, lineToken: 'DEF456uvw', lineVerified: true, sms: '+15557654321', smsVerified: false, subscribedLevels: ['high'] }
     };
 
     let loggedInUser = null;
@@ -2100,47 +2133,72 @@
       document.getElementById('add-rule-btn').addEventListener('click', () => {
         const groupOptions = mockData.deviceGroups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
         const formHtml = `
-                    <div class="space-y-4 text-sm">
-                        <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></div>
-                        <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
-                        <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>選擇設備群組</option>${groupOptions}</select></div>
-                        <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
-                            <div class="space-y-2" id="alert-conditions">
-                                <div class="grid grid-cols-12 gap-2 items-center">
-                                    <span class="col-span-1 text-center">&gt;</span>
-                                    <input type="number" placeholder="閾值" class="col-span-3 p-2 border rounded-md">
-                                    <span class="col-span-1 text-center">持續</span>
-                                    <select class="col-span-3 p-2 border rounded-md"><option>5 分鐘</option><option>10 分鐘</option></select>
-                                    <span class="col-span-1 text-center">為</span>
-                                    <select class="col-span-3 p-2 border rounded-md"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select>
-                                </div>
-                            </div>
-                            <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
-                        </fieldset>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">自動化響應 (選填)</legend>
-                            <div class="space-y-4">
-                                <div><label class="text-sm font-medium text-slate-700">選擇腳本</label>
-                                    <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                        <option value="">不使用自動化響應</option>
-                                    </select>
-                                </div>
-                                <div id="script-parameters" class="hidden">
-                                    <label class="text-sm font-medium text-slate-700">參數映射</label>
-                                    <div class="mt-2 space-y-2" id="parameter-mappings">
-                                        <!-- Parameter mappings will be populated here -->
+            <div class="space-y-2">
+                <!-- Accordion Item 1: Basic Settings (Expanded by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">基本設定</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200 rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200">
+                        <div class="space-y-4 text-sm">
+                            <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></div>
+                            <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
+                            <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>選擇設備群組</option>${groupOptions}</select></div>
+                            <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
+                            <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
+                                <div class="space-y-2" id="alert-conditions">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <span class="col-span-1 text-center">&gt;</span>
+                                        <input type="number" placeholder="閾值" class="col-span-3 p-2 border rounded-md">
+                                        <span class="col-span-1 text-center">持續</span>
+                                        <select class="col-span-3 p-2 border rounded-md"><option>5 分鐘</option><option>10 分鐘</option></select>
+                                        <span class="col-span-1 text-center">為</span>
+                                        <select class="col-span-3 p-2 border rounded-md"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select>
                                     </div>
                                 </div>
+                                <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2: Automation (Collapsed by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">自動化響應 (選填)</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200 hidden">
+                        <div class="space-y-4 text-sm">
+                            <div><label class="font-medium text-slate-700">選擇腳本</label>
+                                <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                    <option value="">不使用自動化響應</option>
+                                </select>
                             </div>
-                        </fieldset>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">通知內容自定義 (選填)</legend>
-                            <div class="space-y-2">
-                                <div><label class="text-sm font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                                <div><label class="text-sm font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
-                                <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                            <div id="script-parameters" class="hidden">
+                                <label class="font-medium text-slate-700">參數映射</label>
+                                <div class="mt-2 space-y-2" id="parameter-mappings"></div>
                             </div>
-                        </fieldset>
-                    </div>`;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3: Custom Notification (Collapsed by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">通知內容自定義 (選填)</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200 hidden">
+                         <div class="space-y-2 text-sm">
+                            <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                            <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
         openFormModal('新增告警規則', formHtml, 'add-rule');
       });
       document.getElementById('rules-table-body').addEventListener('click', e => {
@@ -2149,47 +2207,72 @@
           const rule = mockData.alertRules[index];
           const groupOptions = mockData.deviceGroups.map(g => `<option value="${g.id}" ${rule.target.includes(g.name) ? 'selected' : ''}>${g.name}</option>`).join('');
           const formHtml = `
-                    <div class="space-y-4 text-sm">
-                        <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" value="${rule.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></div>
-                        <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" ${rule.enabled ? 'checked' : ''} class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
-                        <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>選擇設備群組</option>${groupOptions}</select></div>
-                        <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
-                            <div class="space-y-2" id="alert-conditions">
-                                <div class="grid grid-cols-12 gap-2 items-center">
-                                    <span class="col-span-1 text-center">&gt;</span>
-                                    <input type="number" placeholder="閾值" value="90" class="col-span-3 p-2 border rounded-md">
-                                    <span class="col-span-1 text-center">持續</span>
-                                    <select class="col-span-3 p-2 border rounded-md"><option>5 分鐘</option><option selected>10 分鐘</option></select>
-                                    <span class="col-span-1 text-center">為</span>
-                                    <select class="col-span-3 p-2 border rounded-md"><option value="high" selected>高</option><option value="medium">中</option><option value="low">低</option></select>
-                                </div>
-                            </div>
-                            <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
-                        </fieldset>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">自動化響應 (選填)</legend>
-                            <div class="space-y-4">
-                                <div><label class="text-sm font-medium text-slate-700">選擇腳本</label>
-                                    <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                        <option value="">不使用自動化響應</option>
-                                    </select>
-                                </div>
-                                <div id="script-parameters" class="hidden">
-                                    <label class="text-sm font-medium text-slate-700">參數映射</label>
-                                    <div class="mt-2 space-y-2" id="parameter-mappings">
-                                        <!-- Parameter mappings will be populated here -->
+            <div class="space-y-2">
+                <!-- Accordion Item 1: Basic Settings (Expanded by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">基本設定</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200 rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200">
+                        <div class="space-y-4 text-sm">
+                            <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" value="${rule.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></div>
+                            <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" ${rule.enabled ? 'checked' : ''} class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
+                            <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>選擇設備群組</option>${groupOptions}</select></div>
+                            <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
+                            <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
+                                <div class="space-y-2" id="alert-conditions">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <span class="col-span-1 text-center">&gt;</span>
+                                        <input type="number" placeholder="閾值" value="90" class="col-span-3 p-2 border rounded-md">
+                                        <span class="col-span-1 text-center">持續</span>
+                                        <select class="col-span-3 p-2 border rounded-md"><option>5 分鐘</option><option selected>10 分鐘</option></select>
+                                        <span class="col-span-1 text-center">為</span>
+                                        <select class="col-span-3 p-2 border rounded-md"><option value="high" selected>高</option><option value="medium">中</option><option value="low">低</option></select>
                                     </div>
                                 </div>
+                                <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2: Automation (Collapsed by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">自動化響應 (選填)</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200 hidden">
+                        <div class="space-y-4 text-sm">
+                            <div><label class="font-medium text-slate-700">選擇腳本</label>
+                                <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                    <option value="">不使用自動化響應</option>
+                                </select>
                             </div>
-                        </fieldset>
-                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">通知內容自定義 (選填)</legend>
-                            <div class="space-y-2">
-                                <div><label class="text-sm font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                                <div><label class="text-sm font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
-                                <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                            <div id="script-parameters" class="hidden">
+                                <label class="font-medium text-slate-700">參數映射</label>
+                                <div class="mt-2 space-y-2" id="parameter-mappings"></div>
                             </div>
-                        </fieldset>
-                    </div>`;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3: Custom Notification (Collapsed by default) -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="accordion-header bg-slate-50 p-4 flex justify-between items-center cursor-pointer">
+                        <h4 class="font-semibold text-slate-800">通知內容自定義 (選填)</h4>
+                        <svg class="h-5 w-5 text-slate-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <div class="accordion-content p-4 border-t border-slate-200 hidden">
+                         <div class="space-y-2 text-sm">
+                            <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                            <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
           openFormModal('編輯告警規則', formHtml, 'edit-rule', index);
         }
         if (e.target.classList.contains('delete-rule-btn')) openConfirmModal('您確定要刪除此規則嗎？', 'delete-rule', index);
@@ -2201,6 +2284,20 @@
           const newCondition = container.firstElementChild.cloneNode(true);
           newCondition.querySelectorAll('input, select').forEach(el => el.value = '');
           container.appendChild(newCondition);
+        }
+      });
+
+      // Handle accordion toggle
+      document.getElementById('form-modal-body').addEventListener('click', e => {
+        const header = e.target.closest('.accordion-header');
+        if (!header) return;
+
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('svg');
+
+        if (content && content.classList.contains('accordion-content')) {
+          content.classList.toggle('hidden');
+          icon.classList.toggle('rotate-180');
         }
       });
 
@@ -3488,14 +3585,44 @@
     }
 
     // --- Profile Page Functions ---
+    function updateContactMethodUI(method) {
+        if (!loggedInUser) return;
+
+        const input = document.getElementById(`profile-${method}`);
+        const statusEl = document.getElementById(`${method}-status`);
+        const actionBtn = document.getElementById(`${method}-action-btn`);
+
+        const value = loggedInUser[method] || '';
+        const verified = loggedInUser[`${method}Verified`] || false;
+
+        input.value = value;
+
+        if (!value) {
+            statusEl.textContent = '';
+            actionBtn.textContent = '儲存';
+            actionBtn.dataset.action = 'save';
+            actionBtn.className = 'col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold transition-colors text-sm';
+        } else if (verified) {
+            statusEl.textContent = '已驗證';
+            statusEl.className = 'col-span-6 md:col-span-2 text-sm font-medium text-green-600';
+            actionBtn.textContent = '測試';
+            actionBtn.dataset.action = 'test';
+            actionBtn.className = 'col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm';
+        } else {
+            statusEl.textContent = '未驗證';
+            statusEl.className = 'col-span-6 md:col-span-2 text-sm font-medium text-slate-500';
+            actionBtn.textContent = '傳送驗證';
+            actionBtn.dataset.action = 'verify';
+            actionBtn.className = 'col-span-6 md:col-span-3 justify-center px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm';
+        }
+    }
+
     function populateProfilePage() {
       if (!loggedInUser) return;
 
       // Populate profile information
       const profileNameInput = document.getElementById('profile-name-input');
       const profileRole = document.getElementById('profile-role');
-      const profileEmail = document.getElementById('profile-email');
-      const profileLineToken = document.getElementById('profile-line-token');
 
       if (profileNameInput) profileNameInput.value = loggedInUser.name;
       if (profileRole) {
@@ -3525,10 +3652,17 @@
         }
       }
 
+      // Populate contact info using the new UI updater
+      updateContactMethodUI('email');
+      updateContactMethodUI('line-token');
+      updateContactMethodUI('sms');
 
-      // Populate contact info
-      if (profileEmail) profileEmail.value = loggedInUser.email || '';
-      if (profileLineToken) profileLineToken.value = loggedInUser.lineToken || '';
+      // Hide SMS verification code input initially
+      const smsVerifyContainer = document.getElementById('sms-verify-container');
+      if (smsVerifyContainer) {
+        smsVerifyContainer.classList.add('hidden');
+      }
+
 
       // Populate notification preferences
       const prefHigh = document.getElementById('pref-high');
@@ -3546,19 +3680,13 @@
       if (saveProfileInfoBtn) {
         saveProfileInfoBtn.addEventListener('click', () => {
           const newName = document.getElementById('profile-name-input').value;
-
           const oldName = loggedInUser.name;
           loggedInUser.name = newName;
-
-          // Update mockData.personnel as well
           const userInPersonnel = mockData.personnel.find(p => p.name === oldName || p.name === newName);
-          if (userInPersonnel) {
-            userInPersonnel.name = newName;
-          }
-          // re-render user name in sidebar
+          if (userInPersonnel) userInPersonnel.name = newName;
           document.getElementById('user-name').textContent = newName;
-          populateTables(); // To refresh names and teams in other tables
-          populateProfilePage(); // To refresh the profile page itself
+          populateTables();
+          populateProfilePage();
           showFeedbackModal('個人資訊已更新！');
           setTimeout(closeFeedbackModal, 1500);
         });
@@ -3588,7 +3716,6 @@
           showFeedbackModal('密碼已更新！');
           setTimeout(() => {
             closeFeedbackModal();
-            // Clear form
             document.getElementById('current-password').value = '';
             document.getElementById('new-password').value = '';
             document.getElementById('confirm-password').value = '';
@@ -3596,27 +3723,63 @@
         });
       }
 
-      // Save contact info
-      const saveContactBtn = document.getElementById('save-contact-btn');
-      if (saveContactBtn) {
-        saveContactBtn.addEventListener('click', () => {
-          const email = document.getElementById('profile-email').value;
-          const lineToken = document.getElementById('profile-line-token').value;
+      // Delegated listener for contact method actions
+      const contactContainer = document.getElementById('contact-methods-container');
+      if(contactContainer) {
+        contactContainer.addEventListener('click', e => {
+            const button = e.target.closest('button[data-method]');
+            if (!button) return;
 
-          // Update logged in user data
-          loggedInUser.email = email;
-          loggedInUser.lineToken = lineToken;
+            const method = button.dataset.method;
+            const action = button.dataset.action;
+            const inputId = `profile-${method}`;
+            const input = document.getElementById(inputId);
+            const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+            const propName = method === 'line-token' ? 'lineToken' : method;
 
-          // Update in mockData as well
-          const userPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-          if (userPersonnel) {
-            userPersonnel.email = email;
-            userPersonnel.lineToken = lineToken;
-          }
-
-          showFeedbackModal('聯絡方式已儲存！');
-          setTimeout(closeFeedbackModal, 1500);
+            if (action === 'save') {
+                loggedInUser[propName] = input.value;
+                loggedInUser[`${propName}Verified`] = false;
+                if(userInPersonnel) {
+                    userInPersonnel[propName] = input.value;
+                    userInPersonnel[`${propName}Verified`] = false;
+                }
+                showFeedbackModal(`${method.toUpperCase()} 資料已儲存，請進行驗證。`);
+                setTimeout(closeFeedbackModal, 2000);
+                updateContactMethodUI(method);
+            } else if (action === 'verify') {
+                showFeedbackModal(`驗證訊息已傳送到 ${input.value}`);
+                setTimeout(closeFeedbackModal, 2000);
+                button.textContent = '重新傳送';
+                if (method === 'sms') {
+                    document.getElementById('sms-verify-container').classList.remove('hidden');
+                }
+            } else if (action === 'test') {
+                showFeedbackModal(`測試訊息已傳送到 ${input.value}`);
+                setTimeout(closeFeedbackModal, 2000);
+            }
         });
+      }
+
+      // SMS Verification Code button
+      const smsVerifyBtn = document.getElementById('sms-verify-btn');
+      if (smsVerifyBtn) {
+          smsVerifyBtn.addEventListener('click', () => {
+              const codeInput = document.getElementById('sms-verify-code');
+              if (codeInput.value === '123456') { // Mock verification
+                  loggedInUser.smsVerified = true;
+                  const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+                  if(userInPersonnel) userInPersonnel.smsVerified = true;
+
+                  showFeedbackModal('SMS 已成功驗證！');
+                  setTimeout(closeFeedbackModal, 1500);
+                  document.getElementById('sms-verify-container').classList.add('hidden');
+                  updateContactMethodUI('sms');
+              } else {
+                  showFeedbackModal('驗證碼錯誤！');
+                  setTimeout(closeFeedbackModal, 2000);
+              }
+          });
       }
 
       // Save preferences
@@ -3627,16 +3790,9 @@
           if (document.getElementById('pref-high')?.checked) subscribedLevels.push('high');
           if (document.getElementById('pref-medium')?.checked) subscribedLevels.push('medium');
           if (document.getElementById('pref-low')?.checked) subscribedLevels.push('low');
-
-          // Update logged in user data
           loggedInUser.subscribedLevels = subscribedLevels;
-
-          // Update in mockData as well
-          const userPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-          if (userPersonnel) {
-            userPersonnel.subscribedLevels = subscribedLevels;
-          }
-
+          const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+          if (userInPersonnel) userInPersonnel.subscribedLevels = subscribedLevels;
           showFeedbackModal('通知偏好已儲存！');
           setTimeout(closeFeedbackModal, 1500);
         });
