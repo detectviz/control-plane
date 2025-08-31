@@ -443,6 +443,69 @@
       <div class="flex-1 overflow-y-auto p-6 md:p-8">
 
         <section id="page-dashboard" class="page">
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">告警狀態總覽</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-bold text-red-800">新告警 (New)</h4>
+                    <p id="dashboard-new-alerts" class="text-3xl font-extrabold text-red-600 mt-2"></p>
+                  </div>
+                  <div id="new-alerts-trend" class="text-right">
+                    <span class="text-xs font-medium text-red-600">與昨日比較</span>
+                    <div class="flex items-center justify-end mt-1">
+                      <span class="text-sm font-semibold text-red-600">+15%</span>
+                      <svg class="w-4 h-4 ml-1 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                          d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-bold text-yellow-800">處理中 (In Progress)</h4>
+                    <p id="dashboard-ack-alerts" class="text-3xl font-extrabold text-yellow-600 mt-2"></p>
+                  </div>
+                  <div id="ack-alerts-trend" class="text-right">
+                    <span class="text-xs font-medium text-yellow-600">與昨日比較</span>
+                    <div class="flex items-center justify-end mt-1">
+                      <span class="text-sm font-semibold text-green-600">-8%</span>
+                      <svg class="w-4 h-4 ml-1 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                          d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-green-50 border-l-4 border-green-500 rounded-r-lg p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-bold text-green-800">今日已解決 (Resolved Today)</h4>
+                    <p id="dashboard-resolved-alerts" class="text-3xl font-extrabold text-green-600 mt-2"></p>
+                  </div>
+                  <div id="resolved-alerts-trend" class="text-right">
+                    <span class="text-xs font-medium text-green-600">與昨日比較</span>
+                    <div class="flex items-center justify-end mt-1">
+                      <span class="text-sm font-semibold text-green-600">+22%</span>
+                      <svg class="w-4 h-4 ml-1 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                          d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
               class="bg-white p-6 rounded-xl shadow-md flex items-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -495,36 +558,6 @@
                 <p class="text-sm text-slate-500">平均網路延遲</p>
                 <p class="text-2xl font-bold text-slate-800">23 ms</p>
               </div>
-            </div>
-          </div>
-
-          <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-xl shadow-md flex items-center">
-                <div class="p-3 rounded-full bg-red-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm text-slate-500">新告警</p>
-                    <p id="dashboard-new-alerts" class="text-2xl font-bold text-slate-800">0</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-md flex items-center">
-                <div class="p-3 rounded-full bg-yellow-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm text-slate-500">處理中</p>
-                    <p id="dashboard-ack-alerts" class="text-2xl font-bold text-slate-800">0</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-md flex items-center">
-                <div class="p-3 rounded-full bg-green-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm text-slate-500">今日已解決</p>
-                    <p id="dashboard-resolved-alerts" class="text-2xl font-bold text-slate-800">0</p>
-                </div>
             </div>
           </div>
 
@@ -1448,7 +1481,7 @@
           showPage(pageId);
           // Re-render the group status chart specifically when navigating to the dashboard
           if (pageId === 'dashboard') {
-            renderGroupStatusChart(getVisibleGroups());
+            renderGroupStatusChart();
           }
           // Find the nav link to set breadcrumb text, not the icon
           const navLink = document.querySelector(`nav .sidebar-link[data-page="${pageId}"]`);
@@ -1509,7 +1542,28 @@
 
     let groupStatusChartInstance = null; // To hold the chart instance
 
-    function renderGroupStatusChart(groupsToRender) {
+    function renderGroupStatusChart() {
+      // --- Start of moved logic from getVisibleGroups ---
+      if (!loggedInUser) return [];
+      const userRole = loggedInUser.role;
+      let groupsToRender;
+
+      if (userRole === 'SuperAdmin') {
+        groupsToRender = mockData.deviceGroups;
+      } else if (userRole === 'TeamManager' || userRole === 'TeamMember') {
+        const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+        const managedTeamIds = userRole === 'TeamManager' ? loggedInUser.managesTeamIds : userInPersonnel?.teamIds || [];
+
+        const visibleTeams = mockData.teams.filter(t => managedTeamIds.includes(t.id));
+        const accessibleGroupIds = new Set();
+        visibleTeams.forEach(team => {
+          team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id));
+        });
+        groupsToRender = mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
+      } else {
+        groupsToRender = [];
+      }
+      // --- End of moved logic ---
       const groupStatusCtx = document.getElementById('groupStatusChart').getContext('2d');
 
       // 1. Prepare data
@@ -1607,32 +1661,34 @@
       initializeBatchOperations();
       initializeAutomationFeatures();
       initializeCapacityPlanning();
-      renderGroupStatusChart(getVisibleGroups());
+      renderGroupStatusChart();
     }
 
     // --- Data Population Functions ---
-    function getVisibleGroups() {
-      if (!loggedInUser) return [];
-      const userRole = loggedInUser.role;
+    function updateTrend(trendId, percentage) {
+      const trendEl = document.getElementById(trendId);
+      if (!trendEl) return;
 
-      if (userRole === 'SuperAdmin') {
-        return mockData.deviceGroups;
+      const percentEl = trendEl.querySelector('span.text-sm');
+      const svgEl = trendEl.querySelector('svg');
+
+      if (!percentEl || !svgEl) return;
+
+      const isPositive = percentage >= 0;
+      const color = isPositive ? 'red' : 'green';
+      const sign = isPositive ? '+' : '';
+
+      percentEl.textContent = `${sign}${percentage}%`;
+      percentEl.className = `text-sm font-semibold text-${color}-600`;
+      svgEl.className = `w-4 h-4 ml-1 text-${color}-600`;
+
+      // Update SVG path for up/down arrow
+      if (isPositive) {
+        svgEl.innerHTML = `<path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>`;
+      } else {
+        svgEl.innerHTML = `<path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>`;
       }
-
-      if (userRole === 'TeamManager' || userRole === 'TeamMember') {
-        const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-        const managedTeamIds = userRole === 'TeamManager' ? loggedInUser.managesTeamIds : userInPersonnel?.teamIds || [];
-
-        const visibleTeams = mockData.teams.filter(t => managedTeamIds.includes(t.id));
-        const accessibleGroupIds = new Set();
-        visibleTeams.forEach(team => {
-          team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id));
-        });
-        return mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
-      }
-      return [];
     }
-
     function populateDashboard() {
       const pendingAlerts = getPendingAlerts();
       const notificationList = document.getElementById('notification-list');
@@ -1644,6 +1700,10 @@
       const today = new Date().toISOString().slice(0, 10);
       document.getElementById('dashboard-resolved-alerts').textContent = mockData.logs.filter(l => l.status === 'resolved').length; // Simplified for demo
 
+      // Add dynamic trend data
+      updateTrend('new-alerts-trend', (Math.random() * 30 - 5).toFixed(0)); // Random % between -5 and 25
+      updateTrend('ack-alerts-trend', (Math.random() * 20 - 10).toFixed(0)); // Random % between -10 and 10
+      updateTrend('resolved-alerts-trend', (Math.random() * 40 - 5).toFixed(0)); // Random % between -5 and 35
 
       notificationList.innerHTML = '';
       pendingAlerts.forEach(alert => {
@@ -1661,44 +1721,6 @@
         notificationList.innerHTML += itemHtml;
       });
 
-    }
-
-    function getVisibleGroups() {
-      const userRole = loggedInUser.role;
-      let visibleGroups = mockData.deviceGroups;
-
-      if (userRole === 'TeamManager' || userRole === 'TeamMember') {
-        const managedTeamIds = userRole === 'TeamManager' ? loggedInUser.managesTeamIds : mockData.personnel.find(p => p.name === loggedInUser.name)?.teamIds || [];
-        const visibleTeams = mockData.teams.filter(t => managedTeamIds.includes(t.id));
-        const accessibleGroupIds = new Set();
-        visibleTeams.forEach(team => {
-          team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id));
-        });
-        visibleGroups = mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
-      }
-      return visibleGroups;
-    }
-
-    function getVisibleGroups() {
-      if (!loggedInUser) return [];
-      const userRole = loggedInUser.role;
-
-      if (userRole === 'SuperAdmin') {
-        return mockData.deviceGroups;
-      }
-
-      if (userRole === 'TeamManager' || userRole === 'TeamMember') {
-        const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-        const managedTeamIds = userRole === 'TeamManager' ? loggedInUser.managesTeamIds : userInPersonnel?.teamIds || [];
-
-        const visibleTeams = mockData.teams.filter(t => managedTeamIds.includes(t.id));
-        const accessibleGroupIds = new Set();
-        visibleTeams.forEach(team => {
-          team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id));
-        });
-        return mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
-      }
-      return [];
     }
 
     function populateTables() {
