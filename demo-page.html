@@ -79,12 +79,6 @@
       color: #0f172a;
     }
 
-    /* Automation Tab Styles */
-    .automation-tab.active,
-    .profile-tab.active-tab {
-      border-color: #3b82f6;
-      color: #3b82f6;
-    }
 
     /* Batch Operations Styles */
     .device-checkbox:checked {
@@ -749,8 +743,7 @@
 
         <section id="page-channels" class="page hidden">
           <div class="bg-white p-6 rounded-xl shadow-md">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-              <h3 class="text-lg font-semibold text-slate-800">通知管道設定</h3>
+            <div class="flex flex-col md:flex-row justify-end items-center mb-6 gap-4">
               <button id="add-channel-btn"
                 class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors w-full md:w-auto text-sm">新增管道</button>
             </div>
@@ -799,20 +792,20 @@
 
         <section id="page-settings" class="page hidden">
           <div class="max-w-4xl mx-auto">
-            <!-- Tab Navigation -->
-            <div class="mb-8">
-              <nav id="settings-tabs" class="flex space-x-4" aria-label="Tabs">
-                <button data-tab="integration"
-                  class="settings-tab px-4 py-2 rounded-md font-medium text-sm">整合設定</button>
-                <button data-tab="notification"
-                  class="settings-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
-              </nav>
-            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <!-- Tab Navigation -->
+              <div class="border-b border-gray-200 mb-6">
+                <nav id="settings-tabs" class="-mb-px flex space-x-8" aria-label="Tabs">
+                  <button data-tab="integration"
+                    class="settings-tab whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">整合設定</button>
+                  <button data-tab="notification"
+                    class="settings-tab whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">通知設定</button>
+                </nav>
+              </div>
 
-            <!-- Tab Content -->
-            <div>
-              <div id="tab-integration" class="settings-tab-content space-y-8">
-                <div class="bg-white p-6 rounded-xl shadow-md">
+              <!-- Tab Content -->
+              <div class="mt-2">
+                <div id="tab-integration" class="settings-tab-content space-y-8">
                   <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">Grafana 服務設定</h3>
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
@@ -823,73 +816,76 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div id="tab-notification" class="settings-tab-content space-y-8">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">郵件伺服器 (SMTP) 設定</h3>
-                  <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="smtp-server" class="text-sm font-medium text-slate-700">SMTP 伺服器</label>
-                      <input type="text" id="smtp-server"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
-                        placeholder="smtp.example.com">
+                <div id="tab-notification" class="settings-tab-content hidden space-y-8">
+                  <div class="space-y-8">
+                    <div>
+                      <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">郵件伺服器 (SMTP) 設定</h3>
+                      <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="smtp-server" class="text-sm font-medium text-slate-700">SMTP 伺服器</label>
+                          <input type="text" id="smtp-server"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                            placeholder="smtp.example.com">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="smtp-port" class="text-sm font-medium text-slate-700">端口 (Port)</label>
+                          <input type="number" id="smtp-port"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                            placeholder="587">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="smtp-user" class="text-sm font-medium text-slate-700">使用者名稱</label>
+                          <input type="text" id="smtp-user"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                            placeholder="user@example.com">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="smtp-pass" class="text-sm font-medium text-slate-700">密碼</label>
+                          <input type="password" id="smtp-pass"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                        </div>
+                      </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="smtp-port" class="text-sm font-medium text-slate-700">端口 (Port)</label>
-                      <input type="number" id="smtp-port"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
-                        placeholder="587">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="smtp-user" class="text-sm font-medium text-slate-700">使用者名稱</label>
-                      <input type="text" id="smtp-user"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
-                        placeholder="user@example.com">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="smtp-pass" class="text-sm font-medium text-slate-700">密碼</label>
-                      <input type="password" id="smtp-pass"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                    <div>
+                      <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">SMS 閘道設定 (SMS Gateway
+                        Settings)
+                      </h3>
+                      <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="sms-provider" class="text-sm font-medium text-slate-700">服務提供商 (Service
+                            Provider)</label>
+                          <select id="sms-provider"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                            <option>Twilio</option>
+                            <option>Another Provider</option>
+                          </select>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="sms-sid" class="text-sm font-medium text-slate-700">帳號 SID (Account SID)</label>
+                          <input type="text" id="sms-sid"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                            placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="sms-token" class="text-sm font-medium text-slate-700">認證權杖 (Auth Token)</label>
+                          <input type="password" id="sms-token"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+                          <label for="sms-from" class="text-sm font-medium text-slate-700">發送號碼 (From Number)</label>
+                          <input type="text" id="sms-from"
+                            class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                            placeholder="+15017122661">
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">SMS 閘道設定 (SMS Gateway Settings)
-                  </h3>
-                  <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="sms-provider" class="text-sm font-medium text-slate-700">服務提供商 (Service
-                        Provider)</label>
-                      <select id="sms-provider"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
-                        <option>Twilio</option>
-                        <option>Another Provider</option>
-                      </select>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="sms-sid" class="text-sm font-medium text-slate-700">帳號 SID (Account SID)</label>
-                      <input type="text" id="sms-sid"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
-                        placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="sms-token" class="text-sm font-medium text-slate-700">認證權杖 (Auth Token)</label>
-                      <input type="password" id="sms-token"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="sms-from" class="text-sm font-medium text-slate-700">發送號碼 (From Number)</label>
-                      <input type="text" id="sms-from"
-                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
-                        placeholder="+15017122661">
-                    </div>
-                  </div>
+                <div class="flex justify-end mt-8">
+                  <button id="save-settings-btn"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors">儲存設定</button>
                 </div>
-              </div>
-              <div class="flex justify-end mt-8">
-                <button id="save-settings-btn"
-                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors">儲存設定</button>
               </div>
             </div>
           </div>
@@ -991,8 +987,7 @@
 
             <!-- Execution Logs Tab -->
             <div id="execution-logs-content" class="automation-content hidden">
-              <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                <h3 class="text-lg font-semibold text-slate-800">執行日誌</h3>
+              <div class="flex flex-col md:flex-row justify-end items-center mb-6 gap-4">
                 <div class="flex items-center space-x-2">
                   <input type="date" id="log-start-date"
                     class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
@@ -1034,7 +1029,6 @@
           <div class="space-y-6">
             <!-- Control Panel -->
             <div class="bg-white p-6 rounded-xl shadow-md">
-              <h3 class="text-lg font-semibold text-slate-800 mb-4">容量規劃分析</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇目標群組</label>
@@ -1139,22 +1133,23 @@
         <!-- NEW: Profile Page Section -->
         <section id="page-profile" class="page hidden">
           <div class="max-w-4xl mx-auto">
-            <!-- Tab Navigation -->
-            <div class="mb-8">
-              <nav id="profile-tabs" class="flex space-x-4" aria-label="Tabs">
-                <button data-tab="info" class="profile-tab px-4 py-2 rounded-md font-medium text-sm">個人資訊</button>
-                <button data-tab="security" class="profile-tab px-4 py-2 rounded-md font-medium text-sm">密碼安全</button>
-                <button data-tab="notifications"
-                  class="profile-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
-              </nav>
-            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <!-- Tab Navigation -->
+              <div class="border-b border-gray-200 mb-6">
+                <nav id="profile-tabs" class="-mb-px flex space-x-8" aria-label="Tabs">
+                  <button data-tab="info"
+                    class="profile-tab whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">個人資訊</button>
+                  <button data-tab="security"
+                    class="profile-tab whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">密碼安全</button>
+                  <button data-tab="notifications"
+                    class="profile-tab whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">通知設定</button>
+                </nav>
+              </div>
 
-            <!-- Tab Content -->
-            <div class="mt-8">
-              <div id="tab-info" class="profile-tab-content space-y-8">
-                <!-- Personal Info Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">個人資訊</h3>
+              <!-- Tab Content -->
+              <div class="mt-2">
+                <div id="tab-info" class="profile-tab-content">
+                  <!-- Personal Info Card -->
                   <div class="space-y-4 text-sm">
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="profile-name-input" class="font-medium text-slate-700">姓名</label>
@@ -1183,10 +1178,8 @@
                       class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新資訊</button>
                   </div>
                 </div>
-              </div>
-              <div id="tab-security" class="profile-tab-content hidden space-y-8">
-                <!-- Change Password Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div id="tab-security" class="profile-tab-content hidden space-y-8">
+                  <!-- Change Password Card -->
                   <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">變更密碼</h3>
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
@@ -1210,10 +1203,8 @@
                       class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新密碼</button>
                   </div>
                 </div>
-              </div>
-              <div id="tab-notifications" class="profile-tab-content hidden space-y-8">
-                <!-- Contact Info Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div id="tab-notifications" class="profile-tab-content hidden space-y-8">
+                  <!-- Contact Info Card -->
                   <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">聯絡方式</h3>
                   <div id="contact-methods-container" class="space-y-4">
                     <!-- Email -->
@@ -1263,10 +1254,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- Notification Preferences Card -->
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">通知偏好</h3>
+                  <!-- Notification Preferences Card -->
+                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6 mt-8">通知偏好</h3>
                   <p class="text-sm text-slate-600 mb-4">選擇您希望透過以上管道接收的告警等級。</p>
                   <div class="space-y-3">
                     <div class="relative flex items-start">
@@ -3718,11 +3707,11 @@
       function updateTabs(activeTab) {
         tabs.forEach(tab => {
           if (tab === activeTab) {
-            tab.classList.add('bg-blue-600', 'text-white', 'font-semibold');
-            tab.classList.remove('text-slate-600', 'hover:bg-blue-100', 'hover:text-blue-700');
+            tab.classList.add('border-blue-600', 'text-blue-600');
+            tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
           } else {
-            tab.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
-            tab.classList.add('text-slate-600', 'hover:bg-blue-100', 'hover:text-blue-700');
+            tab.classList.remove('border-blue-600', 'text-blue-600');
+            tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
           }
         });
 
@@ -3842,11 +3831,11 @@
       function updateTabs(activeTab) {
         tabs.forEach(tab => {
           if (tab === activeTab) {
-            tab.classList.add('bg-blue-600', 'text-white', 'font-semibold');
-            tab.classList.remove('text-slate-600', 'hover:bg-blue-100', 'hover:text-blue-700');
+            tab.classList.add('border-blue-600', 'text-blue-600');
+            tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
           } else {
-            tab.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
-            tab.classList.add('text-slate-600', 'hover:bg-blue-100', 'hover:text-blue-700');
+            tab.classList.remove('border-blue-600', 'text-blue-600');
+            tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
           }
         });
 
