@@ -2,14 +2,16 @@
 
 ## 檔案為 [demo-page.html](demo-page.html)，以下問題需要解決。
 
-- [ ]如 ![1.png](1.png) 所示，請把左下角的個人資訊區塊，移動到上方靠右位置，跟 Header Bar 齊平。
+- [ ]如 ![1.png](1.png) 所示，Line Notify ，缺少了 「驗證」 按鈕。
 
-- [ ]Header Bar 的語系切換下拉選單，請改至個人資料的頁面，因為實用性不高，不需要常駐在 Header Bar 中。
+- [ ]「個人資料」頁面的頁籤式佈局 ![profile.png](jules-scratch/profile.png)，改成跟自動化頁面的頁籤式佈局相同 ![automation.png](jules-scratch/automation.png)，符合一致的頁籤式佈局。
 
-- [ ] 個人資料頁面，個人資訊區塊中，所屬團隊沒有顯示，需要新增。
+- [ ]「系統設定」從垂直滾動改為頁籤 (Tabs)。
+	* 建立以下兩個頁籤來組織頁面內容：
+			1. 整合設定	
+				* Grafana 服務設定
+			2. 通知設定
+				* 郵件伺服器 (SMTP) 設定
+				* SMS 閘道設定
 
-- [ ]如 ![settings.png](jules-scratch/settings.png) 所示，在「系統設定」頁面中，表格裡的輸入框（Input）與背景的融合度太高，不夠突出，導致看起來不清晰。
-
-- [ ]如 ![dashboard.png](jules-scratch/dashboard.png) 所示，「設備狀態分佈」的圖是空白，看不到任何資料，需要新增模擬資料。
-
-- [ ]「總覽儀表板」頁面中的「設備群組狀態總覽」跟「設備狀態分佈」的圖表，改成並列式，「設備群組狀態總覽」是折線圖，位置靠左佔比 2/3，「設備狀態分佈」的圖表，是圓餅圖，位置靠右佔比 1/3。
+- [ ]如 ![profile.png](jules-scratch/profile.png) 所示，Input 欄位 CSS，需要調整樣式(全局都應該一致)，高度需要與其他 Input 欄位一致 (例如下方「語言」欄位)，使其更清晰易讀。
