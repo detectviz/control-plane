@@ -1146,6 +1146,12 @@
                     class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     placeholder="用於接收 LINE 通知">
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                  <label for="profile-sms" class="text-sm font-medium text-slate-700">SMS 手機號碼</label>
+                  <input type="text" id="profile-sms"
+                    class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    placeholder="用於接收個人簡訊通知">
+                </div>
               </div>
               <div class="flex justify-end mt-6">
                 <button id="save-contact-btn"
@@ -2127,6 +2133,13 @@
                                 </div>
                             </div>
                         </fieldset>
+                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">通知內容自定義 (選填)</legend>
+                            <div class="space-y-2">
+                                <div><label class="text-sm font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                                <div><label class="text-sm font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                                <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                            </div>
+                        </fieldset>
                     </div>`;
         openFormModal('新增告警規則', formHtml, 'add-rule');
       });
@@ -2167,6 +2180,13 @@
                                         <!-- Parameter mappings will be populated here -->
                                     </div>
                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">通知內容自定義 (選填)</legend>
+                            <div class="space-y-2">
+                                <div><label class="text-sm font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                                <div><label class="text-sm font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                                <p class="text-xs text-slate-500">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
                             </div>
                         </fieldset>
                     </div>`;
@@ -2319,22 +2339,14 @@
       document.getElementById('add-user-btn').addEventListener('click', () => {
         const formHtml = `
                     <div class="space-y-4">
+                        <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">此介面僅供管理者設定組織層級的資訊。新進人員個人的聯絡方式與通知偏好，請由該使用者本人登入後，至「個人資料」頁面進行設定。</p>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">Email</label><input id="user-email" type="email" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">LINE Token</label><input id="user-line" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
                           <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                             <option>Team Member</option><option>Team Manager</option><option>Super Admin</option>
                           </select>
                         </div>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">接收等級</legend>
-                            <div class="space-y-2 mt-2">
-                                <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-high" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-high" class="font-medium text-gray-900">高</label></div></div>
-                                <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-medium" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-medium" class="font-medium text-gray-900">中</label></div></div>
-                                <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-low" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-low" class="font-medium text-gray-900">低</label></div></div>
-                            </div>
-                        </fieldset>
                     </div>`;
         openFormModal('新增人員', formHtml, 'add-user');
         formModal.tomSelectInstances = {
@@ -2384,21 +2396,7 @@
 
       // Notification Channel Actions
       document.getElementById('add-channel-btn').addEventListener('click', () => {
-        const formHtml = `
-            <div class="space-y-4">
-                <div><label class="text-sm font-medium text-slate-700">管道名稱</label><input id="channel-name" type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                <div><label class="text-sm font-medium text-slate-700">管道類型</label>
-                    <select id="channel-type" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
-                        <option value="webhook">Webhook</option>
-                        <option value="email">Email</option>
-                    </select>
-                </div>
-                <div id="webhook-url-container"><label class="text-sm font-medium text-slate-700">Webhook URL</label><input id="channel-url" type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="https://hooks.example.com/..."></div>
-            </div>`;
-        openFormModal('新增通知管道', formHtml, 'add-channel');
-        document.getElementById('channel-type').addEventListener('change', (e) => {
-          document.getElementById('webhook-url-container').style.display = e.target.value === 'webhook' ? 'block' : 'none';
-        });
+        openChannelFormModal('新增通知管道', 'add-channel');
       });
 
       document.getElementById('channels-table-body').addEventListener('click', e => {
@@ -2412,41 +2410,89 @@
         }
         if (e.target.classList.contains('edit-channel-btn')) {
           const channel = mockData.notificationChannels[index];
-          const formHtml = `
-            <div class="space-y-4">
-                <div><label class="text-sm font-medium text-slate-700">管道名稱</label><input id="channel-name" type="text" value="${channel.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                <div><label class="text-sm font-medium text-slate-700">管道類型</label>
-                    <select id="channel-type" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
-                        <option value="webhook" ${channel.type === 'webhook' ? 'selected' : ''}>Webhook</option>
-                        <option value="email" ${channel.type === 'email' ? 'selected' : ''}>Email</option>
-                    </select>
-                </div>
-                <div id="webhook-url-container" style="display: ${channel.type === 'webhook' ? 'block' : 'none'}"><label class="text-sm font-medium text-slate-700">Webhook URL</label><input id="channel-url" type="text" value="${channel.url || ''}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-            </div>`;
-          openFormModal('編輯通知管道', formHtml, 'edit-channel', index);
-          document.getElementById('channel-type').addEventListener('change', (e) => {
-            document.getElementById('webhook-url-container').style.display = e.target.value === 'webhook' ? 'block' : 'none';
-          });
+          openChannelFormModal('編輯通知管道', 'edit-channel', index, channel);
         }
       });
+
+      function openChannelFormModal(title, action, index = null, channel = {}) {
+        const formHtml = `
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-slate-700">管道名稱</label>
+                    <input id="channel-name" type="text" value="${channel.name || ''}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-slate-700">管道類型</label>
+                    <select id="channel-type-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                        <option value="email" ${channel.type === 'email' ? 'selected' : ''}>Email</option>
+                        <option value="webhook" ${channel.type === 'webhook' ? 'selected' : ''}>Webhook (通用)</option>
+                        <option value="slack" ${channel.type === 'slack' ? 'selected' : ''}>Slack</option>
+                        <option value="line" ${channel.type === 'line' ? 'selected' : ''}>LINE Notify</option>
+                        <option value="sms" ${channel.type === 'sms' ? 'selected' : ''}>SMS (簡訊)</option>
+                    </select>
+                </div>
+                <div id="channel-fields-container" class="space-y-4 border-t pt-4 mt-4">
+                    <!-- Dynamic fields will be injected here -->
+                </div>
+            </div>`;
+
+        openFormModal(title, formHtml, action, index);
+
+        const typeSelect = document.getElementById('channel-type-select');
+        const fieldsContainer = document.getElementById('channel-fields-container');
+
+        const allFields = {
+          email: `
+            <div><label class="text-sm font-medium text-slate-700">收件人 (To)</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.to || ''}"></div>
+            <div><label class="text-sm font-medium text-slate-700">副本 (CC)</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.cc || ''}"></div>
+            <div><label class="text-sm font-medium text-slate-700">密件副本 (BCC)</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.bcc || ''}"></div>
+          `,
+          webhook: `
+            <div><label class="text-sm font-medium text-slate-700">Webhook URL</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.url || ''}"></div>
+            <div><label class="text-sm font-medium text-slate-700">HTTP 方法 (Method)</label>
+              <select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                <option value="POST" ${channel.method === 'POST' ? 'selected' : ''}>POST</option>
+                <option value="PUT" ${channel.method === 'PUT' ? 'selected' : ''}>PUT</option>
+              </select>
+            </div>
+          `,
+          slack: `
+            <div><label class="text-sm font-medium text-slate-700">Incoming Webhook URL</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.url || ''}"></div>
+            <div><label class="text-sm font-medium text-slate-700">提及對象 (Mention)</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="@here, @channel, or user ID" value="${channel.mention || ''}"></div>
+          `,
+          line: `
+            <div><label class="text-sm font-medium text-slate-700">存取權杖 (Access Token)</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.token || ''}"></div>
+          `,
+          sms: `
+            <div><label class="text-sm font-medium text-slate-700">收件人手機號碼</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="請輸入手機號碼" value="${channel.recipient || ''}"></div>
+          `
+        };
+
+        function updateFields() {
+          const selectedType = typeSelect.value;
+          fieldsContainer.innerHTML = allFields[selectedType] || '';
+        }
+
+        typeSelect.addEventListener('change', updateFields);
+        updateFields(); // Initial call
+      }
 
 
       // Save and Delete Logic
       formModalSaveBtn.addEventListener('click', () => {
         if (currentAction === 'add-user') {
           const name = document.getElementById('user-name').value;
-          const email = document.getElementById('user-email').value;
-          const lineToken = document.getElementById('user-line').value;
           const role = document.getElementById('user-role').value;
           const teamIds = formModal.tomSelectInstances.teams.getValue().map(id => parseInt(id));
-          const subscribedLevels = [];
-          if (document.getElementById('user-level-high').checked) subscribedLevels.push('high');
-          if (document.getElementById('user-level-medium').checked) subscribedLevels.push('medium');
-          if (document.getElementById('user-level-low').checked) subscribedLevels.push('low');
 
           mockData.personnel.push({
             id: mockData.personnel.length > 0 ? Math.max(...mockData.personnel.map(p => p.id)) + 1 : 1,
-            name, email, lineToken, role, teamIds, subscribedLevels,
+            name,
+            email: '',
+            lineToken: '',
+            role,
+            teamIds,
+            subscribedLevels: [],
           });
           showFeedbackModal('人員已新增！');
           setTimeout(closeFeedbackModal, 1500);
