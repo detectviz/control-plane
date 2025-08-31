@@ -79,6 +79,22 @@
       color: #0f172a;
     }
 
+    /* Accordion Menu Styles */
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+    .submenu-toggle.open + .submenu {
+      max-height: 500px; /* Adjust as needed */
+    }
+    .chevron-icon {
+      transition: transform 0.3s ease-in-out;
+    }
+    .submenu-toggle.open .chevron-icon {
+      transform: rotate(180deg);
+    }
+
 
     /* Batch Operations Styles */
     .device-checkbox:checked {
@@ -224,166 +240,79 @@
         </svg>
         <h1 class="text-xl font-bold ml-2">網管監控平台</h1>
       </div>
-      <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 active"
-          data-page="dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-4"></path>
-            <path d="M16 12h-4l-2 5h8l-2-5Z"></path>
-            <path d="M5 12h.01"></path>
-            <path d="M19 12h.01"></path>
-          </svg>
+      <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <!-- Standalone Item -->
+        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 active" data-page="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-4"></path><path d="M16 12h-4l-2 5h8l-2-5Z"></path><path d="M5 12h.01"></path><path d="M19 12h.01"></path></svg>
           總覽儀表板
         </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="devices">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-            <path d="M6 12h4"></path>
-            <path d="m14 12 2 2 2-2"></path>
-          </svg>
-          設備管理
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="groups">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          設備群組
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="teams">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          團隊管理
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="rules">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path
-              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
-            </path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          告警規則
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="personnel">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          人員管理
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="channels">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path
-              d="M4.1 11.6a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L.3 11.6a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z">
-            </path>
-            <path
-              d="M12.2 3.5a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 3.5a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z">
-            </path>
-            <path
-              d="M20.4 19.8a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0l-3.8-3.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z">
-            </path>
-            <path
-              d="M15.6 8.4a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 8.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z">
-            </path>
-            <path d="m9 15-.8.8"></path>
-            <path d="m14.2 9.8-.8.8"></path>
-          </svg>
-          通知管道
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="maintenance">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-            <path d="M12 6v6l4 2"></path>
-          </svg>
-          維護時段
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="automation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-            <path d="M2 17l10 5 10-5"></path>
-            <path d="M2 12l10 5 10-5"></path>
-          </svg>
-          自動化
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="capacity">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M3 3v18h18"></path>
-            <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
-          </svg>
-          容量規劃
-        </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="logs">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-            <path d="M10 9H8"></path>
-            <path d="M16 13H8"></path>
-            <path d="M16 17H8"></path>
-          </svg>
+        <!-- Standalone Item -->
+        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="logs">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
           告警紀錄
         </a>
-        <div class="border-t border-slate-700 my-4"></div>
-        <!-- NEW: Profile link -->
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="profile">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
+
+        <div class="border-t border-slate-700 my-2"></div>
+
+        <!-- Accordion Group: 資源 -->
+        <div class="space-y-1">
+          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>資源</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="submenu pl-6 space-y-1">
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="devices">設備管理</a>
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="groups">設備群組</a>
+          </div>
+        </div>
+
+        <!-- Accordion Group: 組織 -->
+        <div class="space-y-1">
+          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>組織</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="submenu pl-6 space-y-1">
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="personnel">人員管理</a>
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="teams">團隊管理</a>
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="channels">通知管道</a>
+          </div>
+        </div>
+
+        <!-- Accordion Group: 告警 -->
+        <div class="space-y-1">
+          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>告警</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="submenu pl-6 space-y-1">
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="rules">告警規則</a>
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="maintenance">維護時段</a>
+          </div>
+        </div>
+
+        <!-- Accordion Group: 分析與自動化 -->
+        <div class="space-y-1">
+          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>分析與自動化</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="submenu pl-6 space-y-1">
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="automation">自動化</a>
+            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="capacity">容量規劃</a>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-700 my-2"></div>
+
+        <!-- Standalone Item -->
+        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="profile">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
           個人資料
         </a>
-        <a href="#"
-          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
-          data-page="settings">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
-            <path
-              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
-            </path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
+        <!-- Standalone Item -->
+        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
           系統設定
         </a>
       </nav>
@@ -962,7 +891,7 @@
 
             <!-- Scripts Library Tab -->
             <div id="scripts-content" class="automation-content">
-              <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+              <div class="flex flex-col md:flex-row justify-end items-center mb-6 gap-4">
                 <button id="add-script-btn"
                   class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors w-full md:w-auto text-sm">新增腳本</button>
               </div>
@@ -1259,24 +1188,33 @@
                     <div class="relative flex items-start">
                       <div class="flex h-6 items-center"><input id="pref-high" name="alert-level" type="checkbox"
                           class="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-high" class="font-medium text-slate-900">高
-                          (High)</label>
+                      <div class="ml-3 text-sm leading-6">
+                        <label for="pref-high" class="font-medium text-slate-900 cursor-pointer">
+                          <span
+                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-800">高 (High)</span>
+                        </label>
                         <p class="text-slate-500">僅接收最緊急的事件，例如服務中斷。</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex h-6 items-center"><input id="pref-medium" name="alert-level" type="checkbox"
                           class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-medium" class="font-medium text-slate-900">中
-                          (Medium)</label>
+                      <div class="ml-3 text-sm leading-6">
+                        <label for="pref-medium" class="font-medium text-slate-900 cursor-pointer">
+                          <span
+                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">中 (Medium)</span>
+                        </label>
                         <p class="text-slate-500">接收可能影響服務的警告，例如資源使用率過高。</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex h-6 items-center"><input id="pref-low" name="alert-level" type="checkbox"
                           class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-low" class="font-medium text-slate-900">低
-                          (Low)</label>
+                      <div class="ml-3 text-sm leading-6">
+                        <label for="pref-low" class="font-medium text-slate-900 cursor-pointer">
+                          <span
+                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">低 (Low)</span>
+                        </label>
                         <p class="text-slate-500">接收所有資訊型通知。</p>
                       </div>
                     </div>
@@ -1522,26 +1460,56 @@
       const notificationBtn = document.getElementById('notification-btn');
       const notificationDropdown = document.getElementById('notification-dropdown');
 
+      const accordionToggles = document.querySelectorAll('.submenu-toggle');
+
+      accordionToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          // Close other open menus if you want only one open at a time
+          // accordionToggles.forEach(otherToggle => {
+          //   if (otherToggle !== toggle) {
+          //     otherToggle.classList.remove('open');
+          //   }
+          // });
+          toggle.classList.toggle('open');
+        });
+      });
+
       links.forEach(link => {
         link.addEventListener('click', function (e) {
           e.preventDefault();
           if (this.style.display === 'none') return;
+
           const pageId = this.dataset.page;
+
+          // Deactivate all links
           links.forEach(l => l.classList.remove('active'));
-          // Since multiple links can point to profile, activate all of them
+
+          // Activate the clicked link and any other link pointing to the same page
           document.querySelectorAll(`.sidebar-link[data-page="${pageId}"]`).forEach(activeLink => {
             activeLink.classList.add('active');
           });
+
+          // Open parent accordion if inside one
+          const parentSubmenu = this.closest('.submenu');
+          accordionToggles.forEach(t => t.classList.remove('open')); // Close all
+          if (parentSubmenu) {
+            const toggle = parentSubmenu.previousElementSibling;
+            if (toggle && toggle.classList.contains('submenu-toggle')) {
+              toggle.classList.add('open');
+            }
+          }
+
           showPage(pageId);
-          // Re-render the group status chart specifically when navigating to the dashboard
+
           if (pageId === 'dashboard') {
             renderGroupStatusChart();
           }
-          // Find the nav link to set breadcrumb text, not the icon
-          const navLink = document.querySelector(`nav .sidebar-link[data-page="${pageId}"]`);
-          breadcrumb.textContent = navLink ? `${navLink.textContent.trim()}` : "個人資料";
 
-          if (window.innerWidth < 1024) { // Close sidebar on mobile after navigation
+          // Use the text from the clicked link for the breadcrumb, or find a better source
+          const breadcrumbSource = document.querySelector(`.sidebar-link[data-page="${pageId}"]`);
+          breadcrumb.textContent = breadcrumbSource ? breadcrumbSource.textContent.trim() : "個人資料";
+
+          if (window.innerWidth < 1024) {
             sidebar.classList.add('-translate-x-full');
           }
         });
@@ -3779,7 +3747,20 @@
           'TeamManager': '團隊管理員',
           'TeamMember': '一般使用者'
         };
-        profileRole.textContent = roleMap[loggedInUser.role] || loggedInUser.role;
+        const roleText = roleMap[loggedInUser.role] || loggedInUser.role;
+        let roleBadgeHtml;
+        // Match style from personnel page
+        switch (loggedInUser.role) {
+          case 'SuperAdmin':
+            roleBadgeHtml = `<span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${roleText}</span>`;
+            break;
+          case 'TeamManager':
+            roleBadgeHtml = `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${roleText}</span>`;
+            break;
+          default:
+            roleBadgeHtml = `<span class="bg-slate-100 text-slate-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${roleText}</span>`;
+        }
+        profileRole.innerHTML = roleBadgeHtml;
       }
 
       // Find user's teams and populate read-only tags
