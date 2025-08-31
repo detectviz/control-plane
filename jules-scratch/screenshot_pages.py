@@ -12,7 +12,7 @@ def run_verification(playwright):
     page.goto(f'file://{file_path}')
 
     # --- 登入 ---
-    page.get_by_label("帳號").fill("admin")
+    page.locator("#login-form").get_by_label("帳號").fill("admin")
     page.locator("#login-form").get_by_label("密碼").fill("admin")
     page.get_by_role("button", name="登入").click()
     expect(page.locator("#app")).to_be_visible()

@@ -12,7 +12,7 @@ def run_verification(playwright):
     page.goto(f'file://{file_path}')
 
     # --- 登入 ---
-    page.get_by_label("帳號").fill("admin")
+    page.locator("#login-form").get_by_label("帳號").fill("admin")
     page.locator("#login-form").get_by_label("密碼").fill("admin")
     page.get_by_role("button", name="登入").click()
     expect(page.locator("#app")).to_be_visible()
@@ -71,6 +71,22 @@ def run_verification(playwright):
     page.locator(".edit-channel-btn").first.click()
     expect(page.locator("#form-modal")).to_be_visible()
     page.screenshot(path="jules-scratch/modal_edit_channel.png")
+    page.locator("#form-modal .close-modal-btn").first.click()
+    print("  - 完成。")
+
+    # NEW: Add Alert Rule Modal (Accordion)
+    print("正在截取「新增告警規則」彈窗...")
+    page.get_by_role("link", name="告警規則").click()
+    page.get_by_role("button", name="新增告警規則").click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.wait_for_timeout(500) # Wait for modal animation
+    page.screenshot(path="jules-scratch/modal_add_rule_collapsed.png")
+
+    # Click to expand the second section
+    page.locator(".accordion-header").nth(1).click()
+    page.wait_for_timeout(500) # Wait for accordion animation
+    page.screenshot(path="jules-scratch/modal_add_rule_expanded.png")
+
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
