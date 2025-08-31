@@ -80,7 +80,8 @@
     }
 
     /* Automation Tab Styles */
-    .automation-tab.active, .profile-tab.active-tab {
+    .automation-tab.active,
+    .profile-tab.active-tab {
       border-color: #3b82f6;
       color: #3b82f6;
     }
@@ -99,7 +100,8 @@
     input[type="date"],
     select,
     textarea {
-      border: 1px solid #94a3b8; /* Corresponds to slate-400 */
+      border: 1px solid #94a3b8;
+      /* Corresponds to slate-400 */
       padding-top: 0.375rem;
       padding-bottom: 0.375rem;
       padding-left: 0.75rem;
@@ -124,8 +126,10 @@
     input[type="date"]:focus,
     select:focus,
     textarea:focus {
-      border-color: #3b82f6; /* Corresponds to blue-500 */
-      box-shadow: 0 0 0 2px #bfdbfe; /* A ring effect like Tailwind's focus rings */
+      border-color: #3b82f6;
+      /* Corresponds to blue-500 */
+      box-shadow: 0 0 0 2px #bfdbfe;
+      /* A ring effect like Tailwind's focus rings */
     }
 
     /* Responsive Table Styles */
@@ -459,7 +463,6 @@
 
         <section id="page-dashboard" class="page">
           <div class="mb-8">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">告警狀態總覽</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4">
                 <div class="flex items-center justify-between">
@@ -799,8 +802,10 @@
             <!-- Tab Navigation -->
             <div class="mb-8">
               <nav id="settings-tabs" class="flex space-x-4" aria-label="Tabs">
-                <button data-tab="integration" class="settings-tab px-4 py-2 rounded-md font-medium text-sm">整合設定</button>
-                <button data-tab="notification" class="settings-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
+                <button data-tab="integration"
+                  class="settings-tab px-4 py-2 rounded-md font-medium text-sm">整合設定</button>
+                <button data-tab="notification"
+                  class="settings-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
               </nav>
             </div>
 
@@ -850,26 +855,34 @@
                   </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-md">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">SMS 閘道設定 (SMS Gateway Settings)</h3>
+                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">SMS 閘道設定 (SMS Gateway Settings)
+                  </h3>
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="sms-provider" class="text-sm font-medium text-slate-700">服務提供商 (Service Provider)</label>
-                      <select id="sms-provider" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                      <label for="sms-provider" class="text-sm font-medium text-slate-700">服務提供商 (Service
+                        Provider)</label>
+                      <select id="sms-provider"
+                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
                         <option>Twilio</option>
                         <option>Another Provider</option>
                       </select>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                       <label for="sms-sid" class="text-sm font-medium text-slate-700">帳號 SID (Account SID)</label>
-                      <input type="text" id="sms-sid" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                      <input type="text" id="sms-sid"
+                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                        placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                       <label for="sms-token" class="text-sm font-medium text-slate-700">認證權杖 (Auth Token)</label>
-                      <input type="password" id="sms-token" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
+                      <input type="password" id="sms-token"
+                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
                       <label for="sms-from" class="text-sm font-medium text-slate-700">發送號碼 (From Number)</label>
-                      <input type="text" id="sms-from" class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800" placeholder="+15017122661">
+                      <input type="text" id="sms-from"
+                        class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
+                        placeholder="+15017122661">
                     </div>
                   </div>
                 </div>
@@ -1131,7 +1144,8 @@
               <nav id="profile-tabs" class="flex space-x-4" aria-label="Tabs">
                 <button data-tab="info" class="profile-tab px-4 py-2 rounded-md font-medium text-sm">個人資訊</button>
                 <button data-tab="security" class="profile-tab px-4 py-2 rounded-md font-medium text-sm">密碼安全</button>
-                <button data-tab="notifications" class="profile-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
+                <button data-tab="notifications"
+                  class="profile-tab px-4 py-2 rounded-md font-medium text-sm">通知設定</button>
               </nav>
             </div>
 
@@ -1144,7 +1158,8 @@
                   <div class="space-y-4 text-sm">
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="profile-name-input" class="font-medium text-slate-700">姓名</label>
-                      <input type="text" id="profile-name-input" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                      <input type="text" id="profile-name-input"
+                        class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label class="font-medium text-slate-500">角色</label>
@@ -1156,14 +1171,16 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="profile-language-select" class="font-medium text-slate-700">語言</label>
-                      <select id="profile-language-select" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-slate-800 px-3 py-1.5">
+                      <select id="profile-language-select"
+                        class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-slate-800 px-3 py-1.5">
                         <option>繁體中文</option>
                         <option>English</option>
                       </select>
                     </div>
                   </div>
                   <div class="flex justify-end mt-6">
-                    <button id="save-profile-info-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新資訊</button>
+                    <button id="save-profile-info-btn"
+                      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新資訊</button>
                   </div>
                 </div>
               </div>
@@ -1174,19 +1191,23 @@
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="current-password" class="text-sm font-medium text-slate-700">目前密碼</label>
-                      <input type="password" id="current-password" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                      <input type="password" id="current-password"
+                        class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="new-password" class="text-sm font-medium text-slate-700">新密碼</label>
-                      <input type="password" id="new-password" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                      <input type="password" id="new-password"
+                        class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="confirm-password" class="text-sm font-medium text-slate-700">確認新密碼</label>
-                      <input type="password" id="confirm-password" class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                      <input type="password" id="confirm-password"
+                        class="md:col-span-3 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                   </div>
                   <div class="flex justify-end mt-6">
-                    <button id="save-password-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新密碼</button>
+                    <button id="save-password-btn"
+                      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">更新密碼</button>
                   </div>
                 </div>
               </div>
@@ -1199,18 +1220,25 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                       <label for="profile-email" class="text-sm font-medium text-slate-700">Email</label>
                       <div class="md:col-span-3 flex items-center gap-x-3">
-                        <input type="email" id="profile-email" class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收 Email 通知">
+                        <input type="email" id="profile-email"
+                          class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"
+                          placeholder="用於接收 Email 通知">
                         <span id="email-status" class="text-sm font-medium w-20 text-center flex-shrink-0"></span>
-                        <button id="email-action-btn" data-method="email" data-action="save" class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
+                        <button id="email-action-btn" data-method="email" data-action="save"
+                          class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
                       </div>
                     </div>
                     <!-- LINE Notify -->
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                      <label for="profile-line-token" class="text-sm font-medium text-slate-700">LINE Notify Token</label>
-                       <div class="md:col-span-3 flex items-center gap-x-3">
-                        <input type="text" id="profile-line-token" class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收 LINE 通知">
+                      <label for="profile-line-token" class="text-sm font-medium text-slate-700">LINE Notify
+                        Token</label>
+                      <div class="md:col-span-3 flex items-center gap-x-3">
+                        <input type="text" id="profile-line-token"
+                          class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"
+                          placeholder="用於接收 LINE 通知">
                         <span id="line-token-status" class="text-sm font-medium w-20 text-center flex-shrink-0"></span>
-                        <button id="line-token-action-btn" data-method="line-token" data-action="save" class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
+                        <button id="line-token-action-btn" data-method="line-token" data-action="save"
+                          class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
                       </div>
                     </div>
                     <!-- SMS -->
@@ -1218,13 +1246,19 @@
                       <label for="profile-sms" class="text-sm font-medium text-slate-700 pt-2">SMS 手機號碼</label>
                       <div class="md:col-span-3 space-y-2">
                         <div class="flex items-center gap-x-3">
-                          <input type="text" id="profile-sms" class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="用於接收個人簡訊通知">
+                          <input type="text" id="profile-sms"
+                            class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"
+                            placeholder="用於接收個人簡訊通知">
                           <span id="sms-status" class="text-sm font-medium w-20 text-center flex-shrink-0"></span>
-                          <button id="sms-action-btn" data-method="sms" data-action="save" class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
+                          <button id="sms-action-btn" data-method="sms" data-action="save"
+                            class="w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0">儲存</button>
                         </div>
                         <div id="sms-verify-container" class="hidden flex items-center gap-x-3">
-                          <input type="text" id="sms-verify-code" class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" placeholder="請輸入收到的 6 位數驗證碼">
-                          <button id="sms-verify-btn" class="w-28 justify-center px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm flex-shrink-0">確認驗證碼</button>
+                          <input type="text" id="sms-verify-code"
+                            class="flex-grow block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"
+                            placeholder="請輸入收到的 6 位數驗證碼">
+                          <button id="sms-verify-btn"
+                            class="w-28 justify-center px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm flex-shrink-0">確認驗證碼</button>
                         </div>
                       </div>
                     </div>
@@ -1232,24 +1266,37 @@
                 </div>
                 <!-- Notification Preferences Card -->
                 <div class="bg-white p-6 rounded-xl shadow-md">
-                   <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">通知偏好</h3>
+                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">通知偏好</h3>
                   <p class="text-sm text-slate-600 mb-4">選擇您希望透過以上管道接收的告警等級。</p>
                   <div class="space-y-3">
                     <div class="relative flex items-start">
-                      <div class="flex h-6 items-center"><input id="pref-high" name="alert-level" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-high" class="font-medium text-slate-900">高 (High)</label><p class="text-slate-500">僅接收最緊急的事件，例如服務中斷。</p></div>
+                      <div class="flex h-6 items-center"><input id="pref-high" name="alert-level" type="checkbox"
+                          class="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"></div>
+                      <div class="ml-3 text-sm leading-6"><label for="pref-high" class="font-medium text-slate-900">高
+                          (High)</label>
+                        <p class="text-slate-500">僅接收最緊急的事件，例如服務中斷。</p>
+                      </div>
                     </div>
                     <div class="relative flex items-start">
-                      <div class="flex h-6 items-center"><input id="pref-medium" name="alert-level" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-medium" class="font-medium text-slate-900">中 (Medium)</label><p class="text-slate-500">接收可能影響服務的警告，例如資源使用率過高。</p></div>
+                      <div class="flex h-6 items-center"><input id="pref-medium" name="alert-level" type="checkbox"
+                          class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-600"></div>
+                      <div class="ml-3 text-sm leading-6"><label for="pref-medium" class="font-medium text-slate-900">中
+                          (Medium)</label>
+                        <p class="text-slate-500">接收可能影響服務的警告，例如資源使用率過高。</p>
+                      </div>
                     </div>
                     <div class="relative flex items-start">
-                      <div class="flex h-6 items-center"><input id="pref-low" name="alert-level" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div>
-                      <div class="ml-3 text-sm leading-6"><label for="pref-low" class="font-medium text-slate-900">低 (Low)</label><p class="text-slate-500">接收所有資訊型通知。</p></div>
+                      <div class="flex h-6 items-center"><input id="pref-low" name="alert-level" type="checkbox"
+                          class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div>
+                      <div class="ml-3 text-sm leading-6"><label for="pref-low" class="font-medium text-slate-900">低
+                          (Low)</label>
+                        <p class="text-slate-500">接收所有資訊型通知。</p>
+                      </div>
                     </div>
                   </div>
                   <div class="flex justify-end mt-6">
-                    <button id="save-prefs-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">儲存偏好設定</button>
+                    <button id="save-prefs-btn"
+                      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">儲存偏好設定</button>
                   </div>
                 </div>
               </div>
@@ -1423,9 +1470,9 @@
         { id: 4, name: 'Admin', role: 'Super Admin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
       ],
       teams: [
-        { id: 1, name: '網路團隊', managerId: 2, memberIds: [1, 2, 3], accessibleGroupIds: [1, 3], subscribers: [{type: 'personnel', id: 3}, {type: 'channel', id: 1}] },
-        { id: 2, name: '伺服器團隊', managerId: null, memberIds: [3], accessibleGroupIds: [], subscribers: [{type: 'personnel', id: 3}] },
-        { id: 3, name: '資安團隊', managerId: 1, memberIds: [1], accessibleGroupIds: [2], subscribers: [{type: 'personnel', id: 1}, {type: 'channel', id: 4}] },
+        { id: 1, name: '網路團隊', managerId: 2, memberIds: [1, 2, 3], accessibleGroupIds: [1, 3], subscribers: [{ type: 'personnel', id: 3 }, { type: 'channel', id: 1 }] },
+        { id: 2, name: '伺服器團隊', managerId: null, memberIds: [3], accessibleGroupIds: [], subscribers: [{ type: 'personnel', id: 3 }] },
+        { id: 3, name: '資安團隊', managerId: 1, memberIds: [1], accessibleGroupIds: [2], subscribers: [{ type: 'personnel', id: 1 }, { type: 'channel', id: 4 }] },
       ],
       maintenance: [
         { id: 1, name: '週末系統更新', groups: ['核心交換器'], start: '2025-08-30 02:00', end: '2025-08-30 04:00', status: '已排程' }
@@ -1881,13 +1928,13 @@
         const managerName = manager ? manager.name : '<span class="text-slate-400">未指派</span>';
         const memberCount = mockData.personnel.filter(p => p.teamIds.includes(t.id)).length;
         const subscribersHtml = t.subscribers.map(s => {
-            if (s.type === 'personnel') {
-                const user = mockData.personnel.find(p => p.id === s.id);
-                return user ? `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${user.name}</span>` : '';
-            } else if (s.type === 'channel') {
-                const channel = mockData.notificationChannels.find(c => c.id === s.id);
-                return channel ? `<span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M4.1 11.6a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L.3 11.6a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M12.2 3.5a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 3.5a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M20.4 19.8a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0l-3.8-3.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M15.6 8.4a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 8.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="m9 15-.8.8"/><path d="m14.2 9.8-.8.8"/></svg>${channel.name}</span>` : '';
-            }
+          if (s.type === 'personnel') {
+            const user = mockData.personnel.find(p => p.id === s.id);
+            return user ? `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${user.name}</span>` : '';
+          } else if (s.type === 'channel') {
+            const channel = mockData.notificationChannels.find(c => c.id === s.id);
+            return channel ? `<span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M4.1 11.6a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L.3 11.6a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M12.2 3.5a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 3.5a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M20.4 19.8a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0l-3.8-3.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M15.6 8.4a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 8.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="m9 15-.8.8"/><path d="m14.2 9.8-.8.8"/></svg>${channel.name}</span>` : '';
+          }
         }).filter(Boolean).join(' ');
 
         const row = `<tr class="bg-white" data-index="${index}">
@@ -1919,10 +1966,10 @@
             roleBadge = '<span class="bg-slate-100 text-slate-800 text-xs font-medium px-2.5 py-0.5 rounded-full">一般使用者</span>';
         }
         const teamsHtml = p.teamIds
-            .map(tid => mockData.teams.find(t => t.id === tid)?.name)
-            .filter(Boolean)
-            .map(tName => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${tName}</span>`)
-            .join(' ');
+          .map(tid => mockData.teams.find(t => t.id === tid)?.name)
+          .filter(Boolean)
+          .map(tName => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${tName}</span>`)
+          .join(' ');
 
         const levelsHtml = `<div class="flex items-center justify-start md:justify-center gap-1">
                         <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${p.subscribedLevels.includes('high') ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-400'}">高</span>
@@ -2426,26 +2473,26 @@
             </div>`;
         openFormModal('新增團隊', formHtml, 'add-team');
         formModal.tomSelectInstances = {
-            subscribers: new TomSelect('#team-subscribers', {
-                placeholder: '搜尋人員或通知管道...',
-                plugins: ['remove_button'],
-                optgroups: [
-                    { value: 'personnel', label: '人員' },
-                    { value: 'channels', label: '通知管道' }
-                ],
-                options: [
-                    ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
-                    ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
-                ]
-            })
+          subscribers: new TomSelect('#team-subscribers', {
+            placeholder: '搜尋人員或通知管道...',
+            plugins: ['remove_button'],
+            optgroups: [
+              { value: 'personnel', label: '人員' },
+              { value: 'channels', label: '通知管道' }
+            ],
+            options: [
+              ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
+              ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
+            ]
+          })
         };
       });
 
       document.getElementById('teams-table-body').addEventListener('click', e => {
         const index = e.target.closest('tr')?.dataset.index;
         if (e.target.classList.contains('edit-team-btn')) {
-            const team = mockData.teams[index];
-            const formHtml = `
+          const team = mockData.teams[index];
+          const formHtml = `
                 <div class="space-y-4">
                     <div class="grid grid-cols-3 items-center gap-4">
                         <label for="team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
@@ -2456,24 +2503,24 @@
                         <select id="team-subscribers" multiple></select>
                     </fieldset>
                 </div>`;
-            openFormModal('編輯團隊', formHtml, 'edit-team', index);
+          openFormModal('編輯團隊', formHtml, 'edit-team', index);
 
-            const selectedItems = team.subscribers.map(s => `${s.type}-${s.id}`);
-            formModal.tomSelectInstances = {
-                subscribers: new TomSelect('#team-subscribers', {
-                    placeholder: '搜尋人員或通知管道...',
-                    plugins: ['remove_button'],
-                    optgroups: [
-                        { value: 'personnel', label: '人員' },
-                        { value: 'channels', label: '通知管道' }
-                    ],
-                    options: [
-                        ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
-                        ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
-                    ],
-                    items: selectedItems
-                })
-            };
+          const selectedItems = team.subscribers.map(s => `${s.type}-${s.id}`);
+          formModal.tomSelectInstances = {
+            subscribers: new TomSelect('#team-subscribers', {
+              placeholder: '搜尋人員或通知管道...',
+              plugins: ['remove_button'],
+              optgroups: [
+                { value: 'personnel', label: '人員' },
+                { value: 'channels', label: '通知管道' }
+              ],
+              options: [
+                ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
+                ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
+              ],
+              items: selectedItems
+            })
+          };
         }
         if (e.target.classList.contains('delete-team-btn')) openConfirmModal('您確定要刪除此團隊嗎？', 'delete-team', index);
       });
@@ -2527,7 +2574,7 @@
         openFormModal('新增人員', formHtml, 'add-user');
         formModal.tomSelectInstances = {
           teams: new TomSelect('#user-teams', {
-            options: mockData.teams.map(t => ({value: t.id, text: t.name})),
+            options: mockData.teams.map(t => ({ value: t.id, text: t.name })),
             placeholder: '搜尋團隊...',
             plugins: ['remove_button'],
           })
@@ -2558,7 +2605,7 @@
           openFormModal('編輯人員', formHtml, 'edit-user', index);
           formModal.tomSelectInstances = {
             teams: new TomSelect('#user-teams', {
-              options: mockData.teams.map(t => ({value: t.id, text: t.name})),
+              options: mockData.teams.map(t => ({ value: t.id, text: t.name })),
               items: user.teamIds,
               placeholder: '搜尋團隊...',
               plugins: ['remove_button'],
@@ -2718,14 +2765,14 @@
           showFeedbackModal('團隊已新增！');
           setTimeout(closeFeedbackModal, 1500);
         } else if (currentAction === 'edit-team') {
-            const team = mockData.teams[currentEditIndex];
-            team.name = document.getElementById('team-name').value;
-            team.subscribers = formModal.tomSelectInstances.subscribers.getValue().map(val => {
-                const [type, id] = val.split('-');
-                return { type, id: parseInt(id) };
-            });
-            showFeedbackModal('團隊資訊已更新！');
-            setTimeout(closeFeedbackModal, 1500);
+          const team = mockData.teams[currentEditIndex];
+          team.name = document.getElementById('team-name').value;
+          team.subscribers = formModal.tomSelectInstances.subscribers.getValue().map(val => {
+            const [type, id] = val.split('-');
+            return { type, id: parseInt(id) };
+          });
+          showFeedbackModal('團隊資訊已更新！');
+          setTimeout(closeFeedbackModal, 1500);
         } else {
           console.log(`Saving action: ${currentAction} for index: ${currentEditIndex}`);
         }
@@ -3486,8 +3533,8 @@
       }
       // Set initial state for metric dropdown
       if (metricSelect.value === '') {
-          metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
-          metricSelect.disabled = true;
+        metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
+        metricSelect.disabled = true;
       }
 
 
@@ -3505,7 +3552,7 @@
                 const selected = metricSelect.dataset.lastSelection === key ? 'selected' : '';
                 metricSelect.innerHTML += `<option value="${key}" ${selected}>${metric.name}</option>`;
               });
-              if(metricSelect.dataset.lastSelection) {
+              if (metricSelect.dataset.lastSelection) {
                 metricSelect.value = metricSelect.dataset.lastSelection;
               }
               metricSelect.disabled = false;
@@ -3523,7 +3570,7 @@
       if (metricSelect && !metricSelect.hasAttribute('data-initialized')) {
         metricSelect.setAttribute('data-initialized', 'true');
         metricSelect.addEventListener('change', (e) => {
-          if(e.target.value) {
+          if (e.target.value) {
             metricSelect.dataset.lastSelection = e.target.value;
           }
           updateAnalyzeButtonState();
@@ -3534,56 +3581,56 @@
       if (analyzeBtn && !analyzeBtn.hasAttribute('data-initialized')) {
         analyzeBtn.setAttribute('data-initialized', 'true');
         analyzeBtn.addEventListener('click', async () => {
-            const groupId = targetGroupSelect.value;
-            const metric = metricSelect.value;
-            if (!groupId || !metric) return;
+          const groupId = targetGroupSelect.value;
+          const metric = metricSelect.value;
+          if (!groupId || !metric) return;
 
-            const groupName = targetGroupSelect.options[targetGroupSelect.selectedIndex].text;
-            const metricName = mockData.capacityMetrics[metric].name;
+          const groupName = targetGroupSelect.options[targetGroupSelect.selectedIndex].text;
+          const metricName = mockData.capacityMetrics[metric].name;
 
-            analyzeBtn.disabled = true;
-            analyzeBtn.textContent = '分析中...';
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            const mockResults = generateMockCapacityAnalysis(metric);
+          analyzeBtn.disabled = true;
+          analyzeBtn.textContent = '分析中...';
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          const mockResults = generateMockCapacityAnalysis(metric);
 
-            const growthRateEl = document.getElementById('growth-rate');
-            const warningEtaEl = document.getElementById('warning-eta');
-            const depletionEtaEl = document.getElementById('depletion-eta');
-            if (growthRateEl) growthRateEl.textContent = mockResults.growthRate;
-            if (warningEtaEl) warningEtaEl.textContent = mockResults.warningEta;
-            if (depletionEtaEl) depletionEtaEl.textContent = mockResults.depletionEta;
+          const growthRateEl = document.getElementById('growth-rate');
+          const warningEtaEl = document.getElementById('warning-eta');
+          const depletionEtaEl = document.getElementById('depletion-eta');
+          if (growthRateEl) growthRateEl.textContent = mockResults.growthRate;
+          if (warningEtaEl) warningEtaEl.textContent = mockResults.warningEta;
+          if (depletionEtaEl) depletionEtaEl.textContent = mockResults.depletionEta;
 
-            const recommendationsDiv = document.getElementById('capacity-recommendations');
-            if (recommendationsDiv) {
-                recommendationsDiv.innerHTML = mockResults.recommendations.map(rec =>
-                `<div class="flex items-start space-x-3">
+          const recommendationsDiv = document.getElementById('capacity-recommendations');
+          if (recommendationsDiv) {
+            recommendationsDiv.innerHTML = mockResults.recommendations.map(rec =>
+              `<div class="flex items-start space-x-3">
                   <div class="flex-shrink-0 mt-1"><div class="h-2 w-2 rounded-full bg-blue-500"></div></div>
                   <p class="text-sm text-slate-700">${rec}</p>
                 </div>`
-                ).join('');
-            }
+            ).join('');
+          }
 
-            createCapacityTrendChart(mockResults.chartData, metricName);
-            if (resultsDiv) {
-                resultsDiv.classList.remove('hidden');
-            }
+          createCapacityTrendChart(mockResults.chartData, metricName);
+          if (resultsDiv) {
+            resultsDiv.classList.remove('hidden');
+          }
 
-            analyzeBtn.disabled = false;
-            analyzeBtn.textContent = '重新分析';
+          analyzeBtn.disabled = false;
+          analyzeBtn.textContent = '重新分析';
         });
       }
 
       function generateMockCapacityAnalysis(metric) {
-        const baseGrowthRates = {'cpu_usage': '2.3%', 'memory_usage': '5.2%', 'disk_usage': '8.1%', 'network_traffic': '12.5%'};
-        const baseWarningEtas = {'cpu_usage': '120 天後', 'memory_usage': '45 天後', 'disk_usage': '30 天後', 'network_traffic': '15 天後'};
-        const baseDepletionEtas = {'cpu_usage': '180 天後', 'memory_usage': '65 天後', 'disk_usage': '45 天後', 'network_traffic': '25 天後'};
+        const baseGrowthRates = { 'cpu_usage': '2.3%', 'memory_usage': '5.2%', 'disk_usage': '8.1%', 'network_traffic': '12.5%' };
+        const baseWarningEtas = { 'cpu_usage': '120 天後', 'memory_usage': '45 天後', 'disk_usage': '30 天後', 'network_traffic': '15 天後' };
+        const baseDepletionEtas = { 'cpu_usage': '180 天後', 'memory_usage': '65 天後', 'disk_usage': '45 天後', 'network_traffic': '25 天後' };
         const recommendations = {
           'cpu_usage': ['建議監控 CPU 使用率較高的服務，考慮優化或擴容', '評估是否需要增加伺服器節點來分散負載', '檢查是否有異常程序消耗過多 CPU 資源'],
           'memory_usage': ['建議盡快規劃記憶體擴充，預計 45 天後達到警戒線', '檢查應用程式是否存在記憶體洩漏問題', '考慮實施記憶體快取策略優化'],
           'disk_usage': ['緊急建議：磁碟空間即將不足，需立即清理或擴容', '建立自動化日誌清理機制', '評估資料歸檔策略，將舊資料移至冷儲存'],
           'network_traffic': ['網路流量增長快速，建議評估頻寬升級需求', '檢查是否有異常流量或攻擊行為', '考慮實施流量優化和 CDN 策略']
         };
-        const chartData = {labels: [], historical: [], predicted: []};
+        const chartData = { labels: [], historical: [], predicted: [] };
         const now = new Date();
         for (let i = 90; i >= 0; i--) {
           const date = new Date(now);
@@ -3600,7 +3647,7 @@
           const predictedValue = lastValue + i * 0.5 + Math.random() * 2;
           chartData.predicted.push(Math.min(predictedValue, 100));
         }
-        return {growthRate: baseGrowthRates[metric], warningEta: baseWarningEtas[metric], depletionEta: baseDepletionEtas[metric], recommendations: recommendations[metric], chartData: chartData};
+        return { growthRate: baseGrowthRates[metric], warningEta: baseWarningEtas[metric], depletionEta: baseDepletionEtas[metric], recommendations: recommendations[metric], chartData: chartData };
       }
 
       function createCapacityTrendChart(data, metricName) {
@@ -3695,40 +3742,40 @@
       }
     }
     function updateContactMethodUI(method) {
-        if (!loggedInUser) return;
+      if (!loggedInUser) return;
 
-        const propName = method === 'line-token' ? 'lineToken' : method;
-        const input = document.getElementById(`profile-${method}`);
-        const statusEl = document.getElementById(`${method}-status`);
-        const actionBtn = document.getElementById(`${method}-action-btn`);
+      const propName = method === 'line-token' ? 'lineToken' : method;
+      const input = document.getElementById(`profile-${method}`);
+      const statusEl = document.getElementById(`${method}-status`);
+      const actionBtn = document.getElementById(`${method}-action-btn`);
 
-        const value = loggedInUser[propName] || '';
-        const verified = loggedInUser[`${propName}Verified`] || false;
+      const value = loggedInUser[propName] || '';
+      const verified = loggedInUser[`${propName}Verified`] || false;
 
-        const baseBtnClass = 'w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0';
-        const baseStatusClass = 'text-sm font-medium w-20 text-center flex-shrink-0';
+      const baseBtnClass = 'w-28 justify-center px-3 py-1.5 rounded-lg font-semibold transition-colors text-sm flex-shrink-0';
+      const baseStatusClass = 'text-sm font-medium w-20 text-center flex-shrink-0';
 
-        if(input) input.value = value;
+      if (input) input.value = value;
 
-        if (!value) {
-            if(statusEl) statusEl.textContent = '';
-            if(statusEl) statusEl.className = baseStatusClass;
-            if(actionBtn) actionBtn.textContent = '儲存';
-            if(actionBtn) actionBtn.dataset.action = 'save';
-            if(actionBtn) actionBtn.className = `${baseBtnClass} bg-slate-600 text-white hover:bg-slate-700`;
-        } else if (verified) {
-            if(statusEl) statusEl.textContent = '已驗證';
-            if(statusEl) statusEl.className = `${baseStatusClass} text-green-600`;
-            if(actionBtn) actionBtn.textContent = '測試';
-            if(actionBtn) actionBtn.dataset.action = 'test';
-            if(actionBtn) actionBtn.className = `${baseBtnClass} bg-green-600 text-white hover:bg-green-700`;
-        } else {
-            if(statusEl) statusEl.textContent = '未驗證';
-            if(statusEl) statusEl.className = `${baseStatusClass} text-slate-500`;
-            if(actionBtn) actionBtn.textContent = '傳送驗證';
-            if(actionBtn) actionBtn.dataset.action = 'verify';
-            if(actionBtn) actionBtn.className = `${baseBtnClass} bg-blue-600 text-white hover:bg-blue-700`;
-        }
+      if (!value) {
+        if (statusEl) statusEl.textContent = '';
+        if (statusEl) statusEl.className = baseStatusClass;
+        if (actionBtn) actionBtn.textContent = '儲存';
+        if (actionBtn) actionBtn.dataset.action = 'save';
+        if (actionBtn) actionBtn.className = `${baseBtnClass} bg-slate-600 text-white hover:bg-slate-700`;
+      } else if (verified) {
+        if (statusEl) statusEl.textContent = '已驗證';
+        if (statusEl) statusEl.className = `${baseStatusClass} text-green-600`;
+        if (actionBtn) actionBtn.textContent = '測試';
+        if (actionBtn) actionBtn.dataset.action = 'test';
+        if (actionBtn) actionBtn.className = `${baseBtnClass} bg-green-600 text-white hover:bg-green-700`;
+      } else {
+        if (statusEl) statusEl.textContent = '未驗證';
+        if (statusEl) statusEl.className = `${baseStatusClass} text-slate-500`;
+        if (actionBtn) actionBtn.textContent = '傳送驗證';
+        if (actionBtn) actionBtn.dataset.action = 'verify';
+        if (actionBtn) actionBtn.className = `${baseBtnClass} bg-blue-600 text-white hover:bg-blue-700`;
+      }
     }
 
     function populateProfilePage() {
@@ -3870,61 +3917,61 @@
 
       // Delegated listener for contact method actions
       const contactContainer = document.getElementById('contact-methods-container');
-      if(contactContainer) {
+      if (contactContainer) {
         contactContainer.addEventListener('click', e => {
-            const button = e.target.closest('button[data-method]');
-            if (!button) return;
+          const button = e.target.closest('button[data-method]');
+          if (!button) return;
 
-            const method = button.dataset.method;
-            const action = button.dataset.action;
-            const inputId = `profile-${method}`;
-            const input = document.getElementById(inputId);
-            const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-            const propName = method === 'line-token' ? 'lineToken' : method;
+          const method = button.dataset.method;
+          const action = button.dataset.action;
+          const inputId = `profile-${method}`;
+          const input = document.getElementById(inputId);
+          const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+          const propName = method === 'line-token' ? 'lineToken' : method;
 
-            if (action === 'save') {
-                loggedInUser[propName] = input.value;
-                loggedInUser[`${propName}Verified`] = false;
-                if(userInPersonnel) {
-                    userInPersonnel[propName] = input.value;
-                    userInPersonnel[`${propName}Verified`] = false;
-                }
-                showFeedbackModal(`${method.toUpperCase()} 資料已儲存，請進行驗證。`);
-                setTimeout(closeFeedbackModal, 2000);
-                updateContactMethodUI(method);
-            } else if (action === 'verify') {
-                showFeedbackModal(`驗證訊息已傳送到 ${input.value}`);
-                setTimeout(closeFeedbackModal, 2000);
-                button.textContent = '重新傳送';
-                if (method === 'sms') {
-                    document.getElementById('sms-verify-container').classList.remove('hidden');
-                }
-            } else if (action === 'test') {
-                showFeedbackModal(`測試訊息已傳送到 ${input.value}`);
-                setTimeout(closeFeedbackModal, 2000);
+          if (action === 'save') {
+            loggedInUser[propName] = input.value;
+            loggedInUser[`${propName}Verified`] = false;
+            if (userInPersonnel) {
+              userInPersonnel[propName] = input.value;
+              userInPersonnel[`${propName}Verified`] = false;
             }
+            showFeedbackModal(`${method.toUpperCase()} 資料已儲存，請進行驗證。`);
+            setTimeout(closeFeedbackModal, 2000);
+            updateContactMethodUI(method);
+          } else if (action === 'verify') {
+            showFeedbackModal(`驗證訊息已傳送到 ${input.value}`);
+            setTimeout(closeFeedbackModal, 2000);
+            button.textContent = '重新傳送';
+            if (method === 'sms') {
+              document.getElementById('sms-verify-container').classList.remove('hidden');
+            }
+          } else if (action === 'test') {
+            showFeedbackModal(`測試訊息已傳送到 ${input.value}`);
+            setTimeout(closeFeedbackModal, 2000);
+          }
         });
       }
 
       // SMS Verification Code button
       const smsVerifyBtn = document.getElementById('sms-verify-btn');
       if (smsVerifyBtn) {
-          smsVerifyBtn.addEventListener('click', () => {
-              const codeInput = document.getElementById('sms-verify-code');
-              if (codeInput.value === '123456') { // Mock verification
-                  loggedInUser.smsVerified = true;
-                  const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
-                  if(userInPersonnel) userInPersonnel.smsVerified = true;
+        smsVerifyBtn.addEventListener('click', () => {
+          const codeInput = document.getElementById('sms-verify-code');
+          if (codeInput.value === '123456') { // Mock verification
+            loggedInUser.smsVerified = true;
+            const userInPersonnel = mockData.personnel.find(p => p.name === loggedInUser.name);
+            if (userInPersonnel) userInPersonnel.smsVerified = true;
 
-                  showFeedbackModal('SMS 已成功驗證！');
-                  setTimeout(closeFeedbackModal, 1500);
-                  document.getElementById('sms-verify-container').classList.add('hidden');
-                  updateContactMethodUI('sms');
-              } else {
-                  showFeedbackModal('驗證碼錯誤！');
-                  setTimeout(closeFeedbackModal, 2000);
-              }
-          });
+            showFeedbackModal('SMS 已成功驗證！');
+            setTimeout(closeFeedbackModal, 1500);
+            document.getElementById('sms-verify-container').classList.add('hidden');
+            updateContactMethodUI('sms');
+          } else {
+            showFeedbackModal('驗證碼錯誤！');
+            setTimeout(closeFeedbackModal, 2000);
+          }
+        });
       }
 
       // Save preferences
