@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>新一代網管監控平台 - AI 增強版</title>
+  <title>Control Plane 維運監控平台</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,12 +85,16 @@
       overflow: hidden;
       transition: max-height 0.3s ease-in-out;
     }
-    .submenu-toggle.open + .submenu {
-      max-height: 500px; /* Adjust as needed */
+
+    .submenu-toggle.open+.submenu {
+      max-height: 500px;
+      /* Adjust as needed */
     }
+
     .chevron-icon {
       transition: transform 0.3s ease-in-out;
     }
+
     .submenu-toggle.open .chevron-icon {
       transform: rotate(180deg);
     }
@@ -189,7 +193,7 @@
             class="inline-block text-sky-500 h-12 w-12 mb-2">
             <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
           </svg>
-          <h1 class="text-2xl font-bold text-slate-800">網管監控平台</h1>
+          <h1 class="text-2xl font-bold text-slate-800">Control Plane</h1>
         </div>
         <div id="login-error"
           class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
@@ -238,17 +242,34 @@
           class="text-sky-400 h-8 w-8">
           <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
         </svg>
-        <h1 class="text-xl font-bold ml-2">網管監控平台</h1>
+        <h1 class="text-xl font-bold ml-2">Control Plane</h1>
       </div>
       <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
         <!-- Standalone Item -->
-        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 active" data-page="dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-4"></path><path d="M16 12h-4l-2 5h8l-2-5Z"></path><path d="M5 12h.01"></path><path d="M19 12h.01"></path></svg>
+        <a href="#"
+          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 active"
+          data-page="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
+            <path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-4"></path>
+            <path d="M16 12h-4l-2 5h8l-2-5Z"></path>
+            <path d="M5 12h.01"></path>
+            <path d="M19 12h.01"></path>
+          </svg>
           總覽儀表板
         </a>
         <!-- Standalone Item -->
-        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="logs">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        <a href="#"
+          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+          data-page="logs">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+            <path d="M10 9H8"></path>
+            <path d="M16 13H8"></path>
+            <path d="M16 17H8"></path>
+          </svg>
           告警紀錄
         </a>
 
@@ -256,63 +277,139 @@
 
         <!-- Accordion Group: 資源 -->
         <div class="space-y-1">
-          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
-            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>資源</span>
-            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <button
+            class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="h-5 w-5 mr-3">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>資源</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
           <div class="submenu pl-6 space-y-1">
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="devices">設備管理</a>
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="groups">設備群組</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="devices">資源管理</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="groups">資源群組</a>
           </div>
         </div>
 
         <!-- Accordion Group: 組織 -->
         <div class="space-y-1">
-          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
-            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>組織</span>
-            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <button
+            class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="h-5 w-5 mr-3">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>組織</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
           <div class="submenu pl-6 space-y-1">
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="personnel">人員管理</a>
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="teams">團隊管理</a>
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="channels">通知管道</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="personnel">人員管理</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="teams">團隊管理</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="channels">通知管道</a>
           </div>
         </div>
 
         <!-- Accordion Group: 告警 -->
         <div class="space-y-1">
-          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
-            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>告警</span>
-            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <button
+            class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="h-5 w-5 mr-3">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+              </svg>告警</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
           <div class="submenu pl-6 space-y-1">
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="rules">告警規則</a>
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="maintenance">維護時段</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="rules">告警規則</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="maintenance">維護時段</a>
           </div>
         </div>
 
         <!-- Accordion Group: 分析與自動化 -->
         <div class="space-y-1">
-          <button class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
-            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>分析與自動化</span>
-            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <button
+            class="submenu-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200 text-white">
+            <span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="h-5 w-5 mr-3">
+                <path d="M3 3v18h18" />
+                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+              </svg>分析與自動化</span>
+            <svg class="chevron-icon h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
           <div class="submenu pl-6 space-y-1">
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="automation">自動化</a>
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="capacity">容量規劃</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="automation">自動化</a>
+            <a href="#"
+              class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+              data-page="capacity">容量規劃</a>
           </div>
         </div>
 
         <div class="border-t border-slate-700 my-2"></div>
 
         <!-- Standalone Item -->
-        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="profile">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+        <a href="#"
+          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+          data-page="profile">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
           個人資料
         </a>
         <!-- Standalone Item -->
-        <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200" data-page="settings">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <a href="#"
+          class="sidebar-link flex items-center px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+          data-page="settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3">
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+            </path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
           系統設定
         </a>
       </nav>
@@ -459,7 +556,7 @@
                 </svg>
               </div>
               <div class="ml-4">
-                <p class="text-sm text-slate-500">設備妥善率</p>
+                <p class="text-sm text-slate-500">資源妥善率</p>
                 <p class="text-2xl font-bold text-slate-800">99.8%</p>
               </div>
             </div>
@@ -475,7 +572,7 @@
                 </svg>
               </div>
               <div class="ml-4">
-                <p class="text-sm text-slate-500">總設備數</p>
+                <p class="text-sm text-slate-500">總資源數</p>
                 <p class="text-2xl font-bold text-slate-800">1,204</p>
               </div>
             </div>
@@ -504,13 +601,13 @@
 
           <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
-              <h3 class="text-lg font-semibold text-slate-800 mb-4">設備群組狀態總覽</h3>
+              <h3 class="text-lg font-semibold text-slate-800 mb-4">資源群組狀態總覽</h3>
               <div class="relative h-80">
                 <canvas id="groupStatusChart"></canvas>
               </div>
             </div>
             <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-md">
-              <h3 class="text-lg font-semibold text-slate-800 mb-4">設備狀態分佈</h3>
+              <h3 class="text-lg font-semibold text-slate-800 mb-4">資源狀態分佈</h3>
               <div class="relative h-80">
                 <canvas id="statusChart"></canvas>
               </div>
@@ -525,7 +622,7 @@
                 <!-- 批次操作欄 -->
                 <div id="batch-operations-bar" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                   <div class="flex items-center justify-between">
-                    <span class="text-sm font-medium text-blue-800">已選取 <span id="selected-count">0</span> 個設備</span>
+                    <span class="text-sm font-medium text-blue-800">已選取 <span id="selected-count">0</span> 個資源</span>
                     <div class="flex items-center space-x-2">
                       <button id="batch-add-to-group-btn"
                         class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">批次加入群組</button>
@@ -540,12 +637,12 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2 w-full md:w-auto">
-                <input type="text" id="device-search-input" placeholder="搜尋設備名稱或 IP..."
+                <input type="text" id="device-search-input" placeholder="搜尋資源名稱或 IP..."
                   class="w-full md:w-64 px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
                 <button id="scan-network-btn"
                   class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">掃描網段</button>
                 <button id="add-device-btn"
-                  class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">新增設備</button>
+                  class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">新增資源</button>
               </div>
             </div>
             <div class="overflow-x-auto">
@@ -555,7 +652,7 @@
                     <th scope="col" class="px-2 py-3"><input type="checkbox" id="select-all-devices"
                         class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></th>
                     <th scope="col" class="px-6 py-3">狀態</th>
-                    <th scope="col" class="px-6 py-3">設備名稱</th>
+                    <th scope="col" class="px-6 py-3">資源名稱</th>
                     <th scope="col" class="px-6 py-3">IP 位址</th>
                     <th scope="col" class="px-6 py-3">所屬群組</th>
                     <th scope="col" class="px-6 py-3 text-center">操作</th>
@@ -582,7 +679,7 @@
                 <thead class="text-xs text-slate-700 uppercase bg-slate-50">
                   <tr>
                     <th scope="col" class="px-6 py-3">群組名稱</th>
-                    <th scope="col" class="px-6 py-3">設備數量</th>
+                    <th scope="col" class="px-6 py-3">資源數量</th>
                     <th scope="col" class="px-6 py-3">說明</th>
                     <th scope="col" class="px-6 py-3 text-center">操作</th>
                   </tr>
@@ -859,7 +956,7 @@
                     <th scope="col" class="px-6 py-3">時間</th>
                     <th scope="col" class="px-6 py-3">狀態</th>
                     <th scope="col" class="px-6 py-3">處理人員</th>
-                    <th scope="col" class="px-6 py-3">設備名稱</th>
+                    <th scope="col" class="px-6 py-3">資源名稱</th>
                     <th scope="col" class="px-6 py-3">說明</th>
                     <th scope="col" class="px-6 py-3 text-center">操作</th>
                   </tr>
@@ -960,7 +1057,7 @@
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇目標群組</label>
                   <select id="capacity-target-group"
                     class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
-                    <option value="">請選擇設備群組</option>
+                    <option value="">請選擇資源群組</option>
                   </select>
                 </div>
                 <div>
@@ -1189,8 +1286,8 @@
                           class="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"></div>
                       <div class="ml-3 text-sm leading-6">
                         <label for="pref-high" class="font-medium text-slate-900 cursor-pointer">
-                          <span
-                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-800">高 (High)</span>
+                          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-800">高
+                          </span>
                         </label>
                         <p class="text-slate-500">僅接收最緊急的事件，例如服務中斷。</p>
                       </div>
@@ -1200,8 +1297,8 @@
                           class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-600"></div>
                       <div class="ml-3 text-sm leading-6">
                         <label for="pref-medium" class="font-medium text-slate-900 cursor-pointer">
-                          <span
-                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">中 (Medium)</span>
+                          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">中
+                          </span>
                         </label>
                         <p class="text-slate-500">接收可能影響服務的警告，例如資源使用率過高。</p>
                       </div>
@@ -1211,8 +1308,8 @@
                           class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div>
                       <div class="ml-3 text-sm leading-6">
                         <label for="pref-low" class="font-medium text-slate-900 cursor-pointer">
-                          <span
-                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">低 (Low)</span>
+                          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">低
+                          </span>
                         </label>
                         <p class="text-slate-500">接收所有資訊型通知。</p>
                       </div>
@@ -1373,13 +1470,13 @@
       ],
       deviceGroups: [
         { id: 1, name: '核心交換器', description: '所有分行的核心網路交換器', memberIds: [1, 6] },
-        { id: 2, name: '總公司防火牆', description: '總部對外防火牆設備', memberIds: [7] },
+        { id: 2, name: '總公司防火牆', description: '總部對外防火牆資源', memberIds: [7] },
         { id: 3, name: '所有路由器', description: '包含所有分行的路由器', memberIds: [3, 4] },
       ],
       alertRules: [
         { id: 1, name: '核心交換器 CPU 過高', target: '群組: 核心交換器', metric: 'CPU 使用率', enabled: true, silencedUntil: null },
         { id: 2, name: '防火牆網路流量異常', target: '群組: 總公司防火牆', metric: '網路流量', enabled: true, silencedUntil: '2025-08-28T18:00:00' },
-        { id: 3, name: '仁愛分行-Router-延遲', target: '設備: DATA Router', metric: '網路延遲 (Ping)', enabled: false, silencedUntil: null },
+        { id: 3, name: '仁愛分行-Router-延遲', target: '資源: DATA Router', metric: '網路延遲 (Ping)', enabled: false, silencedUntil: null },
       ],
       notificationChannels: [
         { id: 1, name: '網路一部 Slack', type: 'webhook', url: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX' },
@@ -1423,11 +1520,11 @@
         'network_traffic': { name: '網路流量', unit: 'Mbps' }
       },
       logs: [
-        { id: 1, level: 'error', time: '2025-08-29 01:15', branch: '仁愛分行', ip: '88.201.0.13', name: 'Edge SW13', desc: '設備斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
-        { id: 2, level: 'error', time: '2025-08-29 01:10', branch: '仁愛分行', ip: '88.201.0.11', name: 'Edge SW11', desc: '設備斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
+        { id: 1, level: 'error', time: '2025-08-29 01:15', branch: '仁愛分行', ip: '88.201.0.13', name: 'Edge SW13', desc: '資源斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
+        { id: 2, level: 'error', time: '2025-08-29 01:10', branch: '仁愛分行', ip: '88.201.0.11', name: 'Edge SW11', desc: '資源斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
         { id: 3, level: 'warning', time: '2025-08-28 22:15', branch: '台南分行', ip: '121.55.2.1', name: 'Firewall-A', desc: 'CPU 使用率超過 90%', status: 'ack', assignee: '王工程師', acknowledgedBy: '林組長', comments: [{ user: '林組長', text: '已指派給王工程師處理。', time: '2025-08-28 22:16' }] },
         { id: 4, level: 'warning', time: '2025-08-28 21:30', branch: '林口分行', ip: '88.255.252.101', name: 'DATA Router', desc: '網路延遲超過 200ms', status: 'resolved', assignee: '王工程師', acknowledgedBy: '王工程師', comments: [{ user: '王工程師', text: '已確認為 ISP 線路瞬斷，目前已恢復。', time: '2025-08-28 21:45' }] },
-        { id: 5, level: 'info', time: '2025-08-28 18:05', branch: '林口分行', ip: '88.99.33.12', name: 'VG Router', desc: '設備重新啟動', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
+        { id: 5, level: 'info', time: '2025-08-28 18:05', branch: '林口分行', ip: '88.99.33.12', name: 'VG Router', desc: '資源重新啟動', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
         { id: 6, level: 'error', time: '2025-08-28 15:30', branch: '台中分行', ip: '192.168.10.5', name: 'Core Switch01', desc: '記憶體使用率達到 95%', status: 'ack', assignee: '陳經理', acknowledgedBy: '陳經理', comments: [{ user: '陳經理', text: '正在檢查記憶體洩漏問題', time: '2025-08-28 15:35' }] },
         { id: 7, level: 'warning', time: '2025-08-28 14:20', branch: '高雄分行', ip: '172.16.5.10', name: 'Backup Server', desc: '磁碟空間使用率超過 85%', status: 'resolved', assignee: '林組長', acknowledgedBy: '林組長', comments: [{ user: '林組長', text: '已清理舊備份檔案，空間已釋放', time: '2025-08-28 14:45' }] },
         { id: 8, level: 'info', time: '2025-08-28 12:10', branch: '信義分行', ip: '10.0.1.20', name: 'AP-Lobby', desc: '無線網路使用者數量達到上限', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
@@ -1822,7 +1919,7 @@
         const row = `<tr class="bg-white" data-index="${index}">
                         <td data-label="選取" class="px-2 py-4"><input type="checkbox" class="device-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" data-device-id="${d.id}"></td>
                         <td data-label="狀態" class="px-6 py-4"><span class="h-3 w-3 rounded-full inline-block ${statusDot}"></span></td>
-                        <td data-label="設備名稱" class="px-6 py-4 font-medium text-slate-900">${d.name}</td>
+                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${d.name}</td>
                         <td data-label="IP 位址" class="px-6 py-4">${d.ip}</td>
                         <td data-label="所屬群組" class="px-6 py-4"><div class="flex flex-wrap gap-1">${groupsHtml || '無'}</div></td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
@@ -1840,7 +1937,7 @@
         const index = mockData.deviceGroups.indexOf(g);
         const row = `<tr class="bg-white" data-index="${index}">
                         <td data-label="群組名稱" class="px-6 py-4 font-medium text-slate-900">${g.name}</td>
-                        <td data-label="設備數量" class="px-6 py-4">${g.memberIds.length}</td>
+                        <td data-label="資源數量" class="px-6 py-4">${g.memberIds.length}</td>
                         <td data-label="說明" class="px-6 py-4">${g.description}</td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                             <button class="edit-group-btn text-blue-600 hover:text-blue-800 font-medium" style="display: ${userRole === 'TeamMember' ? 'none' : 'inline-block'}">編輯</button>
@@ -1999,7 +2096,7 @@
                         <td data-label="時間" class="px-6 py-4">${l.time}</td>
                         <td data-label="狀態" class="px-6 py-4">${statusMap[l.status]}</td>
                         <td data-label="處理人員" class="px-6 py-4">${l.assignee || '-'}</td>
-                        <td data-label="設備名稱" class="px-6 py-4 font-medium text-slate-900">${l.name}</td>
+                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${l.name}</td>
                         <td data-label="說明" class="px-6 py-4">${l.desc}</td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                              <button class="ack-log-btn text-yellow-600 hover:text-yellow-800 font-medium ${l.status !== 'new' ? 'hidden' : ''}" data-index="${index}">Ack</button>
@@ -2142,11 +2239,11 @@
         const groupCheckboxes = mockData.deviceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
                     <div class="space-y-4">
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">設備名稱</label><input type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">資源名稱</label><input type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">IP 位址</label><input type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">設備群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                     </div>`;
-        openFormModal('新增設備', formHtml, 'add-device');
+        openFormModal('新增資源', formHtml, 'add-device');
       });
 
       document.getElementById('devices-table-body').addEventListener('click', e => {
@@ -2163,14 +2260,14 @@
           }).join('');
           const formHtml = `
                         <div class="space-y-4">
-                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">設備名稱</label><input type="text" value="${device.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">資源名稱</label><input type="text" value="${device.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                             <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">IP 位址</label><input type="text" value="${device.ip}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">設備群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
+                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                         </div>`;
-          openFormModal('編輯設備', formHtml, 'edit-device', index);
+          openFormModal('編輯資源', formHtml, 'edit-device', index);
         }
         if (target.classList.contains('delete-device-btn')) {
-          openConfirmModal('您確定要刪除此設備嗎？', 'delete-device', index);
+          openConfirmModal('您確定要刪除此資源嗎？', 'delete-device', index);
         }
       });
 
@@ -2181,7 +2278,7 @@
                     <div class="space-y-4">
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">群組名稱</label><input type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-start gap-4"><label class="text-sm font-medium text-slate-700 pt-1">說明</label><textarea rows="3" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">群組成員</legend><div class="space-y-2 mt-2 max-h-40 overflow-y-auto">${deviceCheckboxes}</div></fieldset>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">群組資源</legend><div class="space-y-2 mt-2 max-h-40 overflow-y-auto">${deviceCheckboxes}</div></fieldset>
                     </div>`;
         openFormModal('新增群組', formHtml, 'add-group');
       });
@@ -2220,7 +2317,7 @@
                         <div class="space-y-4 text-sm">
                             <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"></div>
                             <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
-                            <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>選擇設備群組</option>${groupOptions}</select></div>
+                            <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>選擇資源群組</option>${groupOptions}</select></div>
                             <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
                             <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
                                 <div class="space-y-2" id="alert-conditions">
@@ -2269,7 +2366,7 @@
                     <div class="accordion-content p-4 border-t border-slate-200 hidden">
                          <div class="space-y-2 text-sm">
                             <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
                             <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
                         </div>
                     </div>
@@ -2296,7 +2393,7 @@
                           <div class="space-y-4 text-sm">
                               <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" value="${rule.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"></div>
                               <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" ${rule.enabled ? 'checked' : ''} class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
-                              <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>選擇設備群組</option>${groupOptions}</select></div>
+                              <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>選擇資源群組</option>${groupOptions}</select></div>
                               <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
                               <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
                                   <div class="space-y-2" id="alert-conditions">
@@ -2345,7 +2442,7 @@
                       <div class="accordion-content p-4 border-t border-slate-200 hidden">
                            <div class="space-y-2 text-sm">
                               <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                              <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="設備 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                              <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
                               <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
                           </div>
                       </div>
@@ -2395,7 +2492,7 @@
                 <div class="grid grid-cols-3 gap-2 items-center">
                   <label class="text-sm text-slate-600">${param}:</label>
                   <select class="col-span-2 text-sm rounded-md border-slate-300">
-                    <option value="instance">設備 IP (instance)</option>
+                    <option value="instance">資源 IP (instance)</option>
                     <option value="alertname">告警名稱 (alertname)</option>
                     <option value="severity">嚴重程度 (severity)</option>
                     <option value="job">任務名稱 (job)</option>
@@ -2486,7 +2583,7 @@
                         <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響設備群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                     </div>`;
         openFormModal('新增維護時段', formHtml, 'add-maintenance');
       });
@@ -2503,7 +2600,7 @@
                         <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" value="${maint.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" value="${new Date(maint.start).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" value="${new Date(maint.end).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響設備群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                     </div>`;
           openFormModal('編輯維護時段', formHtml, 'edit-maintenance', index);
         }
@@ -2818,8 +2915,8 @@
       async function handleGenerateReport() {
         const selectedLogs = Array.from(document.querySelectorAll('.log-checkbox:checked')).map(cb => mockData.logs[cb.dataset.index]);
         if (selectedLogs.length === 0) return;
-        const logsString = selectedLogs.map(log => `- 時間: ${log.time}, 分行: ${log.branch}, 設備: ${log.name} (${log.ip}), 等級: ${log.level}, 描述: ${log.desc}`).join('\n');
-        const prompt = `你是一位資深的IT部門經理，請根據以下多筆網管系統的告警紀錄，撰寫一份專業、結構化的事件報告(Incident Report)。報告需使用繁體中文，並包含以下段落：\n\n1.  **事件摘要 (Summary):** 簡要說明事件的核心問題、影響範圍。\n2.  **事件時間軸 (Timeline):** 依時序整理關鍵的告警事件。\n3.  **影響評估 (Impact Assessment):** 分析此事件可能對業務造成的影響。\n4.  **根本原因分析 (Root Cause Analysis):** 根據紀錄推測最可能的問題根源。\n5.  **後續處理建議 (Recommended Actions):** 提出具體的解決方案與長期改善建議。\n\n原始告警紀錄如下：\n${logsString}`;
+        const logsString = selectedLogs.map(log => `- 時間: ${log.time}, 分行: ${log.branch}, 資源: ${log.name} (${log.ip}), 等級: ${log.level}, 描述: ${log.desc}`).join('\n');
+        const prompt = `你是一位資深的IT部門經理，請根據以下多筆維運系統的告警紀錄，撰寫一份專業、結構化的事件報告(Incident Report)。報告需使用繁體中文，並包含以下段落：\n\n1.  **事件摘要 (Summary):** 簡要說明事件的核心問題、影響範圍。\n2.  **事件時間軸 (Timeline):** 依時序整理關鍵的告警事件。\n3.  **影響評估 (Impact Assessment):** 分析此事件可能對業務造成的影響。\n4.  **根本原因分析 (Root Cause Analysis):** 根據紀錄推測最可能的問題根源。\n5.  **後續處理建議 (Recommended Actions):** 提出具體的解決方案與長期改善建議。\n\n原始告警紀錄如下：\n${logsString}`;
         openModal();
         setModalLoading();
         const result = await callGeminiAPI(prompt);
@@ -2860,9 +2957,9 @@
       window.callGeminiAPI = async function (prompt, type = "單筆告警分析") {
         await new Promise(resolve => setTimeout(resolve, 1500));
         if (prompt.includes("根本原因推測")) {
-          return `**根本原因推測:**\n交換器 (Switch) Edge SW13 可能已完全離線或無法回應網路請求。原因可能包含：\n- 設備斷電或當機。\n- 連接該設備的網路線路中斷 (例如：線路鬆脫、光纖受損)。\n- 上層網路設備 (如 Core Switchitch) 發生問題，導致無法連線至此設備。\n\n**建議處理步驟:**\n1.  **遠端檢查:** 嘗試從跳板機 (Jump Host) SSH 或 Telnet 登入該設備，確認是否能連線。\n2.  **現場檢查:** 若無法遠端連線，請通知分行IT人員或派員至現場，檢查設備電源燈號與網路線路是否正常。\n3.  **關聯性檢查:** 同時檢查仁愛分行其他設備的狀態，確認是否為單一設備問題或區域性網路中斷。`;
+          return `**根本原因推測:**\n交換器 (Switch) Edge SW13 可能已完全離線或無法回應網路請求。原因可能包含：\n- 資源斷電或當機。\n- 連接該資源的網路線路中斷 (例如：線路鬆脫、光纖受損)。\n- 上層網路資源 (如 Core Switchitch) 發生問題，導致無法連線至此資源。\n\n**建議處理步驟:**\n1.  **遠端檢查:** 嘗試從跳板機 (Jump Host) SSH 或 Telnet 登入該資源，確認是否能連線。\n2.  **現場檢查:** 若無法遠端連線，請通知分行IT人員或派員至現場，檢查資源電源燈號與網路線路是否正常。\n3.  **關聯性檢查:** 同時檢查仁愛分行其他資源的狀態，確認是否為單一資源問題或區域性網路中斷。`;
         } else if (prompt.includes("事件報告")) {
-          return `### 網路事件報告：仁愛分行多重設備斷線事件\n\n**1. 事件摘要:**\n本日上午 10:26 左右，監控系統偵測到仁愛分行兩台核心交換器 (Edge SW13, Edge SW11) 同時發生斷線告警，持續時間超過15分鐘。此事件可能導致該分行內部網路服務全面中斷。\n\n**2. 事件時間軸:**\n- 2025.8.26 10:26: 系統發出告警，設備 Edge SW13 (88.201.0.13) 断線超過15分鐘。\n- 2025.8.26 10:26: 系統發出告警，設備 Edge SW11 (88.201.0.11) 斷線超過15分鐘。\n\n**3. 影響評估:**\n由於斷線設備為分行核心交換器，預期將造成以下影響：\n- 分行所有員工的電腦無法上網及存取內部資源。\n- 分行對外業務系統 (如：交易系統) 可能中斷。\n- IP 電話、印表機等網路設備無法使用。\n\n**4. 根本原因分析:**\n兩台位於同一分行的核心交換器在完全相同的時間點斷線，極不可能是單一設備故障。最可能的原因指向該分行的**上層網路或基礎設施問題**，例如：\n- **總電源中斷：** 該分行或機櫃發生跳電。\n- **上聯路由器故障：** 連接總公司的主要路由器 (Router) 當機或斷線。\n- **線路問題：** 該分行的主要對外線路中斷。\n\n**5. 後續處理建議:**\n- **立即行動：** 立刻聯繫仁愛分行IT人員，確認現場電力與主要路由器狀態。\n- **中期追蹤：** 若為電力問題，建議檢查UPS不斷電系統是否正常運作。若為線路問題，需聯繫網路服務供應商 (ISP) 報修。\n- **長期改善：** 評估為仁愛分行建立備援線路的可能性，以提高網路服務的可靠性。`;
+          return `### 網路事件報告：仁愛分行多重資源斷線事件\n\n**1. 事件摘要:**\n本日上午 10:26 左右，監控系統偵測到仁愛分行兩台核心交換器 (Edge SW13, Edge SW11) 同時發生斷線告警，持續時間超過15分鐘。此事件可能導致該分行內部網路服務全面中斷。\n\n**2. 事件時間軸:**\n- 2025.8.26 10:26: 系統發出告警，資源 Edge SW13 (88.201.0.13) 断線超過15分鐘。\n- 2025.8.26 10:26: 系統發出告警，資源 Edge SW11 (88.201.0.11) 斷線超過15分鐘。\n\n**3. 影響評估:**\n由於斷線資源為分行核心交換器，預期將造成以下影響：\n- 分行所有員工的電腦無法上網及存取內部資源。\n- 分行對外業務系統 (如：交易系統) 可能中斷。\n- IP 電話、印表機等網路資源無法使用。\n\n**4. 根本原因分析:**\n兩台位於同一分行的核心交換器在完全相同的時間點斷線，極不可能是單一資源故障。最可能的原因指向該分行的**上層網路或基礎設施問題**，例如：\n- **總電源中斷：** 該分行或機櫃發生跳電。\n- **上聯路由器故障：** 連接總公司的主要路由器 (Router) 當機或斷線。\n- **線路問題：** 該分行的主要對外線路中斷。\n\n**5. 後續處理建議:**\n- **立即行動：** 立刻聯繫仁愛分行IT人員，確認現場電力與主要路由器狀態。\n- **中期追蹤：** 若為電力問題，建議檢查UPS不斷電系統是否正常運作。若為線路問題，需聯繫網路服務供應商 (ISP) 報修。\n- **長期改善：** 評估為仁愛分行建立備援線路的可能性，以提高網路服務的可靠性。`;
         }
         return "無法分析，請檢查您的請求。";
       }
@@ -2936,7 +3033,7 @@
           closeIncidentModal();
           const geminiModal = document.getElementById('gemini-modal');
           const geminiModalContent = document.getElementById('gemini-modal-content');
-          const logString = `時間: ${log.time}, 分行: ${log.branch}, 設備: ${log.name} (${log.ip}), 描述: ${log.desc}`;
+          const logString = `時間: ${log.time}, 分行: ${log.branch}, 資源: ${log.name} (${log.ip}), 描述: ${log.desc}`;
           const prompt = `你是一位資深的網路維運專家。請針對以下這筆告警紀錄，用繁體中文提供簡潔的「根本原因推測」與「建議處理步驟」。請直接給出分析，不要有開場白。\n\n告警紀錄：\n${logString}`;
 
           geminiModal.classList.remove('hidden', 'opacity-0');
@@ -3101,7 +3198,7 @@
       // Batch operations
       batchDeleteBtn.addEventListener('click', () => {
         const selectedDevices = Array.from(document.querySelectorAll('.device-checkbox:checked'));
-        openConfirmModal(`您確定要刪除選取的 ${selectedDevices.length} 個設備嗎？`, 'batch-delete-devices', selectedDevices.map(cb => cb.dataset.deviceId));
+        openConfirmModal(`您確定要刪除選取的 ${selectedDevices.length} 個資源嗎？`, 'batch-delete-devices', selectedDevices.map(cb => cb.dataset.deviceId));
       });
 
       batchAddToGroupBtn.addEventListener('click', () => {
@@ -3109,7 +3206,7 @@
         const groupCheckboxes = mockData.deviceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="batch-group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="batch-group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
           <div class="space-y-4">
-            <p class="text-sm text-slate-600">將選取的 ${selectedDevices.length} 個設備加入以下群組：</p>
+            <p class="text-sm text-slate-600">將選取的 ${selectedDevices.length} 個資源加入以下群組：</p>
             <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">選擇群組</legend><div class="space-y-2 mt-2 max-h-40 overflow-y-auto">${groupCheckboxes}</div></fieldset>
           </div>`;
         const formModal = document.getElementById('form-modal');
@@ -3127,7 +3224,7 @@
         const groupCheckboxes = mockData.deviceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="batch-remove-group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="batch-remove-group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
           <div class="space-y-4">
-            <p class="text-sm text-slate-600">將選取的 ${selectedDevices.length} 個設備從以下群組移除：</p>
+            <p class="text-sm text-slate-600">將選取的 ${selectedDevices.length} 個資源從以下群組移除：</p>
             <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">選擇群組</legend><div class="space-y-2 mt-2 max-h-40 overflow-y-auto">${groupCheckboxes}</div></fieldset>
           </div>`;
         const formModal = document.getElementById('form-modal');
@@ -3148,7 +3245,7 @@
           const deviceRows = document.querySelectorAll('#devices-table-body tr');
 
           deviceRows.forEach(row => {
-            const deviceName = row.querySelector('[data-label="設備名稱"]')?.textContent.toLowerCase() || '';
+            const deviceName = row.querySelector('[data-label="資源名稱"]')?.textContent.toLowerCase() || '';
             const deviceIP = row.querySelector('[data-label="IP 位址"]')?.textContent.toLowerCase() || '';
 
             if (deviceName.includes(searchTerm) || deviceIP.includes(searchTerm)) {
@@ -3180,7 +3277,7 @@
               </div>
               <div class="bg-blue-50 p-4 rounded-lg">
                 <p class="text-sm text-blue-800">
-                  <strong>提示：</strong>掃描將會自動發現網段內的活躍設備，並可選擇批次匯入到系統中。
+                  <strong>提示：</strong>掃描將會自動發現網段內的活躍資源，並可選擇批次匯入到系統中。
                 </p>
               </div>
             </div>`;
@@ -3211,7 +3308,7 @@
 
               const resultsHtml = `
                 <div class="space-y-4">
-                  <h4 class="font-semibold text-slate-800">掃描結果 (發現 ${discoveredDevices.length} 個設備)</h4>
+                  <h4 class="font-semibold text-slate-800">掃描結果 (發現 ${discoveredDevices.length} 個資源)</h4>
                   <div class="max-h-60 overflow-y-auto">
                     ${discoveredDevices.map((device, index) => `
                       <div class="flex items-center space-x-3 p-3 border rounded-lg">
@@ -3224,15 +3321,15 @@
                     `).join('')}
                   </div>
                   <div class="bg-green-50 p-4 rounded-lg">
-                    <p class="text-sm text-green-800">選擇要匯入的設備，點擊「匯入設備」完成批次新增。</p>
+                    <p class="text-sm text-green-800">選擇要匯入的資源，點擊「匯入資源」完成批次新增。</p>
                   </div>
                 </div>`;
 
               formModalBody.innerHTML = resultsHtml;
-              saveBtn.textContent = '匯入設備';
+              saveBtn.textContent = '匯入資源';
               saveBtn.onclick = () => {
                 // Simulate import
-                showFeedbackModal('設備匯入成功！');
+                showFeedbackModal('資源匯入成功！');
                 setTimeout(() => {
                   closeFeedbackModal();
                   document.querySelector('.close-modal-btn').click();
@@ -3639,7 +3736,7 @@
         visibleTeams.forEach(team => { team.accessibleGroupIds.forEach(id => accessibleGroupIds.add(id)); });
         visibleGroups = mockData.deviceGroups.filter(g => accessibleGroupIds.has(g.id));
       }
-      targetGroupSelect.innerHTML = '<option value="">請選擇設備群組</option>';
+      targetGroupSelect.innerHTML = '<option value="">請選擇資源群組</option>';
       visibleGroups.forEach(group => {
         const selected = currentSelection === group.id.toString() ? 'selected' : '';
         targetGroupSelect.innerHTML += `<option value="${group.id}" ${selected}>${group.name}</option>`;
