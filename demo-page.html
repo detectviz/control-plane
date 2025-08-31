@@ -12,6 +12,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
     rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
   <style>
     body {
       font-family: 'Inter', 'Noto Sans TC', sans-serif;
@@ -664,7 +666,7 @@
                     <th scope="col" class="px-6 py-3">團隊名稱</th>
                     <th scope="col" class="px-6 py-3">團隊管理員</th>
                     <th scope="col" class="px-6 py-3">成員數量</th>
-                    <th scope="col" class="px-6 py-3">可閱覽設備群組</th>
+                    <th scope="col" class="px-6 py-3">通知訂閱者</th>
                     <th scope="col" class="px-6 py-3 text-center">操作</th>
                   </tr>
                 </thead>
@@ -1352,17 +1354,18 @@
         { id: 1, name: '網路一部 Slack', type: 'webhook', url: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX' },
         { id: 2, name: 'On-Call 值班簡訊', type: 'webhook', url: 'https://sms-gateway.com/api/send' },
         { id: 3, name: '預設 Email (SMTP)', type: 'email', url: null },
+        { id: 4, name: '資安團隊 Email 群組', type: 'email', url: 'security-alerts@corp.com' }
       ],
       personnel: [
-        { id: 1, name: '陳經理', role: 'Super Admin', channelIds: [1, 3], subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 3], email: 'manager.chen@corp.com', lineToken: 'GHI789jkl' },
-        { id: 2, name: '林組長', role: 'Team Manager', channelIds: [3], subscribedLevels: ['high', 'medium'], teamIds: [1], email: 'manager.lin@corp.com', lineToken: '' },
-        { id: 3, name: '王工程師', role: 'Team Member', channelIds: [1, 2, 3], subscribedLevels: ['high'], teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw' },
-        { id: 4, name: 'Admin', role: 'Super Admin', channelIds: [3], subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
+        { id: 1, name: '陳經理', role: 'Super Admin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 3], email: 'manager.chen@corp.com', lineToken: 'GHI789jkl' },
+        { id: 2, name: '林組長', role: 'Team Manager', subscribedLevels: ['high', 'medium'], teamIds: [1], email: 'manager.lin@corp.com', lineToken: '' },
+        { id: 3, name: '王工程師', role: 'Team Member', subscribedLevels: ['high'], teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw' },
+        { id: 4, name: 'Admin', role: 'Super Admin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
       ],
       teams: [
-        { id: 1, name: '網路團隊', managerId: 2, memberIds: [1, 2, 3], accessibleGroupIds: [1, 3] },
-        { id: 2, name: '伺服器團隊', managerId: null, memberIds: [3], accessibleGroupIds: [] },
-        { id: 3, name: '資安團隊', managerId: 1, memberIds: [1], accessibleGroupIds: [2] },
+        { id: 1, name: '網路團隊', managerId: 2, memberIds: [1, 2, 3], accessibleGroupIds: [1, 3], subscribers: [{type: 'personnel', id: 3}, {type: 'channel', id: 1}] },
+        { id: 2, name: '伺服器團隊', managerId: null, memberIds: [3], accessibleGroupIds: [], subscribers: [{type: 'personnel', id: 3}] },
+        { id: 3, name: '資安團隊', managerId: 1, memberIds: [1], accessibleGroupIds: [2], subscribers: [{type: 'personnel', id: 1}, {type: 'channel', id: 4}] },
       ],
       maintenance: [
         { id: 1, name: '週末系統更新', groups: ['核心交換器'], start: '2025-08-30 02:00', end: '2025-08-30 04:00', status: '已排程' }
@@ -1763,12 +1766,21 @@
         const manager = mockData.personnel.find(p => p.id === t.managerId);
         const managerName = manager ? manager.name : '<span class="text-slate-400">未指派</span>';
         const memberCount = mockData.personnel.filter(p => p.teamIds.includes(t.id)).length;
-        const groupsHtml = t.accessibleGroupIds.map(gid => mockData.deviceGroups.find(g => g.id === gid)?.name).filter(Boolean).map(gName => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${gName}</span>`).join(' ');
+        const subscribersHtml = t.subscribers.map(s => {
+            if (s.type === 'personnel') {
+                const user = mockData.personnel.find(p => p.id === s.id);
+                return user ? `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${user.name}</span>` : '';
+            } else if (s.type === 'channel') {
+                const channel = mockData.notificationChannels.find(c => c.id === s.id);
+                return channel ? `<span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M4.1 11.6a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L.3 11.6a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M12.2 3.5a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 3.5a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M20.4 19.8a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0l-3.8-3.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="M15.6 8.4a2.4 2.4 0 0 1 0 3.8 2.4 2.4 0 0 1-3.8 0L8.4 8.8a2.4 2.4 0 0 1 0-3.8 2.4 2.4 0 0 1 3.8 0Z"/><path d="m9 15-.8.8"/><path d="m14.2 9.8-.8.8"/></svg>${channel.name}</span>` : '';
+            }
+        }).filter(Boolean).join(' ');
+
         const row = `<tr class="bg-white" data-index="${index}">
                         <td data-label="團隊名稱" class="px-6 py-4 font-medium text-slate-900">${t.name}</td>
                         <td data-label="團隊管理員" class="px-6 py-4">${managerName}</td>
                         <td data-label="成員數量" class="px-6 py-4">${memberCount}</td>
-                        <td data-label="可閱覽設備群組" class="px-6 py-4"><div class="flex flex-wrap gap-1">${groupsHtml || '無'}</div></td>
+                        <td data-label="通知訂閱者" class="px-6 py-4"><div class="flex flex-wrap gap-1">${subscribersHtml || '無'}</div></td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                             <button class="edit-team-btn text-blue-600 hover:text-blue-800 font-medium">編輯</button>
                             <button class="delete-team-btn text-red-600 hover:text-red-800 font-medium ml-4" style="display: ${isSuperAdmin ? 'inline-block' : 'none'}">刪除</button>
@@ -1797,7 +1809,7 @@
             .filter(Boolean)
             .map(tName => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${tName}</span>`)
             .join(' ');
-        const channelsHtml = p.channelIds.map(cid => mockData.notificationChannels.find(c => c.id === cid)?.name).filter(Boolean).map(cName => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${cName}</span>`).join(' ');
+
         const levelsHtml = `<div class="flex items-center justify-start md:justify-center gap-1">
                         <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${p.subscribedLevels.includes('high') ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-400'}">高</span>
                         <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${p.subscribedLevels.includes('medium') ? 'bg-yellow-100 text-yellow-800' : 'bg-slate-100 text-slate-400'}">中</span>
@@ -1807,7 +1819,7 @@
                         <td data-label="姓名" class="px-6 py-4 font-medium text-slate-900">${p.name}</td>
                         <td data-label="角色" class="px-6 py-4">${roleBadge}</td>
                         <td data-label="所屬團隊" class="px-6 py-4"><div class="flex flex-wrap gap-1">${teamsHtml || '無'}</div></td>
-                        <td data-label="通知管道" class="px-6 py-4"><div class="flex flex-wrap justify-start md:justify-center gap-1">${channelsHtml || '無'}</div></td>
+                        <td data-label="個人聯絡方式" class="px-6 py-4 text-xs">${p.email || ''}<br>${p.lineToken || ''}</td>
                         <td data-label="接收等級" class="px-6 py-4">${levelsHtml}</td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                             <button class="edit-user-btn text-blue-600 hover:text-blue-800 font-medium">編輯</button>
@@ -2205,35 +2217,67 @@
 
       // Team Actions
       document.getElementById('add-team-btn').addEventListener('click', () => {
-        const groupCheckboxes = mockData.deviceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">團隊名稱</label><input type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">可閱覽設備群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
-                    </div>`;
+            <div class="space-y-4">
+                <div class="grid grid-cols-3 items-center gap-4">
+                    <label for="team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
+                    <input id="team-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                </div>
+                <fieldset class="mt-4">
+                    <legend class="text-sm font-medium text-slate-700 mb-2">通知訂閱者</legend>
+                    <select id="team-subscribers" multiple></select>
+                </fieldset>
+            </div>`;
         openFormModal('新增團隊', formHtml, 'add-team');
+        formModal.tomSelectInstances = {
+            subscribers: new TomSelect('#team-subscribers', {
+                placeholder: '搜尋人員或通知管道...',
+                plugins: ['remove_button'],
+                optgroups: [
+                    { value: 'personnel', label: '人員' },
+                    { value: 'channels', label: '通知管道' }
+                ],
+                options: [
+                    ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
+                    ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
+                ]
+            })
+        };
       });
+
       document.getElementById('teams-table-body').addEventListener('click', e => {
         const index = e.target.closest('tr')?.dataset.index;
         if (e.target.classList.contains('edit-team-btn')) {
-          const team = mockData.teams[index];
-          const groupCheckboxes = mockData.deviceGroups.map(g => {
-            const isChecked = team.accessibleGroupIds.includes(g.id) ? 'checked' : '';
-            return `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="group-${g.id}" type="checkbox" ${isChecked} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`;
-          }).join('');
-          const memberCheckboxes = mockData.personnel.map(p => {
-            const isChecked = p.teamIds.includes(team.id) ? 'checked' : '';
-            return `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-${p.id}" type="checkbox" ${isChecked} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-${p.id}" class="font-medium text-gray-900">${p.name}</label></div></div>`;
-          }).join('');
-          const personnelOptions = mockData.personnel.map(p => `<option value="${p.id}" ${team.managerId === p.id ? 'selected' : ''}>${p.name}</option>`).join('');
-          const formHtml = `
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">團隊名稱</label><input type="text" value="${team.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">團隊管理員</label><select class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"><option value="">未指派</option>${personnelOptions}</select></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊成員</legend><div class="space-y-2 mt-2 max-h-32 overflow-y-auto">${memberCheckboxes}</div></fieldset>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">可閱覽設備群組</legend><div class="space-y-2 mt-2 max-h-32 overflow-y-auto">${groupCheckboxes}</div></fieldset>
-                    </div>`;
-          openFormModal('編輯團隊', formHtml, 'edit-team', index);
+            const team = mockData.teams[index];
+            const formHtml = `
+                <div class="space-y-4">
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label for="team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
+                        <input id="team-name" type="text" value="${team.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                    </div>
+                    <fieldset class="mt-4">
+                        <legend class="text-sm font-medium text-slate-700 mb-2">通知訂閱者</legend>
+                        <select id="team-subscribers" multiple></select>
+                    </fieldset>
+                </div>`;
+            openFormModal('編輯團隊', formHtml, 'edit-team', index);
+
+            const selectedItems = team.subscribers.map(s => `${s.type}-${s.id}`);
+            formModal.tomSelectInstances = {
+                subscribers: new TomSelect('#team-subscribers', {
+                    placeholder: '搜尋人員或通知管道...',
+                    plugins: ['remove_button'],
+                    optgroups: [
+                        { value: 'personnel', label: '人員' },
+                        { value: 'channels', label: '通知管道' }
+                    ],
+                    options: [
+                        ...mockData.personnel.map(p => ({ value: `personnel-${p.id}`, text: p.name, optgroup: 'personnel' })),
+                        ...mockData.notificationChannels.map(c => ({ value: `channel-${c.id}`, text: c.name, optgroup: 'channels' }))
+                    ],
+                    items: selectedItems
+                })
+            };
         }
         if (e.target.classList.contains('delete-team-btn')) openConfirmModal('您確定要刪除此團隊嗎？', 'delete-team', index);
       });
@@ -2273,15 +2317,17 @@
 
       // User/Personnel Actions
       document.getElementById('add-user-btn').addEventListener('click', () => {
-        const teamCheckboxes = mockData.teams.map(t => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-team-${t.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-team-${t.id}" class="font-medium text-gray-900">${t.name}</label></div></div>`).join('');
-        const channelCheckboxes = mockData.notificationChannels.map(c => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-channel-${c.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-channel-${c.id}" class="font-medium text-gray-900">${c.name}</label></div></div>`).join('');
-
         const formHtml = `
                     <div class="space-y-4">
-                        <div class="grid grid-cols-3 items-center gap-4"><label for="user-name" class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">權限</label><div class="col-span-2 flex items-center"><input id="user-is-admin" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"><label for="user-is-admin" class="ml-2 block text-sm text-slate-900">管理員</label></div></div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><div class="space-y-2 mt-2">${teamCheckboxes}</div></fieldset>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">通知管道</legend><div class="space-y-2 mt-2">${channelCheckboxes}</div></fieldset>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">Email</label><input id="user-email" type="email" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">LINE Token</label><input id="user-line" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
+                          <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option>Team Member</option><option>Team Manager</option><option>Super Admin</option>
+                          </select>
+                        </div>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">接收等級</legend>
                             <div class="space-y-2 mt-2">
                                 <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-high" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-high" class="font-medium text-gray-900">高</label></div></div>
@@ -2291,6 +2337,13 @@
                         </fieldset>
                     </div>`;
         openFormModal('新增人員', formHtml, 'add-user');
+        formModal.tomSelectInstances = {
+          teams: new TomSelect('#user-teams', {
+            options: mockData.teams.map(t => ({value: t.id, text: t.name})),
+            placeholder: '搜尋團隊...',
+            plugins: ['remove_button'],
+          })
+        };
       });
 
       document.getElementById('personnel-table-body').addEventListener('click', e => {
@@ -2301,30 +2354,28 @@
 
         if (target.classList.contains('edit-user-btn')) {
           const user = mockData.personnel[index];
-          const teamCheckboxes = mockData.teams.map(t => {
-            const isChecked = user.teamIds.includes(t.id) ? 'checked' : '';
-            return `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-team-${t.id}" type="checkbox" ${isChecked} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-team-${t.id}" class="font-medium text-gray-900">${t.name}</label></div></div>`;
-          }).join('');
-          const channelCheckboxes = mockData.notificationChannels.map(c => {
-            const isChecked = user.channelIds.includes(c.id) ? 'checked' : '';
-            return `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-channel-${c.id}" type="checkbox" ${isChecked} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-channel-${c.id}" class="font-medium text-gray-900">${c.name}</label></div></div>`;
-          }).join('');
-
           const formHtml = `
                         <div class="space-y-4">
-                            <div class="grid grid-cols-3 items-center gap-4"><label for="user-name" class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">權限</label><div class="col-span-2 flex items-center"><input id="user-is-admin" type="checkbox" ${user.isAdmin ? 'checked' : ''} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"><label for="user-is-admin" class="ml-2 block text-sm text-slate-900">管理員</label></div></div>
-                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><div class="space-y-2 mt-2">${teamCheckboxes}</div></fieldset>
-                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">通知管道</legend><div class="space-y-2 mt-2">${channelCheckboxes}</div></fieldset>
-                             <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">接收等級</legend>
-                                <div class="space-y-2 mt-2">
-                                    <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-high" type="checkbox" ${user.subscribedLevels.includes('high') ? 'checked' : ''} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-high" class="font-medium text-gray-900">高</label></div></div>
-                                    <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-medium" type="checkbox" ${user.subscribedLevels.includes('medium') ? 'checked' : ''} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-medium" class="font-medium text-gray-900">中</label></div></div>
-                                    <div class="relative flex items-start"><div class="flex h-6 items-center"><input id="user-level-low" type="checkbox" ${user.subscribedLevels.includes('low') ? 'checked' : ''} class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="user-level-low" class="font-medium text-gray-900">低</label></div></div>
-                                </div>
-                            </fieldset>
+                            <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">此介面僅供管理者設定組織層級的資訊。使用者個人的聯絡方式與通知偏好，請由使用者本人至「個人資料」頁面進行設定。</p>
+                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm"></div>
+                             <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
+                              <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm">
+                                <option ${user.role === 'Team Member' ? 'selected' : ''}>Team Member</option>
+                                <option ${user.role === 'Team Manager' ? 'selected' : ''}>Team Manager</option>
+                                <option ${user.role === 'Super Admin' ? 'selected' : ''}>Super Admin</option>
+                              </select>
+                            </div>
+                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
                         </div>`;
           openFormModal('編輯人員', formHtml, 'edit-user', index);
+          formModal.tomSelectInstances = {
+            teams: new TomSelect('#user-teams', {
+              options: mockData.teams.map(t => ({value: t.id, text: t.name})),
+              items: user.teamIds,
+              placeholder: '搜尋團隊...',
+              plugins: ['remove_button'],
+            })
+          };
         }
         if (target.classList.contains('delete-user-btn')) {
           openConfirmModal('您確定要刪除此人員嗎？', 'delete-user', index);
@@ -2382,7 +2433,31 @@
 
       // Save and Delete Logic
       formModalSaveBtn.addEventListener('click', () => {
-        if (currentAction === 'add-script') {
+        if (currentAction === 'add-user') {
+          const name = document.getElementById('user-name').value;
+          const email = document.getElementById('user-email').value;
+          const lineToken = document.getElementById('user-line').value;
+          const role = document.getElementById('user-role').value;
+          const teamIds = formModal.tomSelectInstances.teams.getValue().map(id => parseInt(id));
+          const subscribedLevels = [];
+          if (document.getElementById('user-level-high').checked) subscribedLevels.push('high');
+          if (document.getElementById('user-level-medium').checked) subscribedLevels.push('medium');
+          if (document.getElementById('user-level-low').checked) subscribedLevels.push('low');
+
+          mockData.personnel.push({
+            id: mockData.personnel.length > 0 ? Math.max(...mockData.personnel.map(p => p.id)) + 1 : 1,
+            name, email, lineToken, role, teamIds, subscribedLevels,
+          });
+          showFeedbackModal('人員已新增！');
+          setTimeout(closeFeedbackModal, 1500);
+        } else if (currentAction === 'edit-user') {
+          const user = mockData.personnel[currentEditIndex];
+          user.name = document.getElementById('user-name').value;
+          user.role = document.getElementById('user-role').value;
+          user.teamIds = formModal.tomSelectInstances.teams.getValue().map(id => parseInt(id));
+          showFeedbackModal('人員資訊已更新！');
+          setTimeout(closeFeedbackModal, 1500);
+        } else if (currentAction === 'add-script') {
           const inputs = formModalBody.querySelectorAll('input, textarea, select');
           const newScript = {
             id: mockData.automationScripts.length + 1,
@@ -2405,11 +2480,28 @@
           script.parameters = inputs[4].value ? inputs[4].value.split(',').map(p => p.trim()) : [];
           showFeedbackModal('腳本已更新！');
           setTimeout(closeFeedbackModal, 1500);
+        } else if (currentAction === 'add-team') {
+          const name = document.getElementById('team-name').value;
+          const subscribers = formModal.tomSelectInstances.subscribers.getValue().map(val => {
+            const [type, id] = val.split('-');
+            return { type, id: parseInt(id) };
+          });
+          mockData.teams.push({
+            id: mockData.teams.length > 0 ? Math.max(...mockData.teams.map(t => t.id)) + 1 : 1,
+            name,
+            subscribers,
+            managerId: null,
+            accessibleGroupIds: [] // Keep empty as it's deprecated
+          });
+          showFeedbackModal('團隊已新增！');
+          setTimeout(closeFeedbackModal, 1500);
         } else if (currentAction === 'edit-team') {
             const team = mockData.teams[currentEditIndex];
-            const inputs = formModalBody.querySelectorAll('input, select');
-            team.name = inputs[0].value;
-            team.managerId = inputs[1].value ? parseInt(inputs[1].value, 10) : null;
+            team.name = document.getElementById('team-name').value;
+            team.subscribers = formModal.tomSelectInstances.subscribers.getValue().map(val => {
+                const [type, id] = val.split('-');
+                return { type, id: parseInt(id) };
+            });
             showFeedbackModal('團隊資訊已更新！');
             setTimeout(closeFeedbackModal, 1500);
         } else {
