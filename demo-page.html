@@ -806,10 +806,9 @@
               <!-- Tab Content -->
               <div class="mt-2">
                 <div id="tab-integration" class="settings-tab-content space-y-8">
-                  <h3 class="text-lg font-semibold text-slate-800 border-b pb-4 mb-6">Grafana 服務設定</h3>
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                      <label for="grafana-url" class="text-sm font-medium text-slate-700">Grafana 基礎 URL</label>
+                      <label for="grafana-url" class="text-sm font-medium text-slate-700">Grafana URL</label>
                       <input type="text" id="grafana-url"
                         class="md:col-span-2 mt-1 block w-full rounded-md border-slate-400 bg-slate-50 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm text-slate-800"
                         placeholder="https://grafana.example.com">
@@ -964,7 +963,6 @@
             <!-- Scripts Library Tab -->
             <div id="scripts-content" class="automation-content">
               <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                <h3 class="text-lg font-semibold text-slate-800">自動化腳本庫</h3>
                 <button id="add-script-btn"
                   class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors w-full md:w-auto text-sm">新增腳本</button>
               </div>
@@ -1419,7 +1417,7 @@
       },
       branches: [
         { name: '仁愛分行', region: '北區', status: 'normal', devices: { total: 50, error: 0, warning: 1 } },
-        { name: '內湖虛擬分行', region: '北區', status: 'error', devices: { total: 35, error: 2, warning: 1 } },
+        { name: '林口分行', region: '北區', status: 'error', devices: { total: 35, error: 2, warning: 1 } },
         { name: '信義分行', region: '北區', status: 'normal', devices: { total: 60, error: 0, warning: 0 } },
         { name: '台中分行', region: '中區', status: 'normal', devices: { total: 45, error: 0, warning: 0 } },
         { name: '台南分行', region: '南區', status: 'warning', devices: { total: 40, error: 0, warning: 3 } },
@@ -1428,10 +1426,10 @@
       devices: [
         { id: 1, status: 'normal', name: 'Edge SW13', ip: '88.201.0.13', branch: '仁愛分行', type: 'Switch', groupIds: [1] },
         { id: 2, status: 'warning', name: 'Backup Server', ip: '88.201.0.14', branch: '仁愛分行', type: 'Server', groupIds: [] },
-        { id: 3, status: 'error', name: 'DATA Router', ip: '88.255.252.101', branch: '內湖虛擬分行', type: 'Router', groupIds: [3] },
-        { id: 4, status: 'normal', name: 'VG Router', ip: '88.99.33.12', branch: '內湖虛擬分行', type: 'Router', groupIds: [3] },
-        { id: 5, status: 'error', name: 'HPE靜音主機', ip: '88.99.33.15', branch: '內湖虛擬分行', type: 'Server', groupIds: [] },
-        { id: 6, status: 'normal', name: 'Core SW', ip: '88.99.0.10', branch: '內湖虛擬分行', type: 'Switch', groupIds: [1] },
+        { id: 3, status: 'error', name: 'DATA Router', ip: '88.255.252.101', branch: '林口分行', type: 'Router', groupIds: [3] },
+        { id: 4, status: 'normal', name: 'VG Router', ip: '88.99.33.12', branch: '林口分行', type: 'Router', groupIds: [3] },
+        { id: 5, status: 'error', name: 'Delta PDU', ip: '88.99.33.15', branch: '林口分行', type: 'Server', groupIds: [] },
+        { id: 6, status: 'normal', name: 'Core Switch', ip: '88.99.0.10', branch: '林口分行', type: 'Switch', groupIds: [1] },
         { id: 7, status: 'warning', name: 'Firewall-A', ip: '121.55.2.1', branch: '台南分行', type: 'Firewall', groupIds: [2] },
         { id: 8, status: 'warning', name: 'AP-Lobby', ip: '121.55.2.100', branch: '台南分行', type: 'AP', groupIds: [] },
         { id: 9, status: 'warning', name: 'AP-MeetingRoom', ip: '121.55.2.101', branch: '台南分行', type: 'AP', groupIds: [] },
@@ -1491,13 +1489,13 @@
         { id: 1, level: 'error', time: '2025-08-29 01:15', branch: '仁愛分行', ip: '88.201.0.13', name: 'Edge SW13', desc: '設備斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
         { id: 2, level: 'error', time: '2025-08-29 01:10', branch: '仁愛分行', ip: '88.201.0.11', name: 'Edge SW11', desc: '設備斷線超過15分鐘', status: 'new', assignee: null, acknowledgedBy: null, comments: [] },
         { id: 3, level: 'warning', time: '2025-08-28 22:15', branch: '台南分行', ip: '121.55.2.1', name: 'Firewall-A', desc: 'CPU 使用率超過 90%', status: 'ack', assignee: '王工程師', acknowledgedBy: '林組長', comments: [{ user: '林組長', text: '已指派給王工程師處理。', time: '2025-08-28 22:16' }] },
-        { id: 4, level: 'warning', time: '2025-08-28 21:30', branch: '內湖虛擬分行', ip: '88.255.252.101', name: 'DATA Router', desc: '網路延遲超過 200ms', status: 'resolved', assignee: '王工程師', acknowledgedBy: '王工程師', comments: [{ user: '王工程師', text: '已確認為 ISP 線路瞬斷，目前已恢復。', time: '2025-08-28 21:45' }] },
-        { id: 5, level: 'info', time: '2025-08-28 18:05', branch: '內湖虛擬分行', ip: '88.99.33.12', name: 'VG Router', desc: '設備重新啟動', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
-        { id: 6, level: 'error', time: '2025-08-28 15:30', branch: '台中分行', ip: '192.168.10.5', name: 'Core SW01', desc: '記憶體使用率達到 95%', status: 'ack', assignee: '陳經理', acknowledgedBy: '陳經理', comments: [{ user: '陳經理', text: '正在檢查記憶體洩漏問題', time: '2025-08-28 15:35' }] },
+        { id: 4, level: 'warning', time: '2025-08-28 21:30', branch: '林口分行', ip: '88.255.252.101', name: 'DATA Router', desc: '網路延遲超過 200ms', status: 'resolved', assignee: '王工程師', acknowledgedBy: '王工程師', comments: [{ user: '王工程師', text: '已確認為 ISP 線路瞬斷，目前已恢復。', time: '2025-08-28 21:45' }] },
+        { id: 5, level: 'info', time: '2025-08-28 18:05', branch: '林口分行', ip: '88.99.33.12', name: 'VG Router', desc: '設備重新啟動', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
+        { id: 6, level: 'error', time: '2025-08-28 15:30', branch: '台中分行', ip: '192.168.10.5', name: 'Core Switch01', desc: '記憶體使用率達到 95%', status: 'ack', assignee: '陳經理', acknowledgedBy: '陳經理', comments: [{ user: '陳經理', text: '正在檢查記憶體洩漏問題', time: '2025-08-28 15:35' }] },
         { id: 7, level: 'warning', time: '2025-08-28 14:20', branch: '高雄分行', ip: '172.16.5.10', name: 'Backup Server', desc: '磁碟空間使用率超過 85%', status: 'resolved', assignee: '林組長', acknowledgedBy: '林組長', comments: [{ user: '林組長', text: '已清理舊備份檔案，空間已釋放', time: '2025-08-28 14:45' }] },
         { id: 8, level: 'info', time: '2025-08-28 12:10', branch: '信義分行', ip: '10.0.1.20', name: 'AP-Lobby', desc: '無線網路使用者數量達到上限', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] },
         { id: 9, level: 'warning', time: '2025-08-28 10:45', branch: '台南分行', ip: '121.55.2.100', name: 'UPS-Main', desc: '電池電量低於 20%', status: 'ack', assignee: '王工程師', acknowledgedBy: '王工程師', comments: [{ user: '王工程師', text: '已聯繫廠商更換電池', time: '2025-08-28 11:00' }] },
-        { id: 10, level: 'error', time: '2025-08-27 23:55', branch: '內湖虛擬分行', ip: '88.99.33.15', name: 'HPE靜音主機', desc: '服務無回應', status: 'resolved', assignee: '陳經理', acknowledgedBy: '陳經理', comments: [{ user: '陳經理', text: '已重啟服務，問題解決', time: '2025-08-28 00:10' }] },
+        { id: 10, level: 'error', time: '2025-08-27 23:55', branch: '林口分行', ip: '88.99.33.15', name: 'Delta PDU', desc: '服務無回應', status: 'resolved', assignee: '陳經理', acknowledgedBy: '陳經理', comments: [{ user: '陳經理', text: '已重啟服務，問題解決', time: '2025-08-28 00:10' }] },
         { id: 11, level: 'warning', time: '2025-08-27 20:30', branch: '台中分行', ip: '192.168.10.15', name: 'Print Server', desc: '列印佇列堆積超過 50 個工作', status: 'resolved', assignee: '林組長', acknowledgedBy: '林組長', comments: [{ user: '林組長', text: '已清理佇列並重啟服務', time: '2025-08-27 20:45' }] },
         { id: 12, level: 'info', time: '2025-08-27 16:20', branch: '高雄分行', ip: '172.16.5.5', name: 'Web Server', desc: '定期維護完成', status: 'resolved', assignee: null, acknowledgedBy: null, comments: [] }
       ]
@@ -2896,7 +2894,7 @@
       window.callGeminiAPI = async function (prompt, type = "單筆告警分析") {
         await new Promise(resolve => setTimeout(resolve, 1500));
         if (prompt.includes("根本原因推測")) {
-          return `**根本原因推測:**\n交換器 (Switch) Edge SW13 可能已完全離線或無法回應網路請求。原因可能包含：\n- 設備斷電或當機。\n- 連接該設備的網路線路中斷 (例如：線路鬆脫、光纖受損)。\n- 上層網路設備 (如 Core Switch) 發生問題，導致無法連線至此設備。\n\n**建議處理步驟:**\n1.  **遠端檢查:** 嘗試從跳板機 (Jump Host) SSH 或 Telnet 登入該設備，確認是否能連線。\n2.  **現場檢查:** 若無法遠端連線，請通知分行IT人員或派員至現場，檢查設備電源燈號與網路線路是否正常。\n3.  **關聯性檢查:** 同時檢查仁愛分行其他設備的狀態，確認是否為單一設備問題或區域性網路中斷。`;
+          return `**根本原因推測:**\n交換器 (Switch) Edge SW13 可能已完全離線或無法回應網路請求。原因可能包含：\n- 設備斷電或當機。\n- 連接該設備的網路線路中斷 (例如：線路鬆脫、光纖受損)。\n- 上層網路設備 (如 Core Switchitch) 發生問題，導致無法連線至此設備。\n\n**建議處理步驟:**\n1.  **遠端檢查:** 嘗試從跳板機 (Jump Host) SSH 或 Telnet 登入該設備，確認是否能連線。\n2.  **現場檢查:** 若無法遠端連線，請通知分行IT人員或派員至現場，檢查設備電源燈號與網路線路是否正常。\n3.  **關聯性檢查:** 同時檢查仁愛分行其他設備的狀態，確認是否為單一設備問題或區域性網路中斷。`;
         } else if (prompt.includes("事件報告")) {
           return `### 網路事件報告：仁愛分行多重設備斷線事件\n\n**1. 事件摘要:**\n本日上午 10:26 左右，監控系統偵測到仁愛分行兩台核心交換器 (Edge SW13, Edge SW11) 同時發生斷線告警，持續時間超過15分鐘。此事件可能導致該分行內部網路服務全面中斷。\n\n**2. 事件時間軸:**\n- 2025.8.26 10:26: 系統發出告警，設備 Edge SW13 (88.201.0.13) 断線超過15分鐘。\n- 2025.8.26 10:26: 系統發出告警，設備 Edge SW11 (88.201.0.11) 斷線超過15分鐘。\n\n**3. 影響評估:**\n由於斷線設備為分行核心交換器，預期將造成以下影響：\n- 分行所有員工的電腦無法上網及存取內部資源。\n- 分行對外業務系統 (如：交易系統) 可能中斷。\n- IP 電話、印表機等網路設備無法使用。\n\n**4. 根本原因分析:**\n兩台位於同一分行的核心交換器在完全相同的時間點斷線，極不可能是單一設備故障。最可能的原因指向該分行的**上層網路或基礎設施問題**，例如：\n- **總電源中斷：** 該分行或機櫃發生跳電。\n- **上聯路由器故障：** 連接總公司的主要路由器 (Router) 當機或斷線。\n- **線路問題：** 該分行的主要對外線路中斷。\n\n**5. 後續處理建議:**\n- **立即行動：** 立刻聯繫仁愛分行IT人員，確認現場電力與主要路由器狀態。\n- **中期追蹤：** 若為電力問題，建議檢查UPS不斷電系統是否正常運作。若為線路問題，需聯繫網路服務供應商 (ISP) 報修。\n- **長期改善：** 評估為仁愛分行建立備援線路的可能性，以提高網路服務的可靠性。`;
         }
