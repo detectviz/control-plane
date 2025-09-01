@@ -74,6 +74,22 @@ def run_verification(playwright):
                 page.screenshot(path=f"jules-scratch/screenshot_pages/automation_execution_logs.png")
                 print(f"  - 已儲存截圖: automation_execution_logs.png")
 
+        # Special handling for the 'settings' page tabs
+        if page_id == 'settings':
+            notification_tab = page.locator("button[data-tab='notification']")
+            if notification_tab.is_visible():
+                notification_tab.click()
+                page.wait_for_timeout(500)
+                page.screenshot(path=f"jules-scratch/screenshot_pages/settings_notification_tab.png")
+                print(f"  - 已儲存截圖: settings_notification_tab.png")
+
+                # Scroll down to show SMS Gateway settings
+                main_content_area = page.locator("main > div.overflow-y-auto")
+                main_content_area.evaluate("node => node.scrollTo(0, node.scrollHeight)")
+                page.wait_for_timeout(500)
+                page.screenshot(path=f"jules-scratch/screenshot_pages/settings_notification_tab_scrolled.png")
+                print(f"  - 已儲存截圖: settings_notification_tab_scrolled.png")
+
     print("已完成所有主要頁面的截圖。")
     browser.close()
 
