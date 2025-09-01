@@ -42,6 +42,16 @@
 
 ## 4. 如何執行 Demo 原型
 
+### 線上預覽 (Live Demo)
+
+您可以直接透過以下網址在瀏覽器中體驗最新的互動原型：
+
+**[https://detectviz.github.io/control-plane/demo-page.html](https://detectviz.github.io/control-plane/demo-page.html)**
+
+### 本地端執行 (Local Execution)
+
+如果您希望在本地端執行：
+
 1.  將此儲存庫複製 (clone) 到您的本機電腦。
 2.  在網頁瀏覽器中直接開啟 `demo-page.html` 檔案。
     *   因為是本地檔案，所以不需要額外的網頁伺服器設定。
