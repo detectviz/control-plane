@@ -14,7 +14,7 @@
 
 ## 2. 主要功能 (Live Demo)
 
-您可以透過 `demo-page.html` 檔案來體驗以下核心功能的即時原型。此原型直觀地展示了專案的最終 UI/UX 與核心工作流程。
+您可以透過 [https://detectviz.github.io/control-plane/demo-page.html](https://detectviz.github.io/control-plane/demo-page.html) 檔案來體驗以下核心功能的即時原型。此原型直觀地展示了專案的最終 UI/UX 與核心工作流程。
 
 *   **整合儀表板：** 一目了然地掌握系統狀態、告警狀況與關鍵效能指標 (KPI)。
 *   **設備管理與批次操作：**
