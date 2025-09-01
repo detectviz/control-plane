@@ -17,9 +17,6 @@
   - [5.1. 人員管理 (Personnel)](#51-人員管理-personnel)
   - [5.2. 團隊管理 (Teams)](#52-團隊管理-teams)
 - [6. 告警規則 (Alert Rules)](#6-告警規則-alert-rules)
-  - [6.1. 規則設定](#61-規則設定)
-  - [6.2. 自動化響應](#62-自動化響應)
-  - [6.3. 自訂通知內容](#63-自訂通知內容)
 - [7. 自動化 (Automation)](#7-自動化-automation)
   - [7.1. 腳本庫 (Scripts)](#71-腳本庫-scripts)
   - [7.2. 執行日誌 (Execution Logs)](#72-執行日誌-execution-logs)
@@ -109,25 +106,27 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 ## 6. 告警規則 (Alert Rules)
 
-您可以針對特定的「設備群組」自訂告警觸發的條件。
+您可以針對特定的「設備群組」自訂告警觸發的條件。點擊「新增規則」後，會彈出一個整合式的設定視窗，所有選項都清晰地組織在可摺疊的區塊中，方便您進行配置。
 
-![告警規則](jules-scratch/screenshot_pages/rules.png)
+![告警規則頁面](jules-scratch/screenshot_pages/rules.png)
 
-### 6.1. 規則設定
+在「新增/編輯告警規則」的彈出視窗中，您可以設定所有與規則相關的參數。我們採用了摺疊式介面，將複雜的設定拆分為三個區塊，讓整體設定流程更加清晰有條理：
 
-在「新增/編輯告警規則」的彈出視窗中，您可以設定規則名稱、監控指標、閾值等基本條件。我們採用了摺疊式介面，讓複雜的設定更加清晰有條理。
+![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_009_10_add_rule_modal_all_expanded.png)
 
-![新增告警規則](jules-scratch/screenshot_modals/modal_add_rule_collapsed.png)
+1.  **基本設定 (Basic Settings)**:
+    *   **規則名稱**: 為您的規則取一個易於識別的名稱。
+    *   **描述**: (選填) 簡要說明此規則的目的。
+    *   **設備群組**: 選擇此規則要應用的設備群組。
+    *   **條件**: 設定觸發告警的具體條件，例如 `CPU 使用率 > 80%`。
 
-### 6.2. 自動化響應
+2.  **自動化響應 (Automated Response)**:
+    *   (選填) 您可以選擇性地為此規則綁定一個預先定義好的「自動化腳本」。
+    *   當告警觸發時，系統將自動執行您指定的腳本（例如：重啟服務、清理磁碟），實現秒級的故障自動排除。
 
-您可以選擇性地為告警規則綁定一個「自動化腳本」。當告警觸發時，系統將自動執行您指定的腳本，實現秒級的故障排除。
-
-![告警規則 - 自動化響應](jules-scratch/gif_frames/frame_008_09_add_rule_modal_automation_expanded.png)
-
-### 6.3. 自訂通知內容
-
-系統允許您客製化告警通知的標題與內容，並可使用 `{{ .DeviceName }}` 等變數來動態插入告警資訊，讓通知更具可讀性。
+3.  **通知內容自定義 (Custom Notification Content)**:
+    *   (選填) 系統允許您客製化告警通知的標題與內容。
+    *   您可以使用 `{{ .DeviceName }}`、`{{ .MetricValue }}` 等變數來動態插入告警的上下文資訊，讓收到的通知更具可讀性與參考價值。
 
 ## 7. 自動化 (Automation)
 
@@ -146,7 +145,6 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 此頁籤記錄了每一次自動化腳本的執行歷史，包含觸發原因、執行時間、狀態與結果。點擊「查看輸出」按鈕，可以檢視該次執行的詳細 Log，方便您追蹤與除錯。
 
 ![自動化 - 執行日誌](jules-scratch/screenshot_pages/automation_execution_logs.png)
-![執行日誌輸出詳情](jules-scratch/screenshot_modals/modal_execution_log_output.png)
 
 ## 8. 容量規劃 (Capacity Planning)
 
