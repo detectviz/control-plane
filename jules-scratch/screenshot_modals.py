@@ -134,6 +134,37 @@ def run_verification(playwright):
     page.get_by_role("button", name="更新資訊").click()
     expect(page.locator("#feedback-modal")).to_be_visible()
     page.screenshot(path="jules-scratch/screenshot_modals/modal_feedback.png")
+    page.locator("#app").click() # Click away to close feedback modal
+    print("  - 完成。")
+
+    # 11. 網段掃描彈窗
+    print("正在截取「網段掃描」彈窗...")
+    navigate_to_page(page, "devices", "#devices-table-body")
+    page.get_by_role("button", name="掃描網段").click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.wait_for_timeout(200)
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_scan_network_initial.png")
+    print("  - 已儲存截圖: modal_scan_network_initial.png")
+
+    # 模擬掃描並截取結果
+    page.locator("#form-modal-save-btn").click()
+    expect(page.locator("#form-modal-body h4")).to_have_text("掃描結果 (發現 4 個資源)", timeout=5000)
+    page.wait_for_timeout(200)
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_scan_network_results.png")
+    print("  - 已儲存截圖: modal_scan_network_results.png")
+    page.locator('#form-modal button:has-text("取消")').click()
+    print("  - 完成。")
+
+    # 12. 自動化執行日誌輸出彈窗
+    print("正在截取「自動化執行日誌輸出」彈窗...")
+    navigate_to_page(page, "automation", "#scripts-content")
+    page.locator("#execution-logs-tab").click()
+    expect(page.locator("#execution-logs-content")).to_be_visible()
+    page.locator(".view-output-btn").first.click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.wait_for_timeout(200)
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_execution_log_output.png")
+    page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
     print("已完成所有彈出視窗的截圖。")
