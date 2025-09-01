@@ -188,11 +188,7 @@
     <div class="w-full max-w-md">
       <form id="login-form" class="bg-white shadow-lg rounded-xl px-8 pt-6 pb-8 mb-4">
         <div class="mb-8 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="inline-block text-sky-500 h-12 w-12 mb-2">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-          </svg>
+          <img src="LOGO.png" alt="Control Plane Logo" class="inline-block h-12 w-auto mb-2">
           <h1 class="text-2xl font-bold text-slate-800">Control Plane</h1>
         </div>
         <div id="login-error"
@@ -237,11 +233,7 @@
     <aside id="sidebar"
       class="w-64 h-full flex-shrink-0 bg-slate-800 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full absolute lg:relative z-40">
       <div class="h-16 flex items-center justify-center px-4 border-b border-slate-700">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="text-sky-400 h-8 w-8">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-        </svg>
+        <img src="LOGO.png" alt="Control Plane Logo" class="h-8 w-auto">
         <h1 class="text-xl font-bold ml-2">Control Plane</h1>
       </div>
       <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
@@ -2616,7 +2608,9 @@
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
                           <select id="user-role" class="col-span-2 mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
-                            <option>Team Member</option><option>Team Manager</option><option>Super Admin</option>
+                            <option value="Super Admin">超級管理員</option>
+                            <option value="Team Manager">團隊管理員</option>
+                            <option value="Team Member">一般使用者</option>
                           </select>
                         </div>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
@@ -2645,9 +2639,9 @@
                             <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm"></div>
                              <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
                               <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm">
-                                <option ${user.role === 'Team Member' ? 'selected' : ''}>Team Member</option>
-                                <option ${user.role === 'Team Manager' ? 'selected' : ''}>Team Manager</option>
-                                <option ${user.role === 'Super Admin' ? 'selected' : ''}>Super Admin</option>
+                                <option value="Super Admin" ${user.role === 'Super Admin' ? 'selected' : ''}>超級管理員</option>
+                                <option value="Team Manager" ${user.role === 'Team Manager' ? 'selected' : ''}>團隊管理員</option>
+                                <option value="Team Member" ${user.role === 'Team Member' ? 'selected' : ''}>一般使用者</option>
                               </select>
                             </div>
                             <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>

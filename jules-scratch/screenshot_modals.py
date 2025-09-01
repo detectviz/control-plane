@@ -51,7 +51,7 @@ def run_verification(playwright):
     # 2. 新增設備彈窗
     print("正在截取「新增設備」彈窗...")
     navigate_to_page(page, "devices", "#devices-table-body")
-    page.get_by_role("button", name="新增設備").click()
+    page.get_by_role("button", name="新增資源").click()
     expect(page.locator("#form-modal")).to_be_visible()
     page.screenshot(path="jules-scratch/modal_add_device.png")
     page.locator("#form-modal .close-modal-btn").first.click()
