@@ -94,11 +94,14 @@ def run_gif_creation(playwright):
     take_screenshot("08_add_rule_modal")
 
     # Expand Automation section
+    page.locator('.accordion-header').nth(0).click()
     page.locator('.accordion-header').nth(1).click()
+    page.locator('#automation-script-select').select_option(label='重啟 Web 服務')
     page.wait_for_timeout(500)
     take_screenshot("09_add_rule_modal_automation_expanded")
 
     # Expand Notification section
+    page.locator('.accordion-header').nth(1).click()
     page.locator('.accordion-header').nth(2).click()
     page.wait_for_timeout(500)
     take_screenshot("10_add_rule_modal_all_expanded")

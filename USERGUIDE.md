@@ -112,21 +112,25 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 在「新增/編輯告警規則」的彈出視窗中，您可以設定所有與規則相關的參數。我們採用了摺疊式介面，將複雜的設定拆分為三個區塊，讓整體設定流程更加清晰有條理：
 
-![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_009_10_add_rule_modal_all_expanded.png)
-
 1.  **基本設定 (Basic Settings)**:
     *   **規則名稱**: 為您的規則取一個易於識別的名稱。
     *   **描述**: (選填) 簡要說明此規則的目的。
     *   **設備群組**: 選擇此規則要應用的設備群組。
     *   **條件**: 設定觸發告警的具體條件，例如 `CPU 使用率 > 80%`。
 
+    ![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_007_08_add_rule_modal.png)
+
 2.  **自動化響應 (Automated Response)**:
     *   (選填) 您可以選擇性地為此規則綁定一個預先定義好的「自動化腳本」。
     *   當告警觸發時，系統將自動執行您指定的腳本（例如：重啟服務、清理磁碟），實現秒級的故障自動排除。
 
+    ![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_008_09_add_rule_modal_automation_expanded.png)
+
 3.  **通知內容自定義 (Custom Notification Content)**:
     *   (選填) 系統允許您客製化告警通知的標題與內容。
     *   您可以使用 `{{ .DeviceName }}`、`{{ .MetricValue }}` 等變數來動態插入告警的上下文資訊，讓收到的通知更具可讀性與參考價值。
+
+    ![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_009_10_add_rule_modal_all_expanded.png)
 
 ## 7. 自動化 (Automation)
 
@@ -150,9 +154,11 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 本平台提供主動式的資源規劃工具。您可以選擇一個「設備群組」和一個關鍵指標（如 CPU 或磁碟使用率），系統將分析歷史數據並預測未來的資源趨勢。
 
+![容量規劃](jules-scratch/screenshot_pages/capacity.png)
+
 分析結果將以易懂的卡片和圖表呈現，例如：「預計將在 45 天後達到 80% 警戒線」，幫助您提前應對潛在的容量瓶頸。
 
-![容量規劃](jules-scratch/screenshot_pages/capacity.png)
+
 ![容量規劃結果](jules-scratch/gif_frames/frame_016_17_capacity_planning_results.png)
 
 ## 9. 告警紀錄 (Logs/Incidents)
@@ -160,18 +166,18 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 此頁面是所有告警事件的集中地，您可以在此查看、搜尋、處理所有歷史與當前的告警。點擊任一筆紀錄即可開啟「事件詳情」視窗進行處理。
 
 ![告警紀錄](jules-scratch/screenshot_pages/logs.png)
-![事件詳情](jules-scratch/screenshot_modals/modal_incident_details.png)
 
 ### 9.1. 檢視與篩選
 
 提供基於時間範圍、告警等級與處理狀態的進階篩選功能。點擊單筆告警可查看詳細資訊，並進行確認 (Acknowledge) 或解決 (Resolve) 等操作。
+
+![事件詳情](jules-scratch/screenshot_modals/modal_incident_details.png)
 
 ### 9.2. AI 輔助生成報告
 
 您可以勾選多筆相關的告警事件，點擊「生成事件報告」。系統會呼叫 Gemini AI，自動為您產出一份結構化的事件根本原因分析報告，大幅縮短撰寫報告的時間。
 
 ![AI 輔助報告](jules-scratch/gif_frames/frame_012_13_logs_ai_report.png)
-![Gemini 報告](jules-scratch/screenshot_modals/modal_gemini_report.png)
 
 ## 10. 通知管道 (Notification Channels)
 
@@ -183,27 +189,30 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 - **Slack**: 需要填寫 `Incoming Webhook URL`。
 - **LINE Notify**: 需要填寫 `存取權杖 (Access Token)`。
 
+![通知管道](jules-scratch/screenshot_modals/modal_edit_channel.png)
+
 ## 11. 個人資料與系統設定
 
 ### 11.1. 個人資料 (Profile)
 
 此頁面採用頁籤式設計，讓您能方便地管理個人資訊：
 - **個人資訊**: 查看您的姓名、角色、所屬團隊。
-- **密碼安全**: 變更您的登入密碼。
-- **通知設定**:
-    - **聯絡方式**: 設定並「驗證」您接收告警的 Email、LINE 或 SMS。**系統只會將通知發送到已驗證的管道**。
-    - **通知偏好**: 選擇您希望接收哪些嚴重等級的告警。
-
 ![個人資料](jules-scratch/screenshot_pages/profile.png)
+
+- **密碼安全**: 變更您的登入密碼。
+![個人資料 - 密碼安全](jules-scratch/gif_frames/frame_018_19_profile_security_tab.png)
+
+- **通知設定**:
+  - **聯絡方式**: 設定並「驗證」您接收告警的 Email、LINE 或 SMS。**系統只會將通知發送到已驗證的管道**。
+  - **通知偏好**: 選擇您希望接收哪些嚴重等級的告警。
 ![個人資料 - 通知設定](jules-scratch/gif_frames/frame_019_20_profile_notifications_tab.png)
+
 
 ### 11.2. 系統設定 (Settings)
 
 此頁面僅供系統管理員存取，同樣採用頁籤式設計，用於管理全域設定。
 
 - **整合設定**: 設定與外部系統（如 Grafana）的串接參數。
-- **通知設定**: 設定系統用於發送通知的後端服務，如郵件伺服器 (SMTP) 或 SMS 閘道。由於內容較長，此分頁可向下滾動檢視所有設定。
-
 ![系統設定 - 整合設定](jules-scratch/screenshot_pages/settings.png)
-![系統設定 - 通知設定 (上半部)](jules-scratch/screenshot_pages/settings_notification_tab.png)
-![系統設定 - 通知設定 (下半部)](jules-scratch/screenshot_pages/settings_notification_tab_scrolled.png)
+- **通知設定**: 設定系統用於發送通知的後端服務，如郵件伺服器 (SMTP) 或 SMS 閘道。由於內容較長，此分頁可向下滾動檢視所有設定。
+![系統設定 - 通知設定](jules-scratch/screenshot_pages/settings_notification_tab.png)
