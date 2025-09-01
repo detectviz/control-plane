@@ -11,7 +11,7 @@ def run_gif_creation(playwright):
 
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
-    page.set_viewport_size({"width": 1280, "height": 800})
+    page.set_viewport_size({"width": 1440, "height": 900})
     file_path = os.path.abspath('demo-page.html')
     page.goto(f'file://{file_path}')
 
