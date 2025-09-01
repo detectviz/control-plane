@@ -20,55 +20,172 @@ def run_gif_creation(playwright):
         nonlocal frame_count
         page.screenshot(path=os.path.join(frames_dir, f"frame_{frame_count:03d}_{name}.png"))
         frame_count += 1
-        page.wait_for_timeout(500) # Add a small delay between actions
+        page.wait_for_timeout(500) # Default delay
 
     # --- Start Capture ---
     print("Starting GIF frame capture...")
 
-    # 1. Login Page
+    # 1. Login
     take_screenshot("01_login_page")
     page.locator("#login-form").get_by_label("帳號").fill("admin")
     page.locator("#login-form").get_by_label("密碼").fill("admin")
     page.get_by_role("button", name="登入").click()
     expect(page.locator("#app")).to_be_visible()
     print("- Logged in")
+    page.wait_for_timeout(1000)
 
     # 2. Dashboard
-    page.wait_for_timeout(1000) # Wait for charts to potentially load
     take_screenshot("02_dashboard")
     print("- Captured Dashboard")
+    page.wait_for_timeout(1000)
 
-    # 3. Navigate to Personnel
-    page.get_by_text("組織").first.click()
-    page.wait_for_timeout(500) # wait for animation
+    # 3. Device Batch Operations
+    print("- Navigating to Device Management...")
+    page.locator("button.submenu-toggle", has_text="資源").click()
+    page.wait_for_timeout(500)
+    page.locator('a[data-page="devices"]').click()
+    expect(page.locator("#page-devices")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("03_devices_page")
+
+    print("- Selecting devices for batch operation...")
+    page.locator('.device-checkbox[data-device-id="1"]').check()
+    page.wait_for_timeout(200)
+    page.locator('.device-checkbox[data-device-id="2"]').check()
+    page.wait_for_timeout(200)
+    page.locator('.device-checkbox[data-device-id="5"]').check()
+    expect(page.locator("#batch-operations-bar")).to_be_visible()
+    page.wait_for_timeout(500)
+    take_screenshot("04_devices_batch_selection")
+    print("- Captured device batch operations bar")
+    page.wait_for_timeout(1000)
+
+    # 4. Personnel Management Modal
+    print("- Navigating to Personnel Management...")
+    page.locator("button.submenu-toggle", has_text="組織").click()
+    page.wait_for_timeout(500)
     page.locator('a[data-page="personnel"]').click()
-    expect(page.locator("#personnel-table-body")).to_be_visible()
-    take_screenshot("03_personnel_page")
-    print("- Captured Personnel Page")
+    expect(page.locator("#page-personnel")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("05_personnel_page")
 
-    # 4. Open "Add Personnel" Modal
-    page.get_by_role("button", name="新增人員").click()
+    print("- Opening 'Add Personnel' modal...")
+    page.locator('#add-user-btn').click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.wait_for_timeout(500) # Wait for modal animation
-    take_screenshot("04_add_personnel_modal")
-    print("- Captured Add Personnel Modal")
-
-    # 5. Close Modal
+    page.wait_for_timeout(500)
+    take_screenshot("06_add_personnel_modal")
+    print("- Captured 'Add Personnel' modal")
     page.locator("#form-modal .close-modal-btn").first.click()
     page.wait_for_timeout(500)
-    take_screenshot("05_modal_closed")
-    print("- Closed modal")
 
-    # 6. Navigate to Logs page
+    # 5. Alarm Rule Folding Interface
+    print("- Navigating to Alarm Rules...")
+    page.locator("button.submenu-toggle", has_text="告警").click()
+    page.wait_for_timeout(500)
+    page.locator('a[data-page="rules"]').click()
+    expect(page.locator("#page-rules")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("07_rules_page")
+
+    print("- Opening 'Add Rule' modal and showing accordion...")
+    page.locator('#add-rule-btn').click()
+    expect(page.locator("#form-modal")).to_be_visible()
+    page.wait_for_timeout(800)
+    take_screenshot("08_add_rule_modal")
+
+    # Expand Automation section
+    page.locator('.accordion-header').nth(1).click()
+    page.wait_for_timeout(500)
+    take_screenshot("09_add_rule_modal_automation_expanded")
+
+    # Expand Notification section
+    page.locator('.accordion-header').nth(2).click()
+    page.wait_for_timeout(500)
+    take_screenshot("10_add_rule_modal_all_expanded")
+    print("- Captured alarm rule accordion interface")
+    page.locator("#form-modal .close-modal-btn").first.click()
+    page.wait_for_timeout(500)
+
+    # 6. AI Log Analysis
+    print("- Navigating to Logs page...")
     page.locator('a[data-page="logs"]').click()
-    expect(page.locator("#logs-table-body")).to_be_visible()
-    take_screenshot("06_logs_page")
-    print("- Captured Logs Page")
+    expect(page.locator("#page-logs")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("11_logs_page")
 
-    # 7. Logout
+    print("- Selecting logs for AI analysis...")
+    page.locator('.log-checkbox[data-index="0"]').check()
+    page.wait_for_timeout(200)
+    page.locator('.log-checkbox[data-index="1"]').check()
+    expect(page.locator("#generate-report-btn")).to_be_enabled()
+    page.wait_for_timeout(500)
+    take_screenshot("12_logs_selected")
+
+    print("- Generating AI report...")
+    page.locator('#generate-report-btn').click()
+    expect(page.locator("#gemini-modal")).to_be_visible()
+    page.wait_for_timeout(2000) # Wait for "AI analysis"
+    take_screenshot("13_logs_ai_report")
+    print("- Captured AI report modal")
+    page.locator("#close-gemini-modal").click()
+    page.wait_for_timeout(500)
+
+    # 7. Automation Page Tabs
+    print("- Navigating to Automation page...")
+    page.locator("button.submenu-toggle", has_text="分析與自動化").click()
+    page.wait_for_timeout(500)
+    page.locator('a[data-page="automation"]').click()
+    expect(page.locator("#page-automation")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("14_automation_scripts_tab")
+
+    print("- Switching to Execution Logs tab...")
+    page.locator('#execution-logs-tab').click()
+    page.wait_for_timeout(500)
+    take_screenshot("15_automation_logs_tab")
+    print("- Captured Automation page tabs")
+
+    # 8. Capacity Planning Analysis
+    print("- Navigating to Capacity Planning page...")
+    page.locator('a[data-page="capacity"]').click()
+    expect(page.locator("#page-capacity")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("16_capacity_planning_page")
+
+    print("- Running analysis...")
+    page.locator('#capacity-target-group').select_option(label='核心交換器')
+    page.wait_for_timeout(200)
+    page.locator('#capacity-metric').select_option(label='磁碟使用率')
+    page.wait_for_timeout(200)
+    page.locator('#analyze-capacity-btn').click()
+    expect(page.locator("#capacity-results")).to_be_visible()
+    page.wait_for_timeout(2500) # Wait for "analysis" and chart animation
+    take_screenshot("17_capacity_planning_results")
+    print("- Captured Capacity Planning analysis results")
+
+    # 9. Personal Profile Tabs
+    print("- Navigating to Profile page...")
+    page.locator('a[data-page="profile"]').first.click()
+    expect(page.locator("#page-profile")).to_be_visible()
+    page.wait_for_timeout(1000)
+    take_screenshot("18_profile_info_tab")
+
+    print("- Switching to Security tab...")
+    page.locator('.profile-tab[data-tab="security"]').click()
+    page.wait_for_timeout(500)
+    take_screenshot("19_profile_security_tab")
+
+    print("- Switching to Notifications tab...")
+    page.locator('.profile-tab[data-tab="notifications"]').click()
+    page.wait_for_timeout(500)
+    take_screenshot("20_profile_notifications_tab")
+    print("- Captured Profile page tabs")
+
+    # 10. Logout
+    page.wait_for_timeout(1000)
     page.locator("#logout-btn").click()
     expect(page.locator("#login-page")).to_be_visible()
-    take_screenshot("07_logout")
+    take_screenshot("21_logout")
     print("- Logged out")
 
     print(f"\nCaptured {frame_count} frames in '{frames_dir}'")
