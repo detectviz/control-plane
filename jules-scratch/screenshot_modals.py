@@ -24,7 +24,7 @@ def navigate_to_page(page, page_id, wait_for_selector):
 def run_verification(playwright):
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
-    page.set_viewport_size({"width": 1280, "height": 800})
+    page.set_viewport_size({"width": 1440, "height": 900})
 
     # 取得 HTML 檔案的絕對路徑
     file_path = os.path.abspath('demo-page.html')
@@ -44,7 +44,7 @@ def run_verification(playwright):
     print("正在截取「通知中心」下拉選單...")
     page.locator("#notification-btn").click()
     expect(page.locator("#notification-dropdown")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_notifications.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_notifications.png")
     page.locator("#notification-btn").click() # 關閉它
     print("  - 完成。")
 
@@ -53,7 +53,7 @@ def run_verification(playwright):
     navigate_to_page(page, "devices", "#devices-table-body")
     page.get_by_role("button", name="新增資源").click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_add_device.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_add_device.png")
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -61,7 +61,7 @@ def run_verification(playwright):
     print("正在截取「刪除確認」彈窗...")
     page.locator(".delete-device-btn").first.click()
     expect(page.locator("#confirm-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_confirm_delete.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_confirm_delete.png")
     page.locator("#cancel-action-btn").click()
     print("  - 完成。")
 
@@ -70,7 +70,7 @@ def run_verification(playwright):
     navigate_to_page(page, "teams", "#teams-table-body")
     page.locator(".edit-team-btn").first.click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_edit_team.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_edit_team.png")
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -79,7 +79,7 @@ def run_verification(playwright):
     navigate_to_page(page, "personnel", "#personnel-table-body")
     page.locator(".edit-user-btn").first.click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_edit_personnel.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_edit_personnel.png")
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -88,7 +88,7 @@ def run_verification(playwright):
     navigate_to_page(page, "channels", "#channels-table-body")
     page.locator(".edit-channel-btn").first.click()
     expect(page.locator("#form-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_edit_channel.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_edit_channel.png")
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -98,12 +98,12 @@ def run_verification(playwright):
     page.get_by_role("button", name="新增告警規則").click()
     expect(page.locator("#form-modal")).to_be_visible()
     page.wait_for_timeout(500) # Wait for modal animation
-    page.screenshot(path="jules-scratch/modal_add_rule_collapsed.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_add_rule_collapsed.png")
 
     # Click to expand the second section
     page.locator(".accordion-header").nth(1).click()
     page.wait_for_timeout(500) # Wait for accordion animation
-    page.screenshot(path="jules-scratch/modal_add_rule_expanded.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_add_rule_expanded.png")
 
     page.locator("#form-modal .close-modal-btn").first.click()
     print("  - 完成。")
@@ -113,7 +113,7 @@ def run_verification(playwright):
     navigate_to_page(page, "logs", "#logs-table-body")
     page.locator("#logs-table-body tr.log-row").first.click()
     expect(page.locator("#incident-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_incident_details.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_incident_details.png")
     page.locator("#incident-modal .close-modal-btn").first.click()
     print("  - 完成。")
 
@@ -123,7 +123,7 @@ def run_verification(playwright):
     page.get_by_role("button", name="✨ 生成事件報告").click()
     expect(page.locator("#gemini-modal")).to_be_visible()
     expect(page.locator("#gemini-modal-content h3")).to_be_visible(timeout=5000)
-    page.screenshot(path="jules-scratch/modal_gemini_report.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_gemini_report.png")
     page.locator("#close-gemini-modal").click()
     print("  - 完成。")
 
@@ -133,7 +133,7 @@ def run_verification(playwright):
     page.locator("#profile-name-input").fill("Test Name")
     page.get_by_role("button", name="更新資訊").click()
     expect(page.locator("#feedback-modal")).to_be_visible()
-    page.screenshot(path="jules-scratch/modal_feedback.png")
+    page.screenshot(path="jules-scratch/screenshot_modals/modal_feedback.png")
     print("  - 完成。")
 
     print("已完成所有彈出視窗的截圖。")

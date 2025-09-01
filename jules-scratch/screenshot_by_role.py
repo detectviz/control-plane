@@ -7,7 +7,7 @@ def take_role_based_screenshots():
     of the pages visible to that role, saving them with a role suffix.
     """
     file_path = f"file://{os.path.abspath('demo-page.html')}"
-    output_dir = "jules-scratch/verification" # Save to the verification sub-directory
+    output_dir = "jules-scratch/screenshot_by_role/verification" # Save to the verification sub-directory
 
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
@@ -35,7 +35,7 @@ def take_role_based_screenshots():
             print(f"--- Capturing screenshots for role: {role} ---")
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.set_viewport_size({"width": 1280, "height": 800})
+            page.set_viewport_size({"width": 1440, "height": 900})
 
             # Login
             page.goto(file_path)

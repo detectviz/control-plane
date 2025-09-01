@@ -6,7 +6,7 @@ def run_verification(playwright):
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     page.on("console", lambda msg: print(f"BROWSER LOG: {msg.text}"))
-    page.set_viewport_size({"width": 1280, "height": 800})
+    page.set_viewport_size({"width": 1440, "height": 900})
 
     # 取得 HTML 檔案的絕對路徑
     file_path = os.path.abspath('demo-page.html')
@@ -62,7 +62,7 @@ def run_verification(playwright):
         expect(page.locator(f'#page-{page_id}')).to_be_visible()
         page.wait_for_timeout(200) # Small delay for render
 
-        page.screenshot(path=f"jules-scratch/{page_id}.png")
+        page.screenshot(path=f"jules-scratch/screenshot_pages/{page_id}.png")
         print(f"  - 已儲存截圖: {page_id}.png")
 
         # Special handling for the 'automation' page tabs
@@ -71,7 +71,7 @@ def run_verification(playwright):
             if execution_logs_tab.is_visible():
                 execution_logs_tab.click()
                 page.wait_for_timeout(500)
-                page.screenshot(path=f"jules-scratch/automation_execution_logs.png")
+                page.screenshot(path=f"jules-scratch/screenshot_pages/automation_execution_logs.png")
                 print(f"  - 已儲存截圖: automation_execution_logs.png")
 
     print("已完成所有主要頁面的截圖。")
