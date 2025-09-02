@@ -2,14 +2,18 @@
 
 ## 檔案為 [demo-page.html](demo-page.html)，以下任務需要執行，請先閱讀 [AGENTS.md](AGENTS.md) 再開始。
 
-- [ ] Header 中，Avatar 頭像請移除、個人資料的 Link Icon 也請移除。
+- [ ] 畫面左上目前有新增選單收合的功能，比照 Grafana 的作法，但是功能還有缺陷，請修正。
 
-- [ ] 告警紀錄頁面，列表的「等級」與「狀態」欄位對調。
+Grafana 的作法：
+- 網址：https://play.grafana.org
+- [LOGO Hover 會顯示 Open Menu，點擊後會顯示選單](1.png)
+- [LOGO Hover 會顯示 Close Menu，點擊後會收合選單](2.png)
+- [Undock 選單 Icon Hover 會顯示 Dock Menu，點擊後會顯示選單](3.png)
+- [Dock 選單 Icon Hover 會顯示 Undock Menu，點擊後會收合選單](4.png)
 
-- [ ] 容量規劃頁面，把「開始分析」按鈕移動到「選擇指標」的後面，與「選擇目標群組」、「選擇指標」並列。
-
-- [ ] 每個頁面的 Table 的欄位字體大小，都比內文字體大小還要小，需要調整。
-
-- [ ] Header 左上方需要新增漢堡選單 Icon 按鈕，點擊後可以切換側邊選單的顯示與否，手機版跟桌機版都要有。
-
-- [ ] 將 `jules-scratch/` 目錄底下 `screenshot_modals.py` 中的 「# 12. 自動化執行日誌輸出彈窗」 這段程式碼執行時會出錯，請修正。
+現況
+[多餘 dock-toggle-btn 按鈕](5.png)
+- [ ] 多餘的 dock-toggle-btn 按鈕，請移除。
+- [ ] 現有的 close-menu-btn 按鈕，請更換 icon 樣式。
+- [ ] Control Plane 字樣不須要可以點擊。
+- [ ] Control Plane 字樣旁邊的 cursor-pointer 請移除。
