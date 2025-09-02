@@ -152,7 +152,8 @@ def run_verification(playwright):
     page.wait_for_timeout(200)
     page.screenshot(path="jules-scratch/screenshot_modals/modal_scan_network_results.png")
     print("  - 已儲存截圖: modal_scan_network_results.png")
-    page.locator('#form-modal button:has-text("取消")').click()
+    # Wait for auto-close (the modal will close automatically after import)
+    page.wait_for_timeout(2000)  # Wait for the modal to auto-close
     print("  - 完成。")
 
     # 12. 自動化執行日誌輸出彈窗
