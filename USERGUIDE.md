@@ -10,7 +10,7 @@
   - [2.2. 側邊導覽列](#22-側邊導覽列)
   - [2.3. 頁首功能區](#23-頁首功能區)
 - [3. 儀表板 (Dashboard)](#3-儀表板-dashboard)
-- [4. 設備管理 (Device Management)](#4-設備管理-device-management)
+- [4. 資源管理 (Resource Management)](#4-資源管理-resource-management)
   - [4.1. 總覽與批次操作](#41-總覽與批次操作)
   - [4.2. 網段掃描與探索](#42-網段掃描與探索)
 - [5. 組織與權限管理](#5-組織與權限管理)
@@ -63,23 +63,23 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 ![儀表板](jules-scratch/screenshot_pages/dashboard.png)
 
-## 4. 設備管理 (Device Management)
+## 4. 資源管理 (Resource Management)
 
 ### 4.1. 總覽與批次操作
 
-此頁面集中呈現了所有受監控的設備列表。您可以透過搜尋功能快速找到特定設備，並查看其基本資訊與狀態。為了提升管理效率，我們提供了強大的批次操作功能：
-1.  在設備列表的每一行前方勾選您想操作的設備。
+此頁面集中呈現了所有受監控的資源列表。您可以透過搜尋功能快速找到特定資源，並查看其基本資訊與狀態。為了提升管理效率，我們提供了強大的批次操作功能：
+1.  在資源列表的每一行前方勾選您想操作的資源。
 2.  勾選後，列表頂部會出現「批次操作欄」。
-3.  您可以選擇將這些設備「批次刪除」、「批次加入群組」或「批次移出群組」。
+3.  您可以選擇將這些資源「批次刪除」、「批次加入群組」或「批次移出群組」。
 
-![設備管理](jules-scratch/screenshot_pages/devices.png)
-![設備批次操作](jules-scratch/gif_frames/frame_003_04_devices_batch_selection.png)
+![資源管理](jules-scratch/screenshot_pages/resources.png)
+![資源批次操作](jules-scratch/gif_frames/frame_003_04_resources_batch_selection.png)
 
 ### 4.2. 網段掃描與探索
 
-除了手動新增資源，您還可以透過「掃描網段」功能，自動探索網路中的未知設備。
+除了手動新增資源，您還可以透過「掃描網段」功能，自動探索網路中的未知資源。
 1.  點擊「掃描網段」按鈕，輸入目標網段與掃描方式。
-2.  系統會回報掃描結果，您可以勾選希望匯入的設備。
+2.  系統會回報掃描結果，您可以勾選希望匯入的資源。
 3.  點擊「匯入資源」即可完成批次新增。
 
 ![網段掃描初始畫面](jules-scratch/screenshot_modals/modal_scan_network_initial.png)
@@ -101,7 +101,7 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 「團隊」是權限賦予與通知訂閱的核心單位。在此頁面，您可以：
 - 建立團隊並加入成員。
-- 將「設備群組」的查看權限授予團隊。
+- 將「資源群組」的查看權限授予團隊。
 - 設定團隊的「通知訂閱者」，決定告警訊息要發送給哪些「人員」或「通知管道」。
 
 ![團隊管理](jules-scratch/screenshot_pages/teams.png)
@@ -109,7 +109,7 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 ## 6. 告警規則 (Alert Rules)
 
-您可以針對特定的「設備群組」自訂告警觸發的條件。點擊「新增規則」後，會彈出一個整合式的設定視窗，所有選項都清晰地組織在可摺疊的區塊中，方便您進行配置。
+您可以針對特定的「資源群組」自訂告警觸發的條件。點擊「新增規則」後，會彈出一個整合式的設定視窗，所有選項都清晰地組織在可摺疊的區塊中，方便您進行配置。
 
 ![告警規則頁面](jules-scratch/screenshot_pages/rules.png)
 
@@ -118,7 +118,7 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 1.  **基本設定 (Basic Settings)**:
     *   **規則名稱**: 為您的規則取一個易於識別的名稱。
     *   **描述**: (選填) 簡要說明此規則的目的。
-    *   **設備群組**: 選擇此規則要應用的設備群組。
+    *   **資源群組**: 選擇此規則要應用的資源群組。
     *   **條件**: 設定觸發告警的具體條件，例如 `CPU 使用率 > 80%`。
 
     ![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_007_08_add_rule_modal.png)
@@ -131,7 +131,7 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 3.  **通知內容自定義 (Custom Notification Content)**:
     *   (選填) 系統允許您客製化告警通知的標題與內容。
-    *   您可以使用 `{{ .DeviceName }}`、`{{ .MetricValue }}` 等變數來動態插入告警的上下文資訊，讓收到的通知更具可讀性與參考價值。
+    *   您可以使用 `{{ .ResourceName }}`、`{{ .MetricValue }}` 等變數來動態插入告警的上下文資訊，讓收到的通知更具可讀性與參考價值。
 
     ![新增告警規則的彈出視窗，完整展示所有設定選項](jules-scratch/gif_frames/frame_009_10_add_rule_modal_all_expanded.png)
 
@@ -155,7 +155,7 @@ Control Plane 是一個以後端驅動 (Backend-Driven) 為核心理念的現代
 
 ## 8. 容量規劃 (Capacity Planning)
 
-本平台提供主動式的資源規劃工具。您可以選擇一個「設備群組」和一個關鍵指標（如 CPU 或磁碟使用率），系統將分析歷史數據並預測未來的資源趨勢。
+本平台提供主動式的資源規劃工具。您可以選擇一個「資源群組」和一個關鍵指標（如 CPU 或磁碟使用率），系統將分析歷史數據並預測未來的資源趨勢。
 
 ![容量規劃](jules-scratch/screenshot_pages/capacity.png)
 
