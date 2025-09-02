@@ -34,12 +34,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GenericRequestContext'
+              $ref: "#/components/schemas/GenericRequestContext"
       responses:
-        '202':
-          $ref: '#/components/responses/AcceptedResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+        "202":
+          $ref: "#/components/responses/AcceptedResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /diagnostics/deployment:
     post:
@@ -52,12 +52,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeploymentRequestContext'
+              $ref: "#/components/schemas/DeploymentRequestContext"
       responses:
-        '202':
-          $ref: '#/components/responses/AcceptedResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+        "202":
+          $ref: "#/components/responses/AcceptedResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /diagnostics/alerts:
     post:
@@ -70,30 +70,30 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AlertRequestContext'
+              $ref: "#/components/schemas/AlertRequestContext"
       responses:
-        '202':
-          $ref: '#/components/responses/AcceptedResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+        "202":
+          $ref: "#/components/responses/AcceptedResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /capacity/analyze:
     post:
       tags:
         - SRE-Assistant - 主動端點
       summary: 分析服務容量 (產品化)
-      description: 針對給定的設備群組與指標，執行容量分析，對應「容量規劃」功能。
+      description: 針對給定的資源群組與指標，執行容量分析，對應「容量規劃」功能。
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CapacityRequestContext'
+              $ref: "#/components/schemas/CapacityRequestContext"
       responses:
-        '202':
-          $ref: '#/components/responses/AcceptedResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+        "202":
+          $ref: "#/components/responses/AcceptedResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /api/v1/audit-logs:
     get:
@@ -120,16 +120,16 @@ paths:
             type: string
             format: date-time
       responses:
-        '200':
+        "200":
           description: 一個包含審計日誌事件的陣列。
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AuditLog'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+                  $ref: "#/components/schemas/AuditLog"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /api/v1/incidents:
     get:
@@ -153,16 +153,16 @@ paths:
             type: string
             enum: [error, warning, info]
       responses:
-        '200':
+        "200":
           description: 一個包含告警紀錄的陣列。
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Incident'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
+                  $ref: "#/components/schemas/Incident"
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
 
   /api/v1/incidents/{id}:
     get:
@@ -171,16 +171,16 @@ paths:
       summary: 獲取單筆告警紀錄
       description: 獲取單一告警事件的詳細資訊。
       parameters:
-        - $ref: '#/components/parameters/IncidentId'
+        - $ref: "#/components/parameters/IncidentId"
       responses:
-        '200':
+        "200":
           description: 所請求的告警紀錄。
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Incident'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
+                $ref: "#/components/schemas/Incident"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
 
   /api/v1/executions/{id}:
     get:
@@ -189,16 +189,16 @@ paths:
       summary: 獲取自動化執行日誌
       description: 提供特定自動化腳本執行的詳細日誌。
       parameters:
-        - $ref: '#/components/parameters/ExecutionId'
+        - $ref: "#/components/parameters/ExecutionId"
       responses:
-        '200':
+        "200":
           description: 所請求的執行日誌。
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExecutionLog'
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
+                $ref: "#/components/schemas/ExecutionLog"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
 
 components:
   schemas:
@@ -226,7 +226,7 @@ components:
           description: "由後端系統組裝的自然語言查詢指令"
           example: "為選定的告警生成一份事件報告。"
         context:
-          $ref: '#/components/schemas/ContextBase'
+          $ref: "#/components/schemas/ContextBase"
       required:
         - user_query
         - context
@@ -276,7 +276,7 @@ components:
           properties:
             device_group_id:
               type: integer
-              description: "在 UI 上選擇的設備群組 ID"
+              description: "在 UI 上選擇的資源群組 ID"
             metric_name:
               type: string
               description: "在 UI 上選擇的指標"
@@ -428,16 +428,16 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SessionResponse'
+            $ref: "#/components/schemas/SessionResponse"
     BadRequestResponse:
       description: 無效請求
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     NotFoundResponse:
       description: 找不到資源
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"

@@ -443,11 +443,22 @@
           <div class="w-px h-6 bg-slate-700"></div>
 
           <div class="flex items-center">
-            <div>
+            <img id="user-avatar" class="h-8 w-8 rounded-full" src="https://placehold.co/100x100/64748b/ffffff?text=A"
+              alt="User Avatar">
+            <div class="ml-3">
               <p id="user-name" class="text-sm font-medium">Admin</p>
               <p id="user-dept" class="text-xs text-slate-400">超級管理員</p>
             </div>
           </div>
+
+          <button title="個人資料" class="sidebar-link text-slate-400 hover:text-white p-1 rounded-full"
+            data-page="profile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
 
           <button id="logout-btn" title="登出" class="text-slate-400 hover:text-white p-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -598,29 +609,33 @@
 
         <section id="page-resources" class="page hidden">
           <div class="bg-white p-6 rounded-xl shadow-md">
-            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
-              <div id="batch-operations-bar" class="hidden">
-                <div class="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <span class="text-sm font-medium text-blue-800 whitespace-nowrap">已選取 <span id="selected-count">0</span> 個資源</span>
-                  <div class="flex items-center space-x-2 ml-4">
-                    <button id="batch-add-to-group-btn"
-                      class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">加入群組</button>
-                    <button id="batch-remove-from-group-btn"
-                      class="px-3 py-1.5 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 font-semibold transition-colors text-sm">移出群組</button>
-                    <button id="batch-delete-btn"
-                      class="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold transition-colors text-sm">刪除</button>
-                    <button id="clear-selection-btn"
-                      class="px-3 py-1.5 bg-slate-500 text-white rounded-lg hover:bg-slate-600 font-semibold transition-colors text-sm">清除</button>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+              <div class="w-full md:w-auto">
+                <!-- 批次操作欄 -->
+                <div id="batch-operations-bar" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                  <div class="flex items-center justify-between">
+                    <span class="px-1.5 text-sm font-medium text-blue-800">已選取 <span id="selected-count">0</span>
+                      個資源</span>
+                    <div class="flex items-center space-x-2">
+                      <button id="batch-add-to-group-btn"
+                        class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">批次加入群組</button>
+                      <button id="batch-remove-from-group-btn"
+                        class="px-3 py-1.5 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 font-semibold transition-colors text-sm">批次移出群組</button>
+                      <button id="batch-delete-btn"
+                        class="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold transition-colors text-sm">批次刪除</button>
+                      <button id="clear-selection-btn"
+                        class="px-3 py-1.5 bg-slate-500 text-white rounded-lg hover:bg-slate-600 font-semibold transition-colors text-sm">清除選取</button>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="flex items-center space-x-2 flex-grow justify-end">
+              <div class="flex items-center space-x-2 w-full md:w-auto">
                 <input type="text" id="resource-search-input" placeholder="搜尋資源名稱或 IP..."
                   class="w-full md:w-64 px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
                 <button id="scan-network-btn"
-                  class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm whitespace-nowrap">掃描網段</button>
+                  class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition-colors text-sm">掃描網段</button>
                 <button id="add-resource-btn"
-                  class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm whitespace-nowrap">新增資源</button>
+                  class="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors text-sm">新增資源</button>
               </div>
             </div>
             <div class="overflow-x-auto">
@@ -933,8 +948,8 @@
                     <th scope="col" class="px-6 py-3">等級</th>
                     <th scope="col" class="px-6 py-3">時間</th>
                     <th scope="col" class="px-6 py-3">狀態</th>
-                    <th scope="col" class="px-6 py-3">資源名稱</th>
                     <th scope="col" class="px-6 py-3">處理人員</th>
+                    <th scope="col" class="px-6 py-3">資源名稱</th>
                     <th scope="col" class="px-6 py-3">說明</th>
                     <th scope="col" class="px-6 py-3 text-center">操作</th>
                   </tr>
@@ -1030,28 +1045,28 @@
           <div class="space-y-6">
             <!-- Control Panel -->
             <div class="bg-white p-6 rounded-xl shadow-md">
-              <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                <div class="md:col-span-2">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇目標群組</label>
                   <select id="capacity-target-group"
                     class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">請選擇資源群組</option>
                   </select>
                 </div>
-                <div class="md:col-span-2">
+                <div>
                   <label class="block text-sm font-medium text-slate-700 mb-2">選擇指標</label>
                   <select id="capacity-metric"
                     class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">請先選擇群組</option>
                   </select>
                 </div>
-                <div>
-                  <button id="analyze-capacity-btn"
-                    class="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold transition-colors disabled:bg-purple-300 disabled:cursor-not-allowed"
-                    disabled>
-                    開始分析
-                  </button>
-                </div>
+              </div>
+              <div class="mt-4">
+                <button id="analyze-capacity-btn"
+                  class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold transition-colors disabled:bg-purple-300 disabled:cursor-not-allowed"
+                  disabled>
+                  開始分析
+                </button>
               </div>
             </div>
 
@@ -1463,10 +1478,10 @@
         { id: 4, name: '資安團隊 Email 群組', type: 'email', url: 'security-alerts@corp.com' }
       ],
       personnel: [
-        { id: 1, name: '陳經理', role: 'SuperAdmin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 3], email: 'manager.chen@corp.com', lineToken: 'GHI789jkl' },
-        { id: 2, name: '林組長', role: 'TeamManager', subscribedLevels: ['high', 'medium'], teamIds: [1], email: 'manager.lin@corp.com', lineToken: '' },
-        { id: 3, name: '王工程師', role: 'TeamMember', subscribedLevels: ['high'], teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw' },
-        { id: 4, name: 'Admin', role: 'SuperAdmin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
+        { id: 1, name: '陳經理', role: 'Super Admin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 3], email: 'manager.chen@corp.com', lineToken: 'GHI789jkl' },
+        { id: 2, name: '林組長', role: 'Team Manager', subscribedLevels: ['high', 'medium'], teamIds: [1], email: 'manager.lin@corp.com', lineToken: '' },
+        { id: 3, name: '王工程師', role: 'Team Member', subscribedLevels: ['high'], teamIds: [1, 2], email: 'wang.pe@corp.com', lineToken: 'DEF456uvw' },
+        { id: 4, name: 'Admin', role: 'Super Admin', subscribedLevels: ['high', 'medium', 'low'], teamIds: [1, 2, 3], email: 'admin@corp.com', lineToken: 'ABC123xyz' }
       ],
       teams: [
         { id: 1, name: '網路團隊', managerId: 2, memberIds: [1, 2, 3], accessibleGroupIds: [1, 3], subscribers: [{ type: 'personnel', id: 3 }, { type: 'channel', id: 1 }] },
@@ -1523,8 +1538,6 @@
       pages.forEach(page => {
         page.id === `page-${pageId}` ? page.classList.remove('hidden') : page.classList.add('hidden');
       });
-      // Repopulate tables on page change to ensure content is fresh
-      populateTables();
     }
 
     // --- Navigation Logic ---
@@ -1891,16 +1904,16 @@
       }
       const resourcesBody = document.getElementById('resources-table-body');
       resourcesBody.innerHTML = ''; // Clear previous
-      visibleResources.forEach((r, index) => {
-        const statusDot = r.status === 'normal' ? 'bg-green-500' : (r.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500');
-        const groups = r.groupIds.map(gid => mockData.resourceGroups.find(g => g.id === gid)?.name).filter(Boolean);
+      visibleResources.forEach((d, index) => {
+        const statusDot = d.status === 'normal' ? 'bg-green-500' : (d.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500');
+        const groups = d.groupIds.map(gid => mockData.resourceGroups.find(g => g.id === gid)?.name).filter(Boolean);
         const groupsHtml = groups.map(g => `<span class="bg-slate-100 text-slate-600 text-xs font-medium px-2 py-1 rounded-full">${g}</span>`).join(' ');
 
         const row = `<tr class="bg-white" data-index="${index}">
-                        <td data-label="選取" class="px-2 py-4"><input type="checkbox" class="resource-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" data-resource-id="${r.id}"></td>
+                        <td data-label="選取" class="px-2 py-4"><input type="checkbox" class="resource-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" data-resource-id="${d.id}"></td>
                         <td data-label="狀態" class="px-6 py-4"><span class="h-3 w-3 rounded-full inline-block ${statusDot}"></span></td>
-                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${r.name}</td>
-                        <td data-label="IP 位址" class="px-6 py-4">${r.ip}</td>
+                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${d.name}</td>
+                        <td data-label="IP 位址" class="px-6 py-4">${d.ip}</td>
                         <td data-label="所屬群組" class="px-6 py-4"><div class="flex flex-wrap gap-1">${groupsHtml || '無'}</div></td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                             <button class="edit-resource-btn text-blue-600 hover:text-blue-800 font-medium" style="display: ${userRole === 'TeamMember' ? 'none' : 'inline-block'}">編輯</button>
@@ -1987,10 +2000,10 @@
         const index = mockData.personnel.indexOf(p);
         let roleBadge;
         switch (p.role) {
-          case 'SuperAdmin':
+          case 'Super Admin':
             roleBadge = '<span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">超級管理員</span>';
             break;
-          case 'TeamManager':
+          case 'Team Manager':
             roleBadge = '<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">團隊管理員</span>';
             break;
           default:
@@ -2075,8 +2088,8 @@
                         <td data-label="等級" class="px-6 py-4">${levelBadge}</td>
                         <td data-label="時間" class="px-6 py-4">${l.time}</td>
                         <td data-label="狀態" class="px-6 py-4">${statusMap[l.status]}</td>
-                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${l.name}</td>
                         <td data-label="處理人員" class="px-6 py-4">${l.assignee || '-'}</td>
+                        <td data-label="資源名稱" class="px-6 py-4 font-medium text-slate-900">${l.name}</td>
                         <td data-label="說明" class="px-6 py-4">${l.desc}</td>
                         <td data-label="操作" class="px-6 py-4 text-left md:text-center">
                              <button class="ack-log-btn text-yellow-600 hover:text-yellow-800 font-medium ${l.status !== 'new' ? 'hidden' : ''}" data-index="${index}">Ack</button>
@@ -2144,21 +2157,22 @@
       let currentAction = null;
 
       function openFormModal(title, bodyHtml, action, index = null) {
-        console.log(`Opening modal: ${title}`);
         formModalTitle.textContent = title;
         formModalBody.innerHTML = bodyHtml;
         currentAction = action;
         currentEditIndex = index;
         formModal.classList.remove('hidden', 'opacity-0');
         formModal.classList.add('flex');
-        formModal.querySelector('div').classList.remove('scale-95');
-        // Populate automation script options if the select exists
-        const scriptSelect = document.getElementById('automation-script-select');
-        if (scriptSelect && scriptSelect.children.length === 1) {
-          mockData.automationScripts.forEach(script => {
-            scriptSelect.innerHTML += `<option value="${script.id}">${script.name}</option>`;
-          });
-        }
+        setTimeout(() => {
+          formModal.querySelector('div').classList.remove('scale-95');
+          // Populate automation script options if the select exists
+          const scriptSelect = document.getElementById('automation-script-select');
+          if (scriptSelect && scriptSelect.children.length === 1) {
+            mockData.automationScripts.forEach(script => {
+              scriptSelect.innerHTML += `<option value="${script.id}">${script.name}</option>`;
+            });
+          }
+        }, 10);
       }
 
       function closeFormModal() {
@@ -2215,7 +2229,6 @@
 
       // Resource Actions
       document.getElementById('add-resource-btn').addEventListener('click', () => {
-        console.log("Add resource button clicked!");
         const groupCheckboxes = mockData.resourceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
                     <div class="space-y-4">
@@ -2345,9 +2358,9 @@
                     </div>
                     <div class="accordion-content p-4 border-t border-slate-200 hidden">
                          <div class="space-y-2 text-sm">
-                            <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
-                            <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                            <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .ResourceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                            <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .ResourceName }} ({{ .ResourceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                            <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .ResourceName }}。</p>
                         </div>
                     </div>
                 </div>
@@ -2421,9 +2434,9 @@
                       </div>
                       <div class="accordion-content p-4 border-t border-slate-200 hidden">
                            <div class="space-y-2 text-sm">
-                              <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .DeviceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
-                              <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .DeviceName }} ({{ .DeviceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
-                              <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .DeviceName }}。</p>
+                              <div><label class="font-medium text-slate-700">自訂標題</label><input type="text" placeholder="[告警] {{ .ResourceName }} 發生問題" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></div>
+                              <div><label class="font-medium text-slate-700">自訂內容</label><textarea rows="4" placeholder="資源 {{ .ResourceName }} ({{ .ResourceIP }}) 的 {{ .MetricName }} 指標目前數值為 {{ .MetricValue }}，已觸發告警。" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm"></textarea></div>
+                              <p class="text-xs text-slate-500 mt-2">如果留空，將使用預設的通知範本。您可以使用變數，如 {{ .ResourceName }}。</p>
                           </div>
                       </div>
                   </div>
@@ -2596,9 +2609,9 @@
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
                           <select id="user-role" class="col-span-2 mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="SuperAdmin">超級管理員</option>
-                            <option value="TeamManager">團隊管理員</option>
-                            <option value="TeamMember">一般使用者</option>
+                            <option value="Super Admin">超級管理員</option>
+                            <option value="Team Manager">團隊管理員</option>
+                            <option value="Team Member">一般使用者</option>
                           </select>
                         </div>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
@@ -2627,9 +2640,9 @@
                             <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm"></div>
                              <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
                               <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm">
-                                <option value="SuperAdmin" ${user.role === 'SuperAdmin' ? 'selected' : ''}>超級管理員</option>
-                                <option value="TeamManager" ${user.role === 'TeamManager' ? 'selected' : ''}>團隊管理員</option>
-                                <option value="TeamMember" ${user.role === 'TeamMember' ? 'selected' : ''}>一般使用者</option>
+                                <option value="Super Admin" ${user.role === 'Super Admin' ? 'selected' : ''}>超級管理員</option>
+                                <option value="Team Manager" ${user.role === 'Team Manager' ? 'selected' : ''}>團隊管理員</option>
+                                <option value="Team Member" ${user.role === 'Team Member' ? 'selected' : ''}>一般使用者</option>
                               </select>
                             </div>
                             <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
@@ -3219,7 +3232,7 @@
         setTimeout(() => formModal.querySelector('div').classList.remove('scale-95'), 10);
       });
 
-      // resource search functionality
+      // Resource search functionality
       const resourceSearchInput = document.getElementById('resource-search-input');
       if (resourceSearchInput) {
         resourceSearchInput.addEventListener('input', (e) => {

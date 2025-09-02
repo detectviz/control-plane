@@ -39,5 +39,6 @@ python jules-scratch/create_gif.py          ＃ 產生 GIF 動畫
 ```
 
 ## 程式碼風格
+- 執行計劃、Commit Message 使用「繁體中文」。
 - 盡可能遵循現有檔案的程式碼風格。
 - 若無特定風格，請採用簡潔、易讀的寫法。
