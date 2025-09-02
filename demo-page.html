@@ -241,22 +241,13 @@
         </div>
         <div class="flex items-center gap-2">
           <!-- Dock/Undock Menu Button -->
-          <button id="dock-toggle-btn"
-            class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-700 transition-colors"
-            title="Undock menu">
+          <button id="close-menu-btn"
+            class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-700 transition-colors" title="Close menu">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="9" x2="15" y2="15"></line>
               <line x1="15" y1="9" x2="9" y2="15"></line>
-            </svg>
-          </button>
-          <!-- Dock/Undock Menu Button -->
-          <button id="close-menu-btn"
-            class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-700 transition-colors" title="Close menu">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6L6 18M6 6l12 12"></path>
             </svg>
           </button>
         </div>
@@ -437,17 +428,12 @@
         <div class="flex items-center gap-4">
           <!-- Logo shows when sidebar is closed (Grafana style) -->
           <div class="flex items-center gap-2" id="header-logo-area">
-            <div class="cursor-pointer hover:bg-slate-700 p-2 rounded transition-colors" id="header-logo-toggle">
-              <img src="LOGO.png" alt="Control Plane Logo" class="h-6 w-auto">
+            <div class="cursor-pointer hover:bg-slate-700 p-2 rounded transition-colors" id="header-logo-toggle"
+              title="Open menu">
+              <img src="LOGO.png" alt="Control Plane Logo" class="h-8 w-auto">
             </div>
-            <div class="cursor-pointer hover:bg-slate-700 px-2 py-1 rounded transition-colors flex items-center gap-1"
-              id="header-title-toggle">
+            <div id="header-title-toggle">
               <span class="text-lg font-semibold text-white">Control Plane</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="text-slate-400">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
             </div>
           </div>
           <div id="breadcrumb" class="text-lg font-semibold text-slate-200">總覽儀表板</div>
@@ -1573,48 +1559,34 @@
       const notificationBtn = document.getElementById('notification-btn');
       const notificationDropdown = document.getElementById('notification-dropdown');
 
-      // Dock state management
-      let isMenuDocked = true;
-
-      function updateDockButton() {
-        const dockButton = document.getElementById('dock-toggle-btn');
-        if (dockButton) {
-          if (isMenuDocked) {
-            dockButton.title = 'Undock menu';
-          } else {
-            dockButton.title = 'Dock menu';
-          }
-        }
-      }
-
+      // --- Sidebar/Menu Logic ---
       // Initialize sidebar state based on screen size
       function initializeSidebarState() {
         if (window.innerWidth >= 1024) {
-          // Desktop: show sidebar by default
-          sidebar.classList.remove('-ml-64');
+          sidebar.classList.remove('-ml-64'); // Desktop: show sidebar
         } else {
-          // Mobile: hide sidebar by default
-          sidebar.classList.add('-ml-64');
+          sidebar.classList.add('-ml-64'); // Mobile: hide sidebar
         }
+        updateMenuState();
+      }
+
+      // Update titles and visibility based on sidebar state
+      function updateMenuState() {
+        const isSidebarOpen = !sidebar.classList.contains('-ml-64');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+
+        if (isSidebarOpen) {
+          headerLogoArea.style.display = 'none';
+          closeMenuBtn.title = 'Close menu';
+        } else {
+          headerLogoArea.style.display = 'flex';
+          headerLogoToggle.title = 'Open menu';
+        }
+        updateHeaderTitle();
       }
 
       // Initialize on page load
       initializeSidebarState();
-
-      // Initialize arrow direction and header logo visibility
-      function updateHeaderLogoState() {
-        const arrow = headerTitleToggle.querySelector('svg');
-        const isSidebarOpen = !sidebar.classList.contains('-ml-64');
-        if (isSidebarOpen) {
-          arrow.style.transform = 'rotate(0deg)'; // Down arrow when open
-          headerLogoArea.style.display = 'none'; // Hide header logo area when sidebar open
-        } else {
-          arrow.style.transform = 'rotate(90deg)'; // Right arrow when closed
-          headerLogoArea.style.display = 'flex'; // Show header logo area when sidebar closed
-        }
-      }
-      updateHeaderLogoState();
-      updateDockButton();
 
       const accordionToggles = document.querySelectorAll('.submenu-toggle');
 
@@ -1699,62 +1671,23 @@
 
       function toggleSidebar() {
         sidebar.classList.toggle('-ml-64');
+        updateMenuState();
 
-        // Update arrow rotation (Grafana style)
-        const arrow = headerTitleToggle.querySelector('svg');
-        const isSidebarOpen = !sidebar.classList.contains('-ml-64');
-        if (isSidebarOpen) {
-          arrow.style.transform = 'rotate(0deg)'; // Down arrow when open
-          // Hide header logo area when sidebar is open (like Grafana)
-          headerLogoArea.style.display = 'none';
-        } else {
-          arrow.style.transform = 'rotate(90deg)'; // Right arrow when closed  
-          // Show header logo area when sidebar is closed (like Grafana)
-          headerLogoArea.style.display = 'flex';
-        }
-
-        // Update header title based on sidebar state
-        updateHeaderTitle();
-        // Add overlay when sidebar is open on mobile/tablet only
+        // Handle overlay for mobile/tablet view
         if (window.innerWidth < 1024) {
           if (!sidebar.classList.contains('-ml-64')) {
             document.body.appendChild(createOverlay());
           } else {
             removeOverlay();
           }
-        } else {
-          // Remove overlay on desktop
-          removeOverlay();
         }
       }
 
-      // Add event listeners for header logo, title toggle and menu buttons
+      // Add event listeners for menu controls
       headerLogoToggle.addEventListener('click', toggleSidebar);
-      headerTitleToggle.addEventListener('click', toggleSidebar);
-
       const closeMenuBtn = document.getElementById('close-menu-btn');
       if (closeMenuBtn) {
         closeMenuBtn.addEventListener('click', toggleSidebar);
-      }
-
-      const dockToggleBtn = document.getElementById('dock-toggle-btn');
-      if (dockToggleBtn) {
-        dockToggleBtn.addEventListener('click', function () {
-          isMenuDocked = !isMenuDocked;
-          updateDockButton();
-
-          if (isMenuDocked) {
-            // Switch to docked mode - sidebar pushes content
-            sidebar.classList.remove('absolute', 'z-40');
-            sidebar.classList.add('relative');
-            console.log('Menu docked');
-          } else {
-            // Switch to undocked mode - sidebar floats over content
-            sidebar.classList.remove('relative');
-            sidebar.classList.add('absolute', 'z-40');
-            console.log('Menu undocked');
-          }
-        });
       }
 
       // Function to create overlay
