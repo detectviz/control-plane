@@ -14,7 +14,7 @@
 `demo-page.html` 是 `ARCHITECTURE.md` 文件中定義之架構的視覺化原型。任何對其中一個檔案的修改，都必須確保另一個檔案的內容與之一致。
 
 - **若修改 `ARCHITECTURE.md`**：必須檢查 `demo-page.html` 是否需要對應更新，以符合新的架構設計。
-- **若修改 `demo-page.html`**：必須檢查 `ARCHITECTURE.md` 的規格是否需要更新，以反映實作上的變更。
+- **若修改 `demo-page.html`**：必須檢查 `ARCHITECTURE.md`、 `USERGUIDE.md` 的規格是否需要更新，以反映實作上的變更。
 
 ### 2. 前端變更後的截圖更新
 
@@ -29,11 +29,14 @@
 請參考 `jules-scratch/README.md` 的說明來執行截圖腳本。主要步驟如下：
 
 1.  確保已安裝 `playwright`。
-2.  從專案根目錄執行以下兩個腳本：
-    ```bash
-    python jules-scratch/screenshot_pages.py
-    python jules-scratch/screenshot_modals.py
-    ```
+2.  從專案根目錄執行以下三個腳本：
+
+```bash
+python jules-scratch/screenshot_pages.py    ＃ 產生頁面截圖
+python jules-scratch/screenshot_modals.py   ＃ 產生彈窗截圖
+python jules-scratch/screenshot_by_role.py  ＃ 產生角色不同狀態的截圖
+python jules-scratch/create_gif.py          ＃ 產生 GIF 動畫
+```
 
 ## 程式碼風格
 - 盡可能遵循現有檔案的程式碼風格。

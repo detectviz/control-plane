@@ -32,6 +32,8 @@ go.work.sum
 # .vscode/
 
 # OS files
+__pycache__/
+tmp/
 .DS_Store
 .DS_Store?
 ._*
