@@ -178,6 +178,13 @@
         font-weight: 600;
         color: #475569;
       }
+
+      #notification-dropdown {
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+      }
     }
   </style>
 </head>
@@ -235,19 +242,22 @@
       class="w-64 h-full flex-shrink-0 bg-slate-800 flex flex-col transition-all duration-300 ease-in-out -ml-64 lg:relative absolute lg:z-auto z-40">
       <!-- Sidebar header with logo (Grafana style) -->
       <div class="h-16 flex items-center justify-between px-4 border-b border-slate-700">
-        <div class="flex items-center gap-3">
+        <div id="sidebar-header-toggle"
+          class="flex items-center gap-3 cursor-pointer hover:bg-slate-700 -ml-2 p-2 rounded-lg transition-colors"
+          title="Close menu">
           <img src="LOGO.png" alt="Control Plane Logo" class="h-8 w-auto">
           <span class="text-lg font-semibold text-white">Control Plane</span>
         </div>
         <div class="flex items-center gap-2">
           <!-- Dock/Undock Menu Button -->
-          <button id="close-menu-btn"
-            class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-700 transition-colors" title="Close menu">
+          <button id="pin-menu-btn"
+            class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-700 transition-colors"
+            title="Undock menu">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="9" y1="9" x2="15" y2="15"></line>
-              <line x1="15" y1="9" x2="9" y2="15"></line>
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M9 3v18" />
+              <path d="m16 15-3-3 3-3" />
             </svg>
           </button>
         </div>
@@ -432,11 +442,9 @@
               title="Open menu">
               <img src="LOGO.png" alt="Control Plane Logo" class="h-8 w-auto">
             </div>
-            <div id="header-title-toggle">
-              <span class="text-lg font-semibold text-white">Control Plane</span>
-            </div>
           </div>
-          <div id="breadcrumb" class="text-lg font-semibold text-slate-200">總覽儀表板</div>
+          <div id="breadcrumb"
+            class="text-lg font-semibold text-slate-200 whitespace-nowrap overflow-hidden text-ellipsis">總覽儀表板</div>
         </div>
         <div class="flex items-center space-x-4">
           <div class="relative">
@@ -1573,11 +1581,13 @@
       // Update titles and visibility based on sidebar state
       function updateMenuState() {
         const isSidebarOpen = !sidebar.classList.contains('-ml-64');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const sidebarHeaderToggle = document.getElementById('sidebar-header-toggle');
 
         if (isSidebarOpen) {
           headerLogoArea.style.display = 'none';
-          closeMenuBtn.title = 'Close menu';
+          if (sidebarHeaderToggle) {
+            sidebarHeaderToggle.title = 'Close menu';
+          }
         } else {
           headerLogoArea.style.display = 'flex';
           headerLogoToggle.title = 'Open menu';
@@ -1649,22 +1659,21 @@
       function updateHeaderTitle() {
         const isSidebarOpen = !sidebar.classList.contains('-ml-64');
         const isDesktop = window.innerWidth >= 1024;
+        const activePage = document.querySelector('.sidebar-link.active');
+        let pageTitle = '總覽儀表板'; // Default title
+        if (activePage) {
+          pageTitle = activePage.textContent.trim();
+        }
 
         if (isDesktop) {
           // On desktop, always show current page breadcrumb
-          const activePage = document.querySelector('.sidebar-link.active');
-          if (activePage) {
-            breadcrumb.textContent = activePage.textContent.trim();
-          }
+          breadcrumb.textContent = pageTitle;
         } else {
-          // On mobile, show title based on sidebar state
+          // On mobile, show title only when sidebar is open
           if (isSidebarOpen) {
-            const activePage = document.querySelector('.sidebar-link.active');
-            if (activePage) {
-              breadcrumb.textContent = activePage.textContent.trim();
-            }
+            breadcrumb.textContent = pageTitle;
           } else {
-            breadcrumb.textContent = 'Control Plane';
+            breadcrumb.textContent = ''; // Hide breadcrumb when sidebar is closed on mobile
           }
         }
       }
@@ -1685,9 +1694,13 @@
 
       // Add event listeners for menu controls
       headerLogoToggle.addEventListener('click', toggleSidebar);
-      const closeMenuBtn = document.getElementById('close-menu-btn');
-      if (closeMenuBtn) {
-        closeMenuBtn.addEventListener('click', toggleSidebar);
+      const sidebarHeaderToggle = document.getElementById('sidebar-header-toggle');
+      if (sidebarHeaderToggle) {
+        sidebarHeaderToggle.addEventListener('click', toggleSidebar);
+      }
+      const pinMenuBtn = document.getElementById('pin-menu-btn');
+      if (pinMenuBtn) {
+        pinMenuBtn.addEventListener('click', toggleSidebar);
       }
 
       // Function to create overlay
