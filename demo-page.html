@@ -112,7 +112,7 @@
     input[type="email"],
     input[type="number"],
     input[type="date"],
-    select,
+    select:not([hidden]),
     textarea {
       border: 1px solid #94a3b8;
       /* Corresponds to slate-400 */
@@ -122,7 +122,8 @@
       padding-right: 0.75rem;
     }
 
-    select {
+    /* 僅對未被Tom Select接管的select元素套用自定義樣式 */
+    select:not([hidden]):not(.tomselected) {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -131,6 +132,20 @@
       background-repeat: no-repeat;
       background-size: 1.5em 1.5em;
       padding-right: 2.5rem;
+    }
+
+    /* 防止被Tom Select接管的元素產生任何視覺效果 */
+    .ts-wrapper + select.tomselected,
+    select.tomselected {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 0 !important;
+      height: 0 !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
     }
 
     input[type="text"]:focus,
@@ -188,6 +203,88 @@
         top: 4rem !important;
         margin-top: 0 !important;
       }
+    }
+
+    /* 徹底隱藏被Tom Select接管的原生select元素 */
+    select.tomselected {
+      display: none !important;
+      border: none !important;
+      padding: 0 !important;
+      background: none !important;
+    }
+
+    /* Tom Select 樣式修復 - 精確針對雙邊框問題 */
+    .ts-wrapper.single .ts-control {
+      border: 1px solid #d1d5db !important;
+      border-radius: 0.5rem !important;
+      background: white !important;
+      padding: 0.375rem 0.75rem !important;
+      min-height: auto !important;
+      font-size: 0.875rem !important;
+      box-shadow: none !important;
+    }
+
+    /* 確保Tom Select控制項內部沒有額外邊框 */
+    .ts-wrapper .ts-control,
+    .ts-wrapper .ts-control * {
+      box-shadow: none !important;
+      outline: none !important;
+    }
+    
+    /* 防止原生select造成雙邊框 */
+    .ts-wrapper select {
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .ts-wrapper.single .ts-control:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 1px #3b82f6 !important;
+      outline: none !important;
+    }
+
+    .ts-wrapper.single .ts-control input {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    /* 多選 Tom Select 樣式 */
+    .ts-wrapper.multi .ts-control {
+      border: 1px solid #d1d5db !important;
+      border-radius: 0.5rem !important;
+      background: white !important;
+      padding: 0.25rem 0.5rem !important;
+      min-height: 2.5rem !important;
+      box-shadow: none !important;
+    }
+
+    .ts-wrapper.multi .ts-control:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 1px #3b82f6 !important;
+      outline: none !important;
+    }
+
+    /* Tom Select 下拉選單樣式 */
+    .ts-dropdown {
+      border: 1px solid #d1d5db !important;
+      border-radius: 0.5rem !important;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    }
+
+    .ts-dropdown .option {
+      padding: 0.5rem 0.75rem !important;
+      font-size: 0.875rem !important;
+    }
+
+    .ts-dropdown .option:hover {
+      background-color: #f8fafc !important;
+    }
+
+    .ts-dropdown .option.active {
+      background-color: #3b82f6 !important;
+      color: white !important;
     }
   </style>
 </head>
@@ -1029,7 +1126,7 @@
                   <input type="date" id="log-end-date"
                     class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
                   <select id="log-status-filter"
-                    class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    class="px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-slate-800">
                     <option value="">所有狀態</option>
                     <option value="success">成功</option>
                     <option value="failed">失敗</option>
@@ -1559,8 +1656,108 @@
       });
     }
 
+    // --- Tom Select Initialization ---
+    function initializeTomSelect() {
+      // Get all select elements that don't already have Tom Select initialized
+      const selectElements = document.querySelectorAll('select:not([data-tom-select-initialized])');
+      
+      selectElements.forEach(select => {
+        // Skip if already initialized
+        if (select.dataset.tomSelectInitialized) return;
+        
+        // Skip elements that are inside specific problematic containers
+        if (select.closest('#form-modal-body')) {
+          // These will be handled by reinitializeTomSelectInModal
+          return;
+        }
+        
+        const config = {
+          plugins: select.multiple ? ['remove_button', 'checkbox_options'] : ['remove_button'],
+          create: false,
+          allowEmptyOption: true,
+          searchField: ['text'],
+          maxOptions: null,
+          closeAfterSelect: !select.multiple,
+        };
+        
+        // Special configuration for searchable dropdowns
+        if (select.options.length > 5) {
+          config.plugins.push('dropdown_header');
+        }
+        
+        try {
+          const instance = new TomSelect(select, config);
+          select.dataset.tomSelectInitialized = 'true';
+          console.log(`Tom Select initialized for: ${select.id || select.className}`);
+        } catch (error) {
+          console.warn('Failed to initialize Tom Select for element:', select.id || select.className, error);
+        }
+      });
+    }
+    
+    // Reinitialize Tom Select when modals are opened
+    function reinitializeTomSelectInModal() {
+      setTimeout(() => {
+        const modalSelects = document.querySelectorAll('#form-modal select:not([data-tom-select-initialized])');
+        modalSelects.forEach(select => {
+          // Only initialize Tom Select for simple select elements
+          if (!select.onchange && !select.addEventListener) {
+            try {
+              const config = {
+                plugins: select.multiple ? ['remove_button', 'checkbox_options'] : ['remove_button'],
+                create: false,
+                allowEmptyOption: true,
+                searchField: ['text'],
+                closeAfterSelect: !select.multiple,
+              };
+              
+              new TomSelect(select, config);
+              select.dataset.tomSelectInitialized = 'true';
+              console.log(`Tom Select initialized in modal for: ${select.id || 'unnamed'}`);
+            } catch (error) {
+              console.warn('Failed to initialize Tom Select in modal:', select.id || 'unnamed', error);
+            }
+          }
+        });
+      }, 200);
+    }
+    
+    // Special function to initialize Tom Select for specific problematic elements
+    function initializeTomSelectLater() {
+      setTimeout(() => {
+        // Try to initialize any remaining select elements
+        const remainingSelects = document.querySelectorAll('select:not([data-tom-select-initialized])');
+        remainingSelects.forEach(select => {
+          // Only initialize if it's visible and not in a problematic container
+          if (select.offsetParent !== null && !select.closest('.ts-wrapper')) {
+            try {
+                const config = {
+                  plugins: select.multiple ? ['remove_button', 'checkbox_options'] : ['remove_button'],
+                  create: false,
+                  allowEmptyOption: true,
+                  searchField: ['text'],
+                  closeAfterSelect: !select.multiple,
+                };
+                
+                new TomSelect(select, config);
+                select.dataset.tomSelectInitialized = 'true';
+                console.log(`Tom Select late-initialized for: ${select.id || select.className}`);
+              } catch (error) {
+                console.warn('Failed to late-initialize Tom Select:', select.id || select.className, error);
+              }
+          }
+        });
+      }, 1000);
+    }
+
     // --- Navigation Logic ---
     document.addEventListener('DOMContentLoaded', function () {
+      // Initialize Tom Select for all select elements
+      initializeTomSelect();
+      
+      // Also try to initialize later for any dynamically created elements
+      initializeTomSelectLater();
+      
       const links = document.querySelectorAll('.sidebar-link');
       const breadcrumb = document.getElementById('breadcrumb');
       const sidebar = document.getElementById('sidebar');
@@ -1584,16 +1781,24 @@
       // Update titles and visibility based on sidebar state
       function updateMenuState() {
         const isSidebarOpen = !sidebar.classList.contains('-ml-64');
+        const isDesktop = window.innerWidth >= 1024;
         const sidebarHeaderToggle = document.getElementById('sidebar-header-toggle');
 
-        if (isSidebarOpen) {
-          headerLogoArea.style.display = 'none';
-          if (sidebarHeaderToggle) {
-            sidebarHeaderToggle.title = 'Close menu';
+        if (isDesktop) {
+          // Desktop behavior: hide logo when sidebar is open
+          if (isSidebarOpen) {
+            headerLogoArea.style.display = 'none';
+            if (sidebarHeaderToggle) {
+              sidebarHeaderToggle.title = 'Close menu';
+            }
+          } else {
+            headerLogoArea.style.display = 'flex';
+            headerLogoToggle.title = 'Open menu';
           }
         } else {
+          // Mobile behavior: always show logo for navigation
           headerLogoArea.style.display = 'flex';
-          headerLogoToggle.title = 'Open menu';
+          headerLogoToggle.title = isSidebarOpen ? 'Close menu' : 'Open menu';
         }
         updateHeaderTitle();
       }
@@ -1652,7 +1857,7 @@
             sidebar.classList.add('-ml-64');
             removeOverlay();
             // Update both header title and logo visibility after sidebar state change
-            updateTitlesAndVisibility();
+            updateMenuState();
           }
 
           // Update header title after sidebar state change
@@ -1674,12 +1879,8 @@
           // On desktop, always show current page breadcrumb
           breadcrumb.textContent = pageTitle;
         } else {
-          // On mobile, show title only when sidebar is open
-          if (isSidebarOpen) {
-            breadcrumb.textContent = pageTitle;
-          } else {
-            breadcrumb.textContent = ''; // Hide breadcrumb when sidebar is closed on mobile
-          }
+          // On mobile, always show current page title
+          breadcrumb.textContent = pageTitle;
         }
       }
 
@@ -2291,6 +2492,9 @@
         currentAction = action;
         currentEditIndex = index;
         formModal.classList.remove('hidden', 'opacity-0');
+        
+        // Initialize Tom Select for any select elements in the modal
+        reinitializeTomSelectInModal();
         formModal.classList.add('flex');
         setTimeout(() => {
           formModal.querySelector('div').classList.remove('scale-95');
@@ -2439,17 +2643,17 @@
                         <div class="space-y-4 text-sm">
                             <div><label class="font-medium text-slate-700">規則名稱</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"></div>
                             <div class="flex items-center justify-between"><label class="font-medium text-slate-700">啟用規則</label><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div>
-                            <div><label class="font-medium text-slate-700">監控目標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>選擇資源群組</option>${groupOptions}</select></div>
-                            <div><label class="font-medium text-slate-700">指標</label><select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-1.5"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
+                            <div><label class="font-medium text-slate-700">監控目標</label><select id="add-rule-target-group" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option>選擇資源群組</option>${groupOptions}</select></div>
+                            <div><label class="font-medium text-slate-700">指標</label><select id="add-rule-metric" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option>CPU 使用率</option><option>網路流量</option><option>網路延遲 (Ping)</option></select></div>
                             <fieldset class="mt-4 border-t pt-4"><legend class="font-medium text-slate-700 mb-2">告警條件</legend>
                                 <div class="space-y-2" id="alert-conditions">
                                     <div class="grid grid-cols-12 gap-2 items-center">
                                         <span class="col-span-1 text-center">&gt;</span>
                                         <input type="number" placeholder="閾值" class="col-span-3 px-3 py-1.5 border rounded-md">
                                         <span class="col-span-1 text-center">持續</span>
-                                        <select class="col-span-3 px-3 py-1.5 border rounded-md"><option>5 分鐘</option><option>10 分鐘</option></select>
+                                        <select id="add-rule-duration" class="col-span-3 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option>5 分鐘</option><option>10 分鐘</option></select>
                                         <span class="col-span-1 text-center">為</span>
-                                        <select class="col-span-3 px-3 py-1.5 border rounded-md"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select>
+                                        <select id="add-rule-severity" class="col-span-3 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select>
                                     </div>
                                 </div>
                                 <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
@@ -2467,7 +2671,7 @@
                     <div class="accordion-content p-4 border-t border-slate-200 hidden">
                         <div class="space-y-4 text-sm">
                             <div><label class="font-medium text-slate-700">選擇腳本</label>
-                                <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <select id="automation-script-select" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                                     <option value="">不使用自動化響應</option>
                                 </select>
                             </div>
@@ -2523,9 +2727,9 @@
                                           <span class="col-span-1 text-center">&gt;</span>
                                           <input type="number" placeholder="閾值" value="90" class="col-span-3 px-3 py-1.5 border rounded-md">
                                           <span class="col-span-1 text-center">持續</span>
-                                          <select class="col-span-3 px-3 py-1.5 border rounded-md"><option>5 分鐘</option><option selected>10 分鐘</option></select>
+                                          <select id="edit-rule-duration" class="col-span-3 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option>5 分鐘</option><option selected>10 分鐘</option></select>
                                           <span class="col-span-1 text-center">為</span>
-                                          <select class="col-span-3 px-3 py-1.5 border rounded-md"><option value="high" selected>高</option><option value="medium">中</option><option value="low">低</option></select>
+                                          <select id="edit-rule-severity" class="col-span-3 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option value="high" selected>高</option><option value="medium">中</option><option value="low">低</option></select>
                                       </div>
                                   </div>
                                   <button id="add-condition-btn" type="button" class="mt-2 text-blue-600 text-sm font-semibold hover:underline">+ 新增條件</button>
@@ -2543,7 +2747,7 @@
                       <div class="accordion-content p-4 border-t border-slate-200 hidden">
                           <div class="space-y-4 text-sm">
                               <div><label class="font-medium text-slate-700">選擇腳本</label>
-                                  <select id="automation-script-select" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                  <select id="automation-script-select" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                                       <option value="">不使用自動化響應</option>
                                   </select>
                               </div>
@@ -2635,17 +2839,17 @@
         const formHtml = `
             <div class="space-y-4">
                 <div class="grid grid-cols-3 items-center gap-4">
-                    <label for="team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
-                    <input id="team-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                    <label for="add-team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
+                    <input id="add-team-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
                 </div>
                 <fieldset class="mt-4">
                     <legend class="text-sm font-medium text-slate-700 mb-2">通知訂閱者</legend>
-                    <select id="team-subscribers" multiple></select>
+                    <select id="add-team-subscribers" multiple></select>
                 </fieldset>
             </div>`;
         openFormModal('新增團隊', formHtml, 'add-team');
         formModal.tomSelectInstances = {
-          subscribers: new TomSelect('#team-subscribers', {
+          subscribers: new TomSelect('#add-team-subscribers', {
             placeholder: '搜尋人員或通知管道...',
             plugins: ['remove_button'],
             optgroups: [
@@ -2667,19 +2871,19 @@
           const formHtml = `
                 <div class="space-y-4">
                     <div class="grid grid-cols-3 items-center gap-4">
-                        <label for="team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
-                        <input id="team-name" type="text" value="${team.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
+                        <label for="edit-team-name" class="text-sm font-medium text-slate-700">團隊名稱</label>
+                        <input id="edit-team-name" type="text" value="${team.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm">
                     </div>
                     <fieldset class="mt-4">
                         <legend class="text-sm font-medium text-slate-700 mb-2">通知訂閱者</legend>
-                        <select id="team-subscribers" multiple></select>
+                        <select id="edit-team-subscribers" multiple></select>
                     </fieldset>
                 </div>`;
           openFormModal('編輯團隊', formHtml, 'edit-team', index);
 
           const selectedItems = team.subscribers.map(s => `${s.type}-${s.id}`);
           formModal.tomSelectInstances = {
-            subscribers: new TomSelect('#team-subscribers', {
+            subscribers: new TomSelect('#edit-team-subscribers', {
               placeholder: '搜尋人員或通知管道...',
               plugins: ['remove_button'],
               optgroups: [
@@ -2702,9 +2906,9 @@
         const groupCheckboxes = mockData.resourceGroups.map(g => `<div class="relative flex items-start"><div class="flex h-6 items-center"><input id="maint-group-${g.id}" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"></div><div class="ml-3 text-sm leading-6"><label for="maint-group-${g.id}" class="font-medium text-gray-900">${g.name}</label></div></div>`).join('');
         const formHtml = `
                     <div class="space-y-4">
-                        <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
+                        <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
+                        <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                     </div>`;
         openFormModal('新增維護時段', formHtml, 'add-maintenance');
@@ -2719,9 +2923,9 @@
           }).join('');
           const formHtml = `
                     <div class="space-y-4">
-                        <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" value="${maint.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" value="${new Date(maint.start).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
-                        <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" value="${new Date(maint.end).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div><label class="text-sm font-medium text-slate-700">說明</label><input type="text" value="${maint.name}" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
+                        <div><label class="text-sm font-medium text-slate-700">開始時間</label><input type="datetime-local" value="${new Date(maint.start).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
+                        <div><label class="text-sm font-medium text-slate-700">結束時間</label><input type="datetime-local" value="${new Date(maint.end).toISOString().slice(0, 16)}" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
                         <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">影響資源群組</legend><div class="space-y-2 mt-2">${groupCheckboxes}</div></fieldset>
                     </div>`;
           openFormModal('編輯維護時段', formHtml, 'edit-maintenance', index);
@@ -2735,19 +2939,19 @@
         const formHtml = `
                     <div class="space-y-4">
                         <p class="text-sm text-slate-500 mb-4 -mt-2">僅供組織權限管理，個人通知設定請至「個人資料」頁面。</p>
-                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+                        <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="add-user-name" type="text" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
                         <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
-                          <select id="user-role" class="col-span-2 mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
+                          <select id="add-user-role" class="col-span-2 mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                             <option value="Super Admin">超級管理員</option>
                             <option value="Team Manager">團隊管理員</option>
                             <option value="Team Member">一般使用者</option>
                           </select>
                         </div>
-                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
+                        <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="add-user-teams" multiple></select></fieldset>
                     </div>`;
         openFormModal('新增人員', formHtml, 'add-user');
         formModal.tomSelectInstances = {
-          teams: new TomSelect('#user-teams', {
+          teams: new TomSelect('#add-user-teams', {
             options: mockData.teams.map(t => ({ value: t.id, text: t.name })),
             placeholder: '搜尋團隊...',
             plugins: ['remove_button'],
@@ -2766,19 +2970,19 @@
           const formHtml = `
                         <div class="space-y-4">
                             <p class="text-sm text-slate-500 mb-4 -mt-2">僅供組織權限管理，個人通知設定請至「個人資料」頁面。</p>
-                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm"></div>
+                            <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">姓名</label><input id="edit-user-name" type="text" value="${user.name}" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm"></div>
                              <div class="grid grid-cols-3 items-center gap-4"><label class="text-sm font-medium text-slate-700">角色</label>
-                              <select id="user-role" class="col-span-2 mt-1 block w-full rounded-md border-slate-300 shadow-sm">
+                              <select id="edit-user-role" class="col-span-2 mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                                 <option value="Super Admin" ${user.role === 'Super Admin' ? 'selected' : ''}>超級管理員</option>
                                 <option value="Team Manager" ${user.role === 'Team Manager' ? 'selected' : ''}>團隊管理員</option>
                                 <option value="Team Member" ${user.role === 'Team Member' ? 'selected' : ''}>一般使用者</option>
                               </select>
                             </div>
-                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="user-teams" multiple></select></fieldset>
+                            <fieldset class="mt-4"><legend class="text-sm font-medium text-slate-700 mb-2">團隊歸屬</legend><select id="edit-user-teams" multiple></select></fieldset>
                         </div>`;
           openFormModal('編輯人員', formHtml, 'edit-user', index);
           formModal.tomSelectInstances = {
-            teams: new TomSelect('#user-teams', {
+            teams: new TomSelect('#edit-user-teams', {
               options: mockData.teams.map(t => ({ value: t.id, text: t.name })),
               items: user.teamIds,
               placeholder: '搜尋團隊...',
@@ -2847,7 +3051,7 @@
           webhook: `
             <div><label class="text-sm font-medium text-slate-700">Webhook URL</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm sm:text-sm" value="${channel.url || ''}"></div>
             <div><label class="text-sm font-medium text-slate-700">HTTP 方法 (Method)</label>
-              <select class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
+              <select id="channel-method-select" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                 <option value="POST" ${channel.method === 'POST' ? 'selected' : ''}>POST</option>
                 <option value="PUT" ${channel.method === 'PUT' ? 'selected' : ''}>PUT</option>
               </select>
@@ -3234,7 +3438,7 @@
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div><span class="font-semibold text-slate-600">處理狀態:</span> ${statusMap[log.status]}</div>
                           <div><span class="font-semibold text-slate-600">確認人員:</span> ${log.acknowledgedBy || '-'}</div>
-                          <div><label for="incident-assignee-select" class="font-semibold text-slate-600">指派給:</label> <select id="incident-assignee-select" class="ml-2 rounded-md border-slate-300 text-sm"><option value="">未指派</option>${personnelOptions}</select></div>
+                          <div><label for="incident-assignee-select" class="font-semibold text-slate-600">指派給:</label> <select id="incident-assignee-select" class="ml-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"><option value="">未指派</option>${personnelOptions}</select></div>
                       </div>
                       <div class="flex gap-2 flex-wrap">
                            ${actionButtonsHtml}
@@ -3389,11 +3593,11 @@
             <div class="space-y-4">
               <div>
                 <label class="text-sm font-medium text-slate-700">網段範圍</label>
-                <input type="text" placeholder="例如：192.168.1.0/24" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                <input type="text" placeholder="例如：192.168.1.0/24" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
               </div>
               <div>
                 <label class="text-sm font-medium text-slate-700">掃描方式</label>
-                <select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                <select id="scan-method-select" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                   <option>SNMP 掃描</option>
                   <option>Ping 掃描</option>
                   <option>Port 掃描</option>
@@ -3501,17 +3705,17 @@
       addScriptBtn.addEventListener('click', () => {
         const formHtml = `
           <div class="space-y-4">
-            <div><label class="text-sm font-medium text-slate-700">腳本名稱</label><input type="text" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+            <div><label class="text-sm font-medium text-slate-700">腳本名稱</label><input type="text" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
             <div><label class="text-sm font-medium text-slate-700">腳本類型</label>
-              <select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+              <select class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                 <option>Shell Script</option>
                 <option>Ansible Playbook</option>
                 <option>Python Script</option>
               </select>
             </div>
-            <div><label class="text-sm font-medium text-slate-700">描述</label><textarea rows="3" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea></div>
+            <div><label class="text-sm font-medium text-slate-700">描述</label><textarea rows="3" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></textarea></div>
             <div><label class="text-sm font-medium text-slate-700">腳本內容</label><textarea rows="8" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm font-mono text-xs" placeholder="#!/bin/bash&#10;# 在此輸入腳本內容"></textarea></div>
-            <div><label class="text-sm font-medium text-slate-700">參數定義 (以逗號分隔)</label><input type="text" placeholder="host_ip,service_name" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+            <div><label class="text-sm font-medium text-slate-700">參數定義 (以逗號分隔)</label><input type="text" placeholder="host_ip,service_name" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
           </div>`;
         const formModal = document.getElementById('form-modal');
         const formModalTitle = document.getElementById('form-modal-title');
@@ -3565,17 +3769,17 @@
 
           const formHtml = `
             <div class="space-y-4">
-              <div><label class="text-sm font-medium text-slate-700">腳本名稱</label><input type="text" value="${script.name}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+              <div><label class="text-sm font-medium text-slate-700">腳本名稱</label><input type="text" value="${script.name}" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
               <div><label class="text-sm font-medium text-slate-700">腳本類型</label>
-                <select class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                <select class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">
                   <option ${script.type === 'Shell Script' ? 'selected' : ''}>Shell Script</option>
                   <option ${script.type === 'Ansible Playbook' ? 'selected' : ''}>Ansible Playbook</option>
                   <option ${script.type === 'Python Script' ? 'selected' : ''}>Python Script</option>
                 </select>
               </div>
-              <div><label class="text-sm font-medium text-slate-700">描述</label><textarea rows="3" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">${script.description}</textarea></div>
+              <div><label class="text-sm font-medium text-slate-700">描述</label><textarea rows="3" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500">${script.description}</textarea></div>
               <div><label class="text-sm font-medium text-slate-700">腳本內容</label><textarea rows="8" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm font-mono text-xs" placeholder="#!/bin/bash&#10;# 在此輸入腳本內容">${script.type === 'Shell Script' ? '#!/bin/bash\n# ' + script.description + '\necho "Executing script..."\n# Add your script logic here' : script.type === 'Python Script' ? '#!/usr/bin/env python3\n# ' + script.description + '\nimport sys\nprint("Executing script...")\n# Add your script logic here' : '---\n# ' + script.description + '\n- name: Execute task\n  debug:\n    msg: "Executing playbook..."'}</textarea></div>
-              <div><label class="text-sm font-medium text-slate-700">參數定義 (以逗號分隔)</label><input type="text" value="${script.parameters.join(',')}" placeholder="host_ip,service_name" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></div>
+              <div><label class="text-sm font-medium text-slate-700">參數定義 (以逗號分隔)</label><input type="text" value="${script.parameters.join(',')}" placeholder="host_ip,service_name" class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus:border-blue-500 focus:ring-blue-500"></div>
             </div>`;
 
           const formModal = document.getElementById('form-modal');
@@ -3730,6 +3934,23 @@
                 metricSelect.value = metricSelect.dataset.lastSelection;
               }
               metricSelect.disabled = false;
+              
+              // Reinitialize Tom Select for the updated metric dropdown
+              if (metricSelect && !metricSelect.dataset.tomSelectInitialized && !metricSelect.closest('.ts-wrapper')) {
+                try {
+                  new TomSelect(metricSelect, {
+                    plugins: ['remove_button'],
+                    create: false,
+                    allowEmptyOption: true,
+                    searchField: ['text'],
+                    closeAfterSelect: true,
+                  });
+                  metricSelect.dataset.tomSelectInitialized = 'true';
+                  console.log('Tom Select initialized for metric select');
+                } catch (error) {
+                  console.warn('Failed to initialize Tom Select for metric select:', error);
+                }
+              }
             } else {
               // No group is selected, reset and disable
               metricSelect.innerHTML = '<option value="">請先選擇群組</option>';
@@ -3865,6 +4086,23 @@
         const selected = currentSelection === group.id.toString() ? 'selected' : '';
         targetGroupSelect.innerHTML += `<option value="${group.id}" ${selected}>${group.name}</option>`;
       });
+      
+      // Reinitialize Tom Select for the updated dropdown
+      if (targetGroupSelect && !targetGroupSelect.dataset.tomSelectInitialized && !targetGroupSelect.closest('.ts-wrapper')) {
+        try {
+          new TomSelect(targetGroupSelect, {
+            plugins: ['remove_button'],
+            create: false,
+            allowEmptyOption: true,
+            searchField: ['text'],
+            closeAfterSelect: true,
+          });
+          targetGroupSelect.dataset.tomSelectInitialized = 'true';
+          console.log('Tom Select initialized for target group select');
+        } catch (error) {
+          console.warn('Failed to initialize Tom Select for target group select:', error);
+        }
+      }
     }
 
     function updateAnalyzeButtonState() {
