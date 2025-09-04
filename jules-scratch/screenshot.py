@@ -17,7 +17,7 @@ class ScreenshotManager:
         self.headless = headless
         self.viewport_size = viewport_size or {"width": 1440, "height": 900}
         self.file_path = f"file://{os.path.abspath('demo-page.html')}"
-        self.base_dir = "jules-scratch"
+        self.base_dir = "docs/jules-scratch"
         self.frame_count = 0
         
         # 角色配置
@@ -44,7 +44,7 @@ class ScreenshotManager:
         directories = [
             f"{self.base_dir}/screenshot_pages",
             f"{self.base_dir}/screenshot_modals", 
-            f"{self.base_dir}/screenshot_by_role/verification",
+            f"{self.base_dir}/screenshot_by_role",
             f"{self.base_dir}/gif_frames"
         ]
         
@@ -231,37 +231,41 @@ class ScreenshotManager:
             
         def setup_add_resource():
             print("    - 導航到資源頁面...")
-            self.navigate_to_page(page, "resources", "#resources-table-body")
+            self.navigate_to_page(page, "resources", "#resources-grid")
             print("    - 點擊新增資源按鈕...")
             page.get_by_role("button", name="新增資源").click()
             
         def setup_confirm_delete():
             print("    - 導航到資源頁面...")
-            self.navigate_to_page(page, "resources", "#resources-table-body")
+            self.navigate_to_page(page, "resources", "#resources-grid")
             print("    - 點擊刪除按鈕...")
-            page.locator(".delete-resource-btn").first.click()
+            expect(page.locator("#resources-grid .delete-resource-btn").first).to_be_visible()
+            page.locator("#resources-grid .delete-resource-btn").first.click()
             
         def setup_edit_team():
             print("    - 導航到團隊頁面...")
-            self.navigate_to_page(page, "teams", "#teams-table-body")
+            self.navigate_to_page(page, "teams", "#teams-grid")
             print("    - 點擊編輯團隊按鈕...")
-            page.locator(".edit-team-btn").first.click()
+            expect(page.locator("#teams-grid .edit-team-btn").first).to_be_visible()
+            page.locator("#teams-grid .edit-team-btn").first.click()
             
         def setup_edit_personnel():
             print("    - 導航到人員頁面...")
-            self.navigate_to_page(page, "personnel", "#personnel-table-body")
+            self.navigate_to_page(page, "personnel", "#personnel-grid")
             print("    - 點擊編輯人員按鈕...")
-            page.locator(".edit-user-btn").first.click()
+            expect(page.locator("#personnel-grid .edit-user-btn").first).to_be_visible()
+            page.locator("#personnel-grid .edit-user-btn").first.click()
             
         def setup_edit_channel():
             print("    - 導航到通知管道頁面...")
-            self.navigate_to_page(page, "channels", "#channels-table-body")
+            self.navigate_to_page(page, "channels", "#channels-grid")
             print("    - 點擊編輯管道按鈕...")
-            page.locator(".edit-channel-btn").first.click()
+            expect(page.locator("#channels-grid .edit-channel-btn").first).to_be_visible()
+            page.locator("#channels-grid .edit-channel-btn").first.click()
             
         def setup_add_rule():
             print("    - 導航到規則頁面...")
-            self.navigate_to_page(page, "rules", "#rules-table-body")
+            self.navigate_to_page(page, "rules", "#rules-grid")
             print("    - 點擊新增告警規則按鈕...")
             page.get_by_role("button", name="新增告警規則").click()
             
@@ -273,15 +277,22 @@ class ScreenshotManager:
             
         def setup_incident_details():
             print("    - 導航到日誌頁面...")
-            self.navigate_to_page(page, "logs", "#logs-table-body")
-            print("    - 點擊日誌行...")
-            page.locator("#logs-table-body tr.log-row").first.click()
+            self.navigate_to_page(page, "logs", "#logs-grid")
+            print("    - 打開事件詳情...")
+            page.locator("#logs-grid .view-incident-btn").first.click()
             
         def setup_gemini_report():
-            print("    - 選擇所有日誌...")
-            page.locator("#select-all-logs").check()
+            print("    - 選擇日誌以啟用按鈕（若需要）...")
+            # 若按鈕為 disabled，嘗試勾選前兩筆；若無 checkbox 則直接點擊
+            btn = page.get_by_role("button", name="✨ 生成事件報告")
+            if btn.get_attribute("disabled") is not None:
+                if page.locator("#logs-grid .log-checkbox").count() >= 2:
+                    page.locator("#logs-grid .log-checkbox").nth(0).check()
+                    page.locator("#logs-grid .log-checkbox").nth(1).check()
+                    page.wait_for_timeout(200)
             print("    - 點擊生成報告按鈕...")
-            page.get_by_role("button", name="✨ 生成事件報告").click()
+            expect(btn).to_be_enabled()
+            btn.click()
             
         def setup_feedback():
             print("    - 導航到個人檔案頁面...")
@@ -292,14 +303,18 @@ class ScreenshotManager:
             
         def setup_scan_network_initial():
             print("    - 導航到資源頁面...")
-            self.navigate_to_page(page, "resources", "#resources-table-body")
+            self.navigate_to_page(page, "resources", "#resources-grid")
             print("    - 點擊掃描網段按鈕...")
             page.get_by_role("button", name="掃描網段").click()
             
         def setup_scan_network_results():
             print("    - 執行掃描...")
-            page.wait_for_timeout(200)
-            page.locator("#form-modal-save-btn").click()
+            # 確保按鈕可見後再點擊
+            expect(page.locator("#form-modal")).to_be_visible()
+            btn = page.locator("#form-modal-save-btn")
+            btn.scroll_into_view_if_needed()
+            expect(btn).to_be_visible()
+            btn.click()
             
         def setup_execution_log():
             print("    - 導航到自動化頁面...")
@@ -308,7 +323,8 @@ class ScreenshotManager:
             page.locator("#execution-logs-tab").click()
             page.wait_for_timeout(200)  # 等待標籤切換
             print("    - 點擊查看輸出按鈕...")
-            page.locator(".view-output-btn").first.click()
+            expect(page.locator("#execution-logs-grid .view-output-btn").first).to_be_visible()
+            page.locator("#execution-logs-grid .view-output-btn").first.click()
             
         modal_configs = [
             {
@@ -400,8 +416,8 @@ class ScreenshotManager:
                 "name": "scan_network_results",
                 "description": "網段掃描彈窗（結果）",
                 "setup": setup_scan_network_results,
-                "wait_for": "#form-modal-body h4",
-                "additional_wait": lambda: expect(page.locator("#form-modal-body h4")).to_have_text("掃描結果 (發現 4 個資源)", timeout=5000),
+                "wait_for": "#form-modal",
+                "additional_wait": lambda: expect(page.locator("#form-modal-body")).to_contain_text("掃描結果", timeout=7000),
                 "cleanup": lambda: page.wait_for_timeout(2000)  # 等待自動關閉
             },
             {
@@ -526,11 +542,11 @@ class ScreenshotManager:
         self.take_gif_frame(page, "03_resources_page")
         
         print("- 選擇資源進行批量操作...")
-        page.locator('.resource-checkbox[data-resource-id="1"]').check()
+        page.locator('#resources-grid .resource-checkbox[data-resource-id="1"]').first.check()
         page.wait_for_timeout(200)
-        page.locator('.resource-checkbox[data-resource-id="2"]').check()
+        page.locator('#resources-grid .resource-checkbox[data-resource-id="2"]').first.check()
         page.wait_for_timeout(200)
-        page.locator('.resource-checkbox[data-resource-id="5"]').check()
+        page.locator('#resources-grid .resource-checkbox[data-resource-id="5"]').first.check()
         expect(page.locator("#batch-operations-bar")).to_be_visible()
         page.wait_for_timeout(500)
         self.take_gif_frame(page, "04_resources_batch_selection", 1000)
@@ -594,10 +610,12 @@ class ScreenshotManager:
         self.take_gif_frame(page, "11_logs_page")
         
         print("- 選擇日誌進行 AI 分析...")
-        page.locator('.log-checkbox[data-index="0"]').check()
-        page.wait_for_timeout(200)
-        page.locator('.log-checkbox[data-index="1"]').check()
-        expect(page.locator("#generate-report-btn")).to_be_enabled()
+        # 在 Grid.js 容器內定位，避免嚴格模式衝突
+        if page.locator('#logs-grid .log-checkbox').count() >= 2:
+            page.locator('#logs-grid .log-checkbox').nth(0).check()
+            page.wait_for_timeout(200)
+            page.locator('#logs-grid .log-checkbox').nth(1).check()
+            expect(page.locator("#generate-report-btn")).to_be_enabled()
         page.wait_for_timeout(500)
         self.take_gif_frame(page, "12_logs_selected")
         
