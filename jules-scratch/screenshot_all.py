@@ -114,6 +114,41 @@ class ScreenshotManager:
         self.frame_count += 1
         page.wait_for_timeout(delay)
         
+    def interact_with_tom_select(self, page, select_id: str, option_text: str):
+        """與 Tom Select 元素互動的通用函數"""
+        try:
+            # 嘗試找到 Tom Select 控制項
+            ts_control = page.locator(f'#{select_id}').locator('..').locator('.ts-control')
+            
+            if ts_control.is_visible():
+                # 點擊打開下拉選單
+                ts_control.click()
+                page.wait_for_timeout(300)
+                
+                # 選擇選項
+                option = page.locator('.ts-dropdown .option', has_text=option_text)
+                if option.is_visible():
+                    option.click()
+                    page.wait_for_timeout(200)
+                    return True
+                else:
+                    print(f"    - 找不到選項：{option_text}")
+                    return False
+            else:
+                # 嘗試直接使用原生 select（如果 Tom Select 未初始化）
+                native_select = page.locator(f'#{select_id}')
+                if native_select.is_visible():
+                    native_select.select_option(label=option_text)
+                    page.wait_for_timeout(200)
+                    return True
+                else:
+                    print(f"    - {select_id} 不可見")
+                    return False
+                    
+        except Exception as e:
+            print(f"    - 警告：無法與 {select_id} 互動：{e}")
+            return False
+        
     def capture_pages(self, browser):
         """截取所有主要頁面"""
         print("=== 開始頁面截圖 ===")
@@ -534,14 +569,17 @@ class ScreenshotManager:
         self.take_gif_frame(page, "08_add_rule_modal")
         
         # 展開自動化部分
-        page.locator('.accordion-header').nth(0).click()
         page.locator('.accordion-header').nth(1).click()
-        page.locator('#automation-script-select').select_option(label='重啟 Web 服務')
+        page.wait_for_timeout(500)
+        
+        # 使用 Tom Select 選擇自動化腳本
+        if not self.interact_with_tom_select(page, 'automation-script-select', '重啟 Web 服務'):
+            print("    - 跳過自動化腳本選擇")
+        
         page.wait_for_timeout(500)
         self.take_gif_frame(page, "09_add_rule_modal_automation_expanded")
         
         # 展開通知部分
-        page.locator('.accordion-header').nth(1).click()
         page.locator('.accordion-header').nth(2).click()
         page.wait_for_timeout(500)
         self.take_gif_frame(page, "10_add_rule_modal_all_expanded")
@@ -593,10 +631,11 @@ class ScreenshotManager:
         self.take_gif_frame(page, "16_capacity_planning_page")
         
         print("- 運行分析...")
-        page.locator('#capacity-target-group').select_option(label='核心交換器')
-        page.wait_for_timeout(200)
-        page.locator('#capacity-metric').select_option(label='磁碟使用率')
-        page.wait_for_timeout(200)
+        
+        # 使用 Tom Select 選擇目標群組和指標
+        self.interact_with_tom_select(page, 'capacity-target-group', '核心交換器')
+        self.interact_with_tom_select(page, 'capacity-metric', '磁碟使用率')
+        
         page.locator('#analyze-capacity-btn').click()
         expect(page.locator("#capacity-results")).to_be_visible()
         page.wait_for_timeout(2500)
