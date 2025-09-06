@@ -14,7 +14,7 @@
 `demo-page.html` 是 `ARCHITECTURE.md` 文件中定義之架構的視覺化原型。任何對其中一個檔案的修改，都必須確保另一個檔案的內容與之一致。
 
 - **若修改 `ARCHITECTURE.md`**：必須檢查 `demo-page.html` 是否需要對應更新，以符合新的架構設計。
-- **若修改 `demo-page.html`**：必須檢查 `ARCHITECTURE.md`、 `USERGUIDE.md` 的規格是否需要更新，以反映實作上的變更。
+- **若修改 `demo-page.html`**：必須檢查 `ARCHITECTURE.md`、 `USER_GUIDE.md` 的規格是否需要更新，以反映實作上的變更。
 
 ### 2. 前端變更後的截圖更新
 
